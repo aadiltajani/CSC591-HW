@@ -1,5 +1,5 @@
 # README
-This good repository contains folder for HW1.
+This repository contains folder for HW1.
 
 ## Name
 CSC 591 Automated Software Engineering Group 11 HW repo.

@@ -1,0 +1,5 @@
+# Gitignore file to mention what files and folders to ignore during version control on git
+.Python
+build/
+lib/
+.venv

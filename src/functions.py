@@ -16,3 +16,30 @@ def rnd(n, places = 3):
     mult = 10 ** places
     return math.floor(n * mult + 0.5) / mult
 
+# Lists
+def map(t, fun):
+    u = {}
+    for k,v in t.items():
+        v,k = fun(v)
+        if k in u.keys():
+            u[k] = v
+        else:
+            u[len(u) + 1] = v
+    return u
+
+def kap(t, fun):
+    u = {}
+    for k,v in t.items():
+        v,k = fun(k,v)
+        if k in u.keys():
+            u[k] = v
+        else:
+            u[len(u) + 1] = v
+    return u 
+
+def sort(t):
+    t = sorted(t)
+    return t
+
+def keys(t):
+    return sorted(t.keys())

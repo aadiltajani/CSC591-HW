@@ -44,3 +44,29 @@ def sort(t):
 def keys(t):
     return sorted(t.keys())
 
+# Strings
+def oo(t):
+    print(o(t))
+
+def fmt(s, *a):
+    return str.format(s, a)
+
+def o(t):
+    if((not isinstance(t, dict)) and (not isinstance(t, list))):
+        return str(t)
+    def show(k, v):
+        if str(k).find('_') != 0:
+            v = o(v)
+            return isinstance(t, dict) and (":"+str(k)+" "+str(v)) or str(v)
+    u = []
+    if isinstance(t, dict):
+        for k, v in t.items():
+            showop = show(k,v)
+            if showop:
+                u.append(showop) 
+            u.sort()
+
+    elif isinstance(t, list):
+        u = t
+    return "{" + " ".join(str(val) for val in u) + "}"
+

@@ -1,3 +1,4 @@
+import math
 class NUM: 
     def __init__(self):
         self.n = 0

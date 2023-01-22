@@ -2,7 +2,7 @@ import sys
 sys.path.append("./src")
 import functions
 import NUM
-import Sym
+import sym
 the = {'h': False, 'd': False, 's': 937162211, 'g': 'all'}
 
 def test_the():

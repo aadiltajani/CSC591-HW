@@ -30,6 +30,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running test cases with pytest
       run: python -m pytest 
+    - name: Running main file
+      run: python ./src/main.py -g all
     - name: Running custom test engine to output
       run: python ./test/test_cases.py
     - name: Generate Report

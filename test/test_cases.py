@@ -30,10 +30,10 @@ def test_rand():
 
 
 def test_sym():
-    sym = Sym.SYM()
+    Sym = sym.sym()
     for i in ["a", "a", "a", "a", "b", "b", "c"]:
-        sym.add(i)
-    val = 'a' == sym.mid() and 1.379 == functions.rnd(sym.div())
+        Sym.add(i)
+    val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())
     if not val:
         print("❌ fail: sym")
     else:

@@ -1,6 +1,6 @@
 import math
 
-class SYM:
+class sym:
     def __init__(self,c=0,s='') -> None:
         self.n = 0
         self.has={}

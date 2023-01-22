@@ -10,8 +10,8 @@ class NUM:
         self.hi = -sys.maxsize
 
     def add(self, n):
-        if isinstance(n, int):
-            # if n != '?':
+        # if isinstance(n, float) or isinstance(n, int):
+        if n != '?':
             self.n += 1
             d = n - self.mu
             self.mu = self.mu + d / self.n

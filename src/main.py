@@ -2,8 +2,7 @@ import sys
 import getopt
 import functions
 import NUM
-import SYM
-
+import Sym
 n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:'
@@ -23,11 +22,16 @@ ACTIONS:
 
 def rand():
     num1, num2 = NUM.NUM(), NUM.NUM()
+    tempSeed = the['s']
     for i in range(1000):
-        num1.add(functions.rand(the['s'], 0, 1))
+        tm, tempSeed = functions.rand(tempSeed, 0, 1)
+        num1.add(tm)
+    tempSeed = the['s']
     for i in range(1000):
-        num2.add(functions.rand(the['s'], 0, 1))
+        tm, tempSeed = functions.rand(tempSeed, 0, 1)
+        num2.add(tm)
     m1, m2 = functions.rnd(num1.mid(), 10), functions.rnd(num2.mid(), 10)
+    temp = functions.rnd(m1, 1)
     return m1 == m2 and 0.5 == functions.rnd(m1, 1)
 
 
@@ -57,10 +61,10 @@ else:
         else:
             print("✅ pass: rand")
     if the['g'] == 'all' or the['g'] == 'sym':
-        sym = SYM.SYM()
+        Sym = Sym.SYM()
         for i in ["a", "a", "a", "a", "b", "b", "c"]:
-            sym.add(i)
-        val = 'a' == sym.mid() and 1.379 == functions.rnd(sym.div())
+            Sym.add(i)
+        val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())
         if not val:
             print("❌ fail: sym")
         else:

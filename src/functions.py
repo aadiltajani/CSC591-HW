@@ -1,7 +1,7 @@
 import math
 
 # Numerics
-Seed = 937162211
+# Seed = 937162211
 
 
 def rint(lo, hi):
@@ -9,8 +9,9 @@ def rint(lo, hi):
 
 
 def rand(seed, lo=0, hi=1):
-    Seed = (16807 * (seed)) % 2147483647
-    return lo + (hi - lo) * Seed / 2147483647
+    
+    seed = (16807 * (seed)) % 2147483647
+    return lo + (hi - lo) * seed / 2147483647, seed 
 
 
 def rnd(n, places=3):

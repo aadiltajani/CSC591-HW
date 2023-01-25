@@ -1,7 +1,8 @@
 import sys
 sys.path.append("./code")
-from num import Num
-from SYM import Sym
+from NUM import NUM
+from SYM import sym
+from row import Row
 
 class Cols:
 
@@ -27,4 +28,11 @@ class Cols:
             if column_name[-1]=='!':
                 self.klass=column
             self.all.append(column)
+
+    def add(self,row):
+        for _,names in enumerate(zip(self.x,self.y)):
+            for i,col in enumerate(names):
+                col.add(row.cells[i])
+
+
     

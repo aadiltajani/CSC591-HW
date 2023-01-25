@@ -11,3 +11,5 @@ class obj:
         t = type(s, (object,), {})
         t.__call__ = new
         self.t = t
+        
+NUM, SYM, ROW, COLS, DATA = (obj(name) for name in ["NUM", "SYM", "ROW", "COLS", "DATA"])

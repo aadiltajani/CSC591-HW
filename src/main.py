@@ -2,7 +2,7 @@ import sys
 import getopt
 import functions
 import NUM
-import Sym
+import sym
 n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:'
@@ -61,7 +61,7 @@ else:
         else:
             print("✅ pass: rand")
     if the['g'] == 'all' or the['g'] == 'sym':
-        Sym = Sym.SYM()
+        Sym = sym.sym()
         for i in ["a", "a", "a", "a", "b", "b", "c"]:
             Sym.add(i)
         val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())

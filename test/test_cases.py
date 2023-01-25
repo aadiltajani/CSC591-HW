@@ -2,7 +2,7 @@ import sys
 sys.path.append("./src")
 import functions
 import NUM
-import sym
+import SYM
 the = {'h': False, 'd': False, 's': 937162211, 'g': 'all'}
 
 def test_the():
@@ -30,7 +30,7 @@ def test_rand():
 
 
 def test_sym():
-    Sym = sym.sym()
+    Sym = SYM.sym()
     for i in ["a", "a", "a", "a", "b", "b", "c"]:
         Sym.add(i)
     val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())

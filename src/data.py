@@ -6,10 +6,8 @@ class DATA:
             def fun(x):
                 self.add(x)
         if isinstance(src, str):
-            # load from csv file on disk
             csv(src, fun)
         else:
-            # load from list
             for x in src or []:
                 fun(x)
 

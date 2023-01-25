@@ -28,4 +28,4 @@ class NUM:
         return math.sqrt(self.m2 / (self.n - 1))
     
     def rnd(self, x, n):
-        return x if x == "?" else round(x, n)
+        return x if x == "?" else rnd(x, n)

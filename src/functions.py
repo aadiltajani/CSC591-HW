@@ -1,5 +1,5 @@
 import math
-
+import csv
 # Numerics
 # Seed = 937162211
 
@@ -85,3 +85,17 @@ def o(t):
 
 def the(t):
     oo(t)
+
+
+def csv_read(filename):
+    f = open(filename , 'r')
+    # f = open(r'./etc/data/auto93.csv', 'r')
+
+    reader = csv.reader(f)
+    t = {}
+    i = 0
+    for row in reader:
+        for ele in row:
+            t[i] = ele
+            i += 1    
+    return t

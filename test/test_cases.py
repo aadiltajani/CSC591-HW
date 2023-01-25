@@ -49,8 +49,18 @@ def test_num():
     else:
         print("✅ pass: num")
 
+def test_csv():
+    n = 0
+    t = functions.csv_read(r'./etc/data/auto93.csv')
+    n = n + len(t)
+    if n==8*399:
+        print("✅ pass: csv")
+        
+    else:
+       print("❌ fail: csv")
 
 test_the()
 test_rand()
 test_sym()
 test_num()
+test_csv()

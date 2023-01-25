@@ -1,11 +1,14 @@
 import math
 
 class sym:
-    def __init__(self,c=0,s='') -> None:
+    def __init__(self) -> None:
         self.n = 0
         self.has={}
         self.most=0
         self.mode = None
+        self.at = 0
+        self.txt = ""
+
 
     def add(self, v):
         if v != '?':
@@ -24,5 +27,7 @@ class sym:
         for key in self.has.keys():
             if self.has[key] > 0 :
                 e = e - fun(self.has[key]/self.n)
-        
         return e
+
+    def rnd(self,v):
+        return v

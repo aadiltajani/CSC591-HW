@@ -2,7 +2,8 @@ import sys
 sys.path.append("./src")
 import functions
 import NUM
-import SYM
+import sym
+import data
 the = {'h': False, 'd': False, 's': 937162211, 'g': 'all'}
 
 def test_the():
@@ -30,7 +31,7 @@ def test_rand():
 
 
 def test_sym():
-    Sym = SYM.sym()
+    Sym = sym.sym()
     for i in ["a", "a", "a", "a", "b", "b", "c"]:
         Sym.add(i)
     val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())
@@ -59,8 +60,22 @@ def test_csv():
     else:
        print("❌ fail: csv")
 
+def test_data():
+    d = data.DATA(r'./etc/data/auto93.csv')
+    print(len(d.rows))
+    print(d.cols.y[0].w)
+    print(d.cols.x[1].at)
+    print(len(d.cols.y))
+    
+def test_stats():
+     d = data.DATA(r'./etc/data/auto93.csv')
+     for k, cols in enumerate((d.cols.y, d.cols.x)):
+        print(k,"mid",functions.o(d.stats("mid",cols,2 )))
+        print("", "div",functions.o(d.stats("div",cols,2)))
+
 test_the()
 test_rand()
 test_sym()
 test_num()
 test_csv()
+test_data()

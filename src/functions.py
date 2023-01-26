@@ -33,8 +33,8 @@ def map(t, fun):
 
 def kap(t, fun):
     u = {}
-    for k, v in t.items():
-        v, k = fun(k, v)
+    for v in t:
+        v, k = fun(t.index(v), v)
         if k in u.keys():
             u[k] = v
         else:
@@ -87,7 +87,7 @@ def the(t):
     oo(t)
 
 
-def csv_read(filename):
+def csv_read(filename, fun = None):
     f = open(filename , 'r')
     # f = open(r'./etc/data/auto93.csv', 'r')
 
@@ -97,5 +97,7 @@ def csv_read(filename):
     for row in reader:
         for ele in row:
             t[i] = ele
-            i += 1    
+            i += 1
+    if fun != None:
+        fun(t)    
     return t

@@ -1,3 +1,6 @@
+import functions
+import row
+import cols
 class DATA:
     def __init__(self, src=None, fun=None):
         self.rows = []
@@ -6,18 +9,18 @@ class DATA:
             def fun(x):
                 self.add(x)
         if isinstance(src, str):
-            csv(src, fun)
+            self.rows = functions.csv_read(src ,fun)
         else:
             for x in src or []:
                 fun(x)
 
     def add(self, t):
         if self.cols:
-            t = t.cells if hasattr(t, "cells") else ROW(t)
+            t = t.cells if hasattr(t, "cells") else row.Row(t)
             self.rows.append(t)
             self.cols.add(t)
         else:
-            self.cols = COLS(t)
+            self.cols = cols.Cols(t)
 
     def clone(self, init=None):
         data = DATA(self.cols.names)

@@ -1,6 +1,8 @@
 import functions
 import row
 import cols
+
+
 class DATA:
     def __init__(self, src=None):
         self.rows = []
@@ -28,6 +30,8 @@ class DATA:
         return data
 
     def stats(self, what=None, cols=None, nPlaces=None):
-        def fun(k, col):
-            return round(getattr(col, what or "mid")(col), nPlaces), col.txt
-        return {k: fun(k, col) for k, col in (cols or self.cols.y).items()}
+        def fun(col):
+            x = col.mid() if what == 'mid' else col.div()
+            return col.rnd(x, nPlaces)
+
+        return {col.txt: fun(col) for col in cols}

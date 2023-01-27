@@ -90,8 +90,17 @@ else:
         else:
             print("✅ pass: csv")
     if the['g'] == 'all' or the['g'] == 'data':
-        data = data.DATA(the['f'])
-        if len(data.rows) != 398 and data.cols.y[1].w != -1 and data.cols.x[1].at != 1 and len(data.cols.x) != 4:
+        Data = data.DATA(the['f'])
+        if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
             print("❌ fail: data")
         else:
             print("✅ pass: data")
+    if the['g'] == 'all' or the['g'] == 'stats':
+        Data = data.DATA(the['f'])
+        try:
+            for k, cols in ([('y', Data.cols.y), ('x', Data.cols.x)]):
+                print(k, "mid", functions.o(Data.stats("mid", cols, 2)))
+                print(" ", "div", functions.o(Data.stats("div", cols, 2)))
+            print("✅ pass: stats")
+        except Exception as e:
+            print(e, "❌ fail: stats")

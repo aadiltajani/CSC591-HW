@@ -29,5 +29,5 @@ class sym:
                 e = e - fun(self.has[key] / self.n)
         return e
 
-    def rnd(self, v):
+    def rnd(self, v, n):
         return v

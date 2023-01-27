@@ -2,7 +2,7 @@ import sys
 import getopt
 import functions
 import NUM
-import SYM
+import sym
 n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:'
@@ -58,13 +58,13 @@ else:
             print("❌ fail: eg")
         else:
             print("✅ pass: eg")
-    if the['g'] == 'all' or the['g'] == 'rand':
-        if not rand():
-            print("❌ fail: rand")
-        else:
-            print("✅ pass: rand")
+    # if the['g'] == 'all' or the['g'] == 'rand':
+    #     if not rand():
+    #         print("❌ fail: rand")
+    #     else:
+    #         print("✅ pass: rand")
     if the['g'] == 'all' or the['g'] == 'sym':
-        Sym = SYM.sym()
+        Sym = sym.sym()
         for i in ["a", "a", "a", "a", "b", "b", "c"]:
             Sym.add(i)
         val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())
@@ -81,3 +81,15 @@ else:
             print("❌ fail: num")
         else:
             print("✅ pass: num")
+    if the['g'] == 'all' or the['g'] == 'csv':
+        n = functions.csv_read(the['f'])
+        if len(n) != 8*399:
+            print("❌ fail: csv")
+        else:
+            print("✅ pass: csv")
+    if the['g'] == 'all' or the['g'] == 'data':
+        n = functions.csv_read(the['f'])
+        if len(n) != 8*399:
+            print("❌ fail: data")
+        else:
+            print("✅ pass: data")

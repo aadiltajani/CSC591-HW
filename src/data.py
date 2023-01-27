@@ -2,17 +2,15 @@ import functions
 import row
 import cols
 class DATA:
-    def __init__(self, src=None, fun=None):
+    def __init__(self, src=None):
         self.rows = []
         self.cols = None
-        if fun is None:
-            def fun(x):
-                self.add(x)
+
         if isinstance(src, str):
-            self.rows = functions.csv_read(src ,fun)
+            self.add(functions.csv_read(src))
         else:
             for x in src or []:
-                fun(x)
+                self.add(x)
 
     def add(self, t):
         if self.cols:

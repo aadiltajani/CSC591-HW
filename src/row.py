@@ -4,5 +4,5 @@ sys.path.append("./code")
 
 class Row:
 
-    def __init__(self, t:dict):
+    def __init__(self, t:list):
         self.cells = t

@@ -1,6 +1,7 @@
 import math
 import csv
-
+import sys
+sys.path.append("./src")
 
 # Numerics
 # Seed = 937162211

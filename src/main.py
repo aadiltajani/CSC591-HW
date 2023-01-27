@@ -4,7 +4,8 @@ import functions
 import NUM
 import sym
 import data
-
+import sys
+sys.path.append("./src")
 n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:'

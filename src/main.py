@@ -5,14 +5,15 @@ import NUM
 import SYM
 n = len(sys.argv)
 cli_list = sys.argv[1:]
-shorts = 'dg:hs:'
-longs = ['dump', 'go=', 'help', 'seed=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all'}
+shorts = 'dg:hs:f:'
+longs = ['dump', 'go=', 'help', 'seed=', 'file=']
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': '../etc/data/auto93.csv'}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
   -d  --dump  on crash, dump stack = false
+  -f  --file  name of file         = ../etc/data/auto93.csv
   -g  --go    start-up action      = data
   -h  --help  show help            = false
   -s  --seed  random number seed   = 937162211
@@ -46,6 +47,8 @@ if n > 0:
             the['h'] = True
         elif arg == '-s' or arg == '--seed':
             the['s'] = val
+        elif arg == '-f' or arg == '--file':
+            the['f'] = val
 
 if the['h']:
     print(help)

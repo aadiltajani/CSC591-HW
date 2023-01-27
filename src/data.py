@@ -7,14 +7,15 @@ class DATA:
         self.cols = None
 
         if isinstance(src, str):
-            self.add(functions.csv_read(src))
+            for x in functions.csv_read(src):
+                self.add(x)
         else:
-            for x in src or []:
+            for x in src:
                 self.add(x)
 
     def add(self, t):
         if self.cols:
-            t = t.cells if hasattr(t, "cells") else row.Row(t)
+            t = row.Row(t)
             self.rows.append(t)
             self.cols.add(t)
         else:

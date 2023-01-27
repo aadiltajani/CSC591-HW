@@ -1,14 +1,14 @@
 import math
 
+
 class sym:
-    def __init__(self, at = 0, txt = '') -> None:
+    def __init__(self, at=0, txt='') -> None:
         self.n = 0
-        self.has={}
-        self.most=0
+        self.has = {}
+        self.most = 0
         self.mode = None
         self.at = at
         self.txt = txt
-
 
     def add(self, v):
         if v != '?':
@@ -22,12 +22,12 @@ class sym:
         return self.mode
 
     def div(self):
-        fun = lambda p : p*math.log(p,2)
-        e = 0  
+        fun = lambda p: p * math.log(p, 2)
+        e = 0
         for key in self.has.keys():
-            if self.has[key] > 0 :
-                e = e - fun(self.has[key]/self.n)
+            if self.has[key] > 0:
+                e = e - fun(self.has[key] / self.n)
         return e
 
-    def rnd(self,v):
+    def rnd(self, v):
         return v

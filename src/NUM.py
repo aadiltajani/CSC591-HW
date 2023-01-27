@@ -1,8 +1,9 @@
 import sys
 import math
 
+
 class NUM:
-    def __init__(self, at = 0, txt = ''):
+    def __init__(self, at=0, txt=''):
         self.n = 0
         self.at = at
         self.txt = txt
@@ -29,6 +30,6 @@ class NUM:
         if self.m2 < 0 or self.n < 2:
             return 0
         return math.sqrt(self.m2 / (self.n - 1))
-    
+
     def rnd(self, x, n):
         return x if x == "?" else rnd(x, n)

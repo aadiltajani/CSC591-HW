@@ -3,6 +3,8 @@ import getopt
 import functions
 import NUM
 import sym
+import data
+
 n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:'
@@ -76,20 +78,20 @@ else:
         num = NUM.NUM()
         for i in [1, 1, 1, 1, 2, 2, 3]:
             num.add(i)
-        val = 11/7 == num.mid() and 0.787 == functions.rnd(num.div())
+        val = 11 / 7 == num.mid() and 0.787 == functions.rnd(num.div())
         if not val:
             print("❌ fail: num")
         else:
             print("✅ pass: num")
     if the['g'] == 'all' or the['g'] == 'csv':
         n = functions.csv_read(the['f'])
-        if len(n) != 8*399:
+        if len([i for sublist in n for i in sublist]) != 8 * 399:
             print("❌ fail: csv")
         else:
             print("✅ pass: csv")
     if the['g'] == 'all' or the['g'] == 'data':
-        n = functions.csv_read(the['f'])
-        if len(n) != 8*399:
+        data = data.DATA(the['f'])
+        if len(data.rows) != 398 and data.cols.y[1].w != -1 and data.cols.x[1].at != 1 and len(data.cols.x) != 4:
             print("❌ fail: data")
         else:
             print("✅ pass: data")

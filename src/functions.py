@@ -1,5 +1,7 @@
 import math
 import csv
+
+
 # Numerics
 # Seed = 937162211
 
@@ -9,9 +11,8 @@ def rint(lo, hi):
 
 
 def rand(seed, lo=0, hi=1):
-    
     seed = (16807 * (seed)) % 2147483647
-    return lo + (hi - lo) * seed / 2147483647, seed 
+    return lo + (hi - lo) * seed / 2147483647, seed
 
 
 def rnd(n, places=3):
@@ -62,7 +63,7 @@ def fmt(s, *a):
 
 
 def o(t):
-    if ((not isinstance(t, dict)) and (not isinstance(t, list))):
+    if (not isinstance(t, dict)) and (not isinstance(t, list)):
         return str(t)
 
     def show(k, v):
@@ -87,17 +88,30 @@ def the(t):
     oo(t)
 
 
-def csv_read(filename, fun = None):
-    f = open(filename , 'r')
+def typecheck(x):
+    try:
+        a = float(x)
+        b = int(a)
+    except (TypeError, ValueError):
+        pass
+    else:
+        return b
+    try:
+        a = float(x)
+    except (TypeError, ValueError):
+        return x
+    else:
+        return float(x)
+
+
+def csv_read(filename):
+    f = open(filename, 'r')
     # f = open(r'./etc/data/auto93.csv', 'r')
 
     reader = csv.reader(f)
-    t = {}
-    i = 0
+    t = []
     for row in reader:
-        for ele in row:
-            t[i] = ele
-            i += 1
-    if fun != None:
-        fun(t)    
+        t.append([typecheck(ele) for ele in row])
+    # if fun is not None:
+    #     fun(t)
     return t

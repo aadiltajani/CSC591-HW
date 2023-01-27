@@ -2,12 +2,15 @@ import sys
 import math
 
 class NUM:
-    def __init__(self):
+    def __init__(self, at = 0, txt = ''):
         self.n = 0
+        self.at = at
+        self.txt = txt
         self.mu = 0
         self.m2 = 0
         self.lo = sys.maxsize
         self.hi = -sys.maxsize
+        self.w = -1 if '-' in self.txt else 1
 
     def add(self, n):
         # if isinstance(n, float) or isinstance(n, int):

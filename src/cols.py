@@ -1,7 +1,7 @@
 import sys
 sys.path.append("./code")
 from NUM import NUM
-from SYM import sym
+from sym import sym
 from row import Row
 
 class Cols:
@@ -13,11 +13,11 @@ class Cols:
         self.y=[]
         self.klass=None
         
-        for column_name in self.names:
+        for k,column_name in self.names.items():
             if column_name[0].isupper():
-                column=Num(names.index(column_name),column_name)
+                column=NUM(k,column_name)
             else:
-                column=Sym(names.index(column_name),column_name)
+                column=sym(k,column_name)
             
             if column_name[-1]!=':':
                 if('!' in column_name or '+' in column_name or '-' in column_name):

@@ -1,13 +1,13 @@
 import math
 
 class sym:
-    def __init__(self) -> None:
+    def __init__(self, at = 0, txt = '') -> None:
         self.n = 0
         self.has={}
         self.most=0
         self.mode = None
-        self.at = 0
-        self.txt = ""
+        self.at = at
+        self.txt = txt
 
 
     def add(self, v):

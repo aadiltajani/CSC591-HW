@@ -32,6 +32,6 @@ class Cols:
             # self.all.append(column)
 
     def add(self, row):
-        for _, names in enumerate(zip(self.x, self.y)):
-            for i, col in enumerate(names):
-                col.add(row.cells[col.at])
+        for t in [self.x, self.y]:
+            for col in t:
+                col.add(row.cells[int(col.at)])

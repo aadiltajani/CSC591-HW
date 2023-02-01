@@ -4,7 +4,7 @@ import functions
 import NUM
 import sym
 import data
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all'}
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv'}
 
 def test_the():
     if not functions.oo(the):
@@ -54,24 +54,24 @@ def test_csv():
     n = 0
     t = functions.csv_read(r'./etc/data/auto93.csv')
     n = n + len(t)
-    if n==8*399:
+    if n == 399:
         print("✅ pass: csv")
         
     else:
        print("❌ fail: csv")
 
 def test_data():
-    d = data.DATA(r'./etc/data/auto93.csv')
-    print(len(d.rows))
-    print(d.cols.y[0].w)
-    print(d.cols.x[1].at)
-    print(len(d.cols.y))
+    Data = data.DATA(the['f'])
+    if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
+        print("❌ fail: data")
+    else:
+        print("✅ pass: data")
     
 def test_stats():
      d = data.DATA(r'./etc/data/auto93.csv')
      for k, cols in enumerate((d.cols.y, d.cols.x)):
-        print(k,"mid",functions.o(d.stats("mid",cols,2 )))
-        print("", "div",functions.o(d.stats("div",cols,2)))
+        print(k,"mid",functions.o(d.stats("mid",cols, 2)))
+        print("", "div",functions.o(d.stats("div",cols, 2)))
 
 test_the()
 test_rand()
@@ -79,3 +79,4 @@ test_sym()
 test_num()
 test_csv()
 test_data()
+test_stats()

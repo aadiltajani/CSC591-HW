@@ -1,7 +1,9 @@
 import math
 import csv
 import sys
+
 sys.path.append("./src")
+
 
 # Numerics
 # Seed = 937162211
@@ -116,3 +118,7 @@ def csv_read(filename):
     # if fun is not None:
     #     fun(t)
     return t
+
+
+def show():
+    pass

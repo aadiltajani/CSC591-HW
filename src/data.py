@@ -35,3 +35,21 @@ class DATA:
             return col.rnd(x, nPlaces)
 
         return {col.txt: fun(col) for col in cols}
+
+    def better(self):
+        pass
+
+    def dist(self):
+        pass
+
+    def around(self):
+        pass
+
+    def half(self):
+        pass
+
+    def cluster(self):
+        pass
+
+    def sway(self):
+        pass

@@ -1,7 +1,7 @@
 import functions
 import row
 import cols
-
+import math
 
 class DATA:
     def __init__(self, src=None):
@@ -36,11 +36,32 @@ class DATA:
 
         return {col.txt: fun(col) for col in cols}
 
-    def better(self):
-        pass
+    def better(self, row1, row2, s1, s2, ys, x, y):
+        s1, s2 = 0,0
+        for col in ys:
+            self.x = col.norm(row1.cells[int(col.at)])
+            self.y = col.norm(row2.cells[int(col.at)])
+            s1 = s1 - math.exp(col.w * (x - y)/len(ys))
+            s2 = s2 - math.exp(col.w * (y - x)/len(ys))
+        if s1/len(ys) < s2/len(ys):
+            return True
+        else:
+            return False
 
-    def dist(self):
-        pass
+
+    def dist(self, row1, row2, cols, n, d):
+        n,d = 0,0
+        if cols is not None:
+            for col in cols:
+                n =+1
+                d =d + [col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])] ** the.p
+            return (d/n)**(1/functions.the.p)
+
+        elif cols.x is not None:
+            for col in cols:
+                n =+1
+                d =d + [col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])] ** the.p
+            return (d/n)**(1/the.p)
 
     def around(self):
         pass
@@ -53,3 +74,4 @@ class DATA:
 
     def sway(self):
         pass
+

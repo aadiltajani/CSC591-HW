@@ -10,7 +10,7 @@ n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:'
 longs = ['dump', 'go=', 'help', 'seed=', 'file=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv'}
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv','p': 2}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]

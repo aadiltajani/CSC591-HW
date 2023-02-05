@@ -12,12 +12,12 @@ class DATA:
             for x in functions.csv_read(src):
                 self.add(x)
         else:
-            for x in src:
-                self.add(x)
+            self.add(src)
 
     def add(self, t):
         if self.cols:
-            t = row.Row(t)
+            if isinstance(t, list):
+                t = row.Row(t)
             self.rows.append(t)
             self.cols.add(t)
         else:
@@ -49,22 +49,24 @@ class DATA:
             return False
 
 
-    def dist(self, row1, row2, cols, n, d):
+    def dist(self, row1, row2, cols, p):
         n,d = 0,0
         if cols is not None:
             for col in cols:
                 n =+1
                 d =d + [col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])] ** the.p
-            return (d/n)**(1/functions.the.p)
+            return (d/n)**(1/p)
 
         elif cols.x is not None:
             for col in cols:
                 n =+1
                 d =d + [col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])] ** the.p
-            return (d/n)**(1/the.p)
+            return (d/n)**(1/p)
 
-    def around(self):
-        pass
+    def around(self, row1, p):
+        return sorted(
+            [{'row': row2, 'dist': self.dist(row1, row2, self.cols, p)} for row2 in self.rows], key=lambda x:x['dist']
+        )
 
     def half(self):
         pass

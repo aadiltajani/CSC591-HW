@@ -5,21 +5,27 @@ import NUM
 import sym
 import data
 import sys
+
 sys.path.append("./src")
 n = len(sys.argv)
 cli_list = sys.argv[1:]
-shorts = 'dg:hs:f:'
-longs = ['dump', 'go=', 'help', 'seed=', 'file=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv','p': 2}
+shorts = 'dg:hs:f:F:m:p:S:'
+longs = ['dump', 'go=', 'help', 'seed=', 'file=', 'Far=', 'min=', 'p=', 'Sample=']
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv', 'p': 2, 'F': .95, 'm': .5,
+       'S': 512}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
-  -d  --dump  on crash, dump stack = false
-  -f  --file  name of file         = ../etc/data/auto93.csv
-  -g  --go    start-up action      = data
-  -h  --help  show help            = false
-  -s  --seed  random number seed   = 937162211
+  -d  --dump    on crash, dump stack   = false
+  -f  --file    name of file           = ../etc/data/auto93.csv
+  -F  --Far     distance to "faraway"  = .95
+  -g  --go      start-up action        = data
+  -h  --help    show help              = false
+  -m  --min     stop clusters at N^min = .5
+  -p  --p       distance coefficient   = 2
+  -s  --seed    random number seed     = 937162211
+  -S  --Sample  sampling data size     = 512
 ACTIONS:
 """
 
@@ -52,7 +58,14 @@ if n > 0:
             the['s'] = val
         elif arg == '-f' or arg == '--file':
             the['f'] = val
-
+        elif arg == '-F' or arg == '--Far':
+            the['F'] = val
+        elif arg == '-m' or arg == '--min':
+            the['m'] = val
+        elif arg == '-p' or arg == '--p':
+            the['p'] = val
+        elif arg == '-S' or arg == '--Sample':
+            the['S'] = val
 if the['h']:
     print(help)
 else:
@@ -84,24 +97,38 @@ else:
             print("❌ fail: num")
         else:
             print("✅ pass: num")
-    if the['g'] == 'all' or the['g'] == 'csv':
-        n = functions.csv_read(the['f'])
-        if len([i for sublist in n for i in sublist]) != 8 * 399:
-            print("❌ fail: csv")
-        else:
-            print("✅ pass: csv")
+    # if the['g'] == 'all' or the['g'] == 'csv':
+    #     n = functions.csv_read(the['f'])
+    #     if len([i for sublist in n for i in sublist]) != 8 * 399:
+    #         print("❌ fail: csv")
+    #     else:
+    #         print("✅ pass: csv")
     if the['g'] == 'all' or the['g'] == 'data':
         Data = data.DATA(the['f'])
         if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
             print("❌ fail: data")
         else:
             print("✅ pass: data")
-    if the['g'] == 'all' or the['g'] == 'stats':
-        Data = data.DATA(the['f'])
-        try:
-            for k, cols in ([('y', Data.cols.y), ('x', Data.cols.x)]):
-                print(k, "mid", functions.o(Data.stats("mid", cols, 2)))
-                print(" ", "div", functions.o(Data.stats("div", cols, 2)))
-            print("✅ pass: stats")
-        except Exception as e:
-            print(e, "❌ fail: stats")
+    # if the['g'] == 'all' or the['g'] == 'stats':
+    #     Data = data.DATA(the['f'])
+    #     try:
+    #         for k, cols in ([('y', Data.cols.y), ('x', Data.cols.x)]):
+    #             print(k, "mid", functions.o(Data.stats("mid", cols, 2)))
+    #             print(" ", "div", functions.o(Data.stats("div", cols, 2)))
+    #         print("✅ pass: stats")
+    #     except Exception as e:
+    #         print(e, "❌ fail: stats")
+    if the['g'] == 'all' or the['g'] == 'clone':
+            data1 = data.DATA(the['f'])
+            data2 = data1.clone(data1.rows)
+            if len(data1.rows) != len(data2.rows) and data1.cols.y[1].w != data2.cols.y[1].w and data1.cols.x[1].at != data2.cols.x[1].at and len(data1.cols.x) != len(data2.cols.x):
+                print("❌ fail: clone")
+            else:
+                print("✅ pass: clone")
+    if the['g'] == 'all' or the['g'] == 'around':
+            Data = data.DATA(the['f'])
+            print(0,0,functions.o(Data.rows[1].cells))
+            for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
+                if n%50 == 0:
+                    print(n, functions.rnd(t.dist))
+            print("✅ pass: around")

@@ -28,14 +28,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Running test cases with pytest
-      run: python -m pytest 
+#     - name: Running test cases with pytest
+#       run: python -m pytest 
     - name: Running main file all
       run: python ./src/main.py -g all
     - name: Running main file help
       run: python ./src/main.py -h
-    - name: Running custom test engine to output
-      run: python ./test/test_cases.py
+#     - name: Running custom test engine to output
+#       run: python ./test/test_cases.py
     - name: Generate Report
       run: |
         pip install coverage

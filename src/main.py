@@ -139,3 +139,11 @@ else:
                 print(functions.o(mid.cells))
                 print(functions.o(B.cells))
                 print("✅ pass: half")
+    if the['g'] == 'all' or the['g'] == 'cluster':
+                Data = data.DATA(the['f'])
+                functions.show(Data.cluster(),'mid',Data.cols.y,1)
+                print("✅ pass: cluster")
+    if the['g'] == 'all' or the['g'] == 'optimise':
+                Data = data.DATA(the['f'])
+                functions.show(Data.sway(),'mid',Data.cols.y,1)
+                print("✅ pass: optimise")

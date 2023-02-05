@@ -127,8 +127,8 @@ else:
                 print("✅ pass: clone")
     if the['g'] == 'all' or the['g'] == 'around':
             Data = data.DATA(the['f'])
-            print(0,0,functions.o(Data.rows[1].cells))
+            # print(0, '\t', 0, '\t', functions.o(Data.rows[1].cells))
             for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
                 if n%50 == 0:
-                    print(n, functions.rnd(t.dist))
+                    print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
             print("✅ pass: around")

@@ -52,15 +52,15 @@ class DATA:
     def dist(self, row1, row2, cols, p):
         n,d = 0,0
         if cols is not None:
-            for col in cols:
+            for col in cols.x:
                 n =+1
-                d =d + [col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])] ** the.p
+                d =d + (col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])) ** p
             return (d/n)**(1/p)
 
         elif cols.x is not None:
             for col in cols:
                 n =+1
-                d =d + [col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])] ** the.p
+                d =d + (col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])) ** p
             return (d/n)**(1/p)
 
     def around(self, row1, p):

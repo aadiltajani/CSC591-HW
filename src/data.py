@@ -2,6 +2,7 @@ import functions
 import row
 import cols
 import math
+import random
 
 class DATA:
     def __init__(self, src=None):
@@ -49,27 +50,39 @@ class DATA:
             return False
 
 
-    def dist(self, row1, row2, cols, p):
+    def dist(self, row1, row2, p, cols=None):
         n,d = 0,0
-        if cols is not None:
-            for col in cols.x:
-                n =+1
-                d =d + (col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])) ** p
-            return (d/n)**(1/p)
+        cols = self.cols if cols is None else cols
+        for col in cols.x:
+            n =+1
+            d =d + (col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])) ** p
+        return (d/n)**(1/p)
 
-        elif cols.x is not None:
-            for col in cols:
-                n =+1
-                d =d + (col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])) ** p
-            return (d/n)**(1/p)
-
-    def around(self, row1, p):
+    def around(self, row1, p, rows=None):
+        rows = self.rows if rows is None else rows
         return sorted(
-            [{'row': row2, 'dist': self.dist(row1, row2, self.cols, p)} for row2 in self.rows], key=lambda x:x['dist']
+            [{'row': row2, 'dist': self.dist(row1, row2, p, self.cols)} for row2 in rows], key=lambda x:x['dist']
         )
 
-    def half(self):
-        pass
+    def half(self, S, F, p):
+        mid = None
+        rows = self.rows
+        some = random.choices(rows, k=S)
+        A = random.choice(some)
+        B = self.around(A, p, some)[int(F*len(rows))]['row']
+        c = self.dist(A, B,p)
+        def project(row): 
+            return {'row': row, 'dist': functions.cosine(self.dist(row,A,p), self.dist(row, B,p), c)}
+        left, right = [], []
+        for n, tmp in enumerate(sorted(map(project, rows), key=lambda x:x['dist'])):
+            if n <= len(rows)//2:
+                left.append(tmp['row'])
+                mid = tmp['row']
+            else:
+                right.append(tmp['row'])
+        return left, right, A, B, mid, c
+
+
 
     def cluster(self):
         pass

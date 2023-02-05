@@ -127,8 +127,15 @@ else:
                 print("✅ pass: clone")
     if the['g'] == 'all' or the['g'] == 'around':
             Data = data.DATA(the['f'])
-            # print(0, '\t', 0, '\t', functions.o(Data.rows[1].cells))
             for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
                 if n%50 == 0:
                     print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
             print("✅ pass: around")
+    if the['g'] == 'all' or the['g'] == 'half':
+                Data = data.DATA(the['f'])
+                left, right, A, B, mid, c = Data.half(the['S'], the['F'], the['p'])
+                print(len(left), len(right), len(Data.rows))
+                print(functions.o(A.cells), c)
+                print(functions.o(mid.cells))
+                print(functions.o(B.cells))
+                print("✅ pass: half")

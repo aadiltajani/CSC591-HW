@@ -119,6 +119,11 @@ def csv_read(filename):
     #     fun(t)
     return t
 
+def cosine(a,b,c):
+    x1 = (a**2 + c**2 - b**2)/(2*c)
+    x2 = max(0, min(1, x1))
+    y = (a**2 - x2**2)**(.5)
+    return x2,y
 
 def show():
     pass

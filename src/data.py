@@ -37,11 +37,12 @@ class DATA:
 
         return {col.txt: fun(col) for col in cols}
 
-    def better(self, row1, row2, s1, s2, ys, x, y):
+    def better(self, row1, row2):
         s1, s2 = 0,0
+        ys = self.cols.y
         for col in ys:
-            self.x = col.norm(row1.cells[int(col.at)])
-            self.y = col.norm(row2.cells[int(col.at)])
+            x = col.norm(row1.cells[int(col.at)])
+            y = col.norm(row2.cells[int(col.at)])
             s1 = s1 - math.exp(col.w * (x - y)/len(ys))
             s2 = s2 - math.exp(col.w * (y - x)/len(ys))
         if s1/len(ys) < s2/len(ys):
@@ -64,11 +65,11 @@ class DATA:
             [{'row': row2, 'dist': self.dist(row1, row2, p, self.cols)} for row2 in rows], key=lambda x:x['dist']
         )
 
-    def half(self, S, F, p):
+    def half(self, S = None, F = None, p = None, rows = None, cols = None, above = None):
         mid = None
-        rows = self.rows
+        rows = rows if rows else self.rows
         some = random.choices(rows, k=S)
-        A = random.choice(some)
+        A = above or random.choice(some)
         B = self.around(A, p, some)[int(F*len(rows))]['row']
         c = self.dist(A, B,p)
         def project(row): 
@@ -84,9 +85,29 @@ class DATA:
 
 
 
-    def cluster(self):
-        pass
+    def cluster(self, S = None, F = None, p = None, rows = None, min = None, cols = None, above = None):
+        rows = rows if rows != None else self.rows
+        cols = cols if cols != None else self.cols.x
+        min = min if min != None else len(self.rows) ** 0.5 
+        node = self.clone(rows)
 
-    def sway(self):
-        pass
+        if len(rows) > 2 * min:
+            left, right, node.A, node.B, node.mid, c = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
+            node.left  = self.cluster(S = S, F = F, p = p, rows = left, min = min,cols = cols, above = node.A)
+            node.right = self.cluster(S = S, F = F, p = p, rows = right, min = min, cols = cols, above = node.B)
+        return node
+
+    def sway(self, S = None, F = None, p = None, rows = None, min = None, cols = None, above = None):
+        rows = rows if rows != None else self.rows
+        cols = cols if cols != None else self.cols.x
+        min = min if min != None else len(self.rows) ** 0.5 
+        node = self.clone(rows)
+
+        if len(rows) > 2 * min:
+            left, right, node.A, node.B, node.mid, c = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
+            if self.better(node.B, node.A):
+                left,right,node.A,node.B = right,left,node.B,node.A
+            node.left  = self.sway(S = S, F = F, p = p, rows = left, min = min,cols = cols, above = node.A)
+            
+        return node
 

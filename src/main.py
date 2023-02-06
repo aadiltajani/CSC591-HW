@@ -133,7 +133,7 @@ else:
             print("✅ pass: around")
     if the['g'] == 'all' or the['g'] == 'half':
                 Data = data.DATA(the['f'])
-                left, right, A, B, mid, c = Data.half(the['S'], the['F'], the['p'])
+                left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
                 print(len(left), len(right), len(Data.rows))
                 print(functions.o(A.cells), c)
                 print(functions.o(mid.cells))
@@ -141,9 +141,9 @@ else:
                 print("✅ pass: half")
     if the['g'] == 'all' or the['g'] == 'cluster':
                 Data = data.DATA(the['f'])
-                functions.show(Data.cluster(),'mid',Data.cols.y,1)
+                functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
                 print("✅ pass: cluster")
     if the['g'] == 'all' or the['g'] == 'optimise':
                 Data = data.DATA(the['f'])
-                functions.show(Data.sway(),'mid',Data.cols.y,1)
+                functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
                 print("✅ pass: optimise")

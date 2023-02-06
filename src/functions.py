@@ -120,10 +120,28 @@ def csv_read(filename):
     return t
 
 def cosine(a,b,c):
-    x1 = (a**2 + c**2 - b**2)/(2*c)
+    den = 1 if c == 0 else 2 * c
+    x1 = (a**2 + c**2 - b**2) / den
     x2 = max(0, min(1, x1))
-    y = (a**2 - x2**2)**(.5)
-    return x2,y
+    y = abs((a**2 - x2**2)) ** 0.5
+    return x2, y
 
-def show():
-    pass
+def show(node, what, cols, nPlaces, lvl = 0):
+
+    if node:
+        s = "| " * lvl
+        print(s+ str(len(node.rows)) + " ")
+        if not hasattr(node, 'left'):
+            print(o(node.stats("mid",node.cols.y,nPlaces)))
+        elif lvl == 0 :
+            print(o(node.stats("mid",node.cols.y,nPlaces)))
+        if hasattr(node, 'left'):
+            show(node.left, what,cols, nPlaces, lvl+1)
+        else:
+            show(None, what,cols, nPlaces, lvl+1)
+        if hasattr(node, 'right'):
+            show(node.right, what,cols,nPlaces, lvl+1)
+        else:
+            show(None, what,cols,nPlaces, lvl+1)
+    else:
+        pass

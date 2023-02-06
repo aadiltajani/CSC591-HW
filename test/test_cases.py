@@ -4,8 +4,7 @@ import functions
 import NUM
 import sym
 import data
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv'}
-
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv', 'p': 2, 'F': .95, 'm': .5,'S': 512}
 def test_the():
     if not functions.oo(the):
         print("❌ fail: eg")
@@ -73,6 +72,41 @@ def test_stats():
         print(k,"mid",functions.o(d.stats("mid",cols, 2)))
         print("", "div",functions.o(d.stats("div",cols, 2)))
 
+def test_clone():
+    data1 = data.DATA(the['f'])
+    data2 = data1.clone(data1.rows)
+    if len(data1.rows) != len(data2.rows) and data1.cols.y[1].w != data2.cols.y[1].w and data1.cols.x[1].at != data2.cols.x[1].at and len(data1.cols.x) != len(data2.cols.x):
+        print("❌ fail: clone")
+    else:
+        print("✅ pass: clone")
+
+def test_around():
+    Data = data.DATA(the['f'])
+    for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
+        if n%50 == 0:
+            print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
+    print("✅ pass: around")
+
+def test_half():
+    Data = data.DATA(the['f'])
+    left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
+    print(len(left), len(right), len(Data.rows))
+    print(functions.o(A.cells), c)
+    print(functions.o(mid.cells))
+    print(functions.o(B.cells))
+    print("✅ pass: half")
+
+def test_cluster():
+    Data = data.DATA(the['f'])
+    functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+    print("✅ pass: cluster")
+
+def test_optimise():
+    Data = data.DATA(the['f'])
+    functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+    print("✅ pass: optimise")
+
+
 test_the()
 test_rand()
 test_sym()
@@ -80,3 +114,8 @@ test_num()
 test_csv()
 test_data()
 test_stats()
+test_clone()
+test_around()
+test_half()
+test_cluster()
+test_optimise()

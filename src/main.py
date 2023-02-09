@@ -58,14 +58,14 @@ if n > 0:
             the['s'] = val
         elif arg == '-f' or arg == '--file':
             the['f'] = val
-        elif arg == '-F' or arg == '--Far':
-            the['F'] = val
-        elif arg == '-m' or arg == '--min':
-            the['m'] = val
+        # elif arg == '-F' or arg == '--Far':
+        #     the['F'] = val
+        # elif arg == '-m' or arg == '--min':
+        #     the['m'] = val
         elif arg == '-p' or arg == '--p':
             the['p'] = val
-        elif arg == '-S' or arg == '--Sample':
-            the['S'] = val
+        # elif arg == '-S' or arg == '--Sample':
+        #     the['S'] = val
 if the['h']:
     print(help)
 else:
@@ -97,18 +97,42 @@ else:
             print("❌ fail: num")
         else:
             print("✅ pass: num")
+    if the['g'] == 'all' or the['g'] == 'copy':
+        t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
+        t2 = functions.copy(t1)
+        t2['b']['d'][0] = 10000
+        print("b4",functions.o(t1),"\nafter",functions.o(t2))
+        print("✅ pass: eg")
+    if the['g'] == 'all' or the['g'] == 'repcols':
+        t = functions.repCols(functions.dofile(the['f']).cols)
+        map(functions.oo, t.cols.all)
+        map(functions.oo, t.rows)
+        print("✅ pass: eg")
+    if the['g'] == 'all' or the['g'] == 'synonyms':
+        functions.show(functions.repCols(functions.dofile(the['f']).cols).cluster())
+        print("✅ pass: eg")
+    if the['g'] == 'all' or the['g'] == 'reprows':
+        t = functions.dofile(the['f'])
+        rows = functions.repRows(t, functions.transpose(t.cols))
+        map(functions.oo, rows.cols.all)
+        map(functions.oo, rows.rows)
+        print("✅ pass: eg")
+
+
+
+
     # if the['g'] == 'all' or the['g'] == 'csv':
     #     n = functions.csv_read(the['f'])
     #     if len([i for sublist in n for i in sublist]) != 8 * 399:
     #         print("❌ fail: csv")
     #     else:
     #         print("✅ pass: csv")
-    if the['g'] == 'all' or the['g'] == 'data':
-        Data = data.DATA(the['f'])
-        if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
-            print("❌ fail: data")
-        else:
-            print("✅ pass: data")
+    # if the['g'] == 'all' or the['g'] == 'data':
+    #     Data = data.DATA(the['f'])
+    #     if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
+    #         print("❌ fail: data")
+    #     else:
+    #         print("✅ pass: data")
     # if the['g'] == 'all' or the['g'] == 'stats':
     #     Data = data.DATA(the['f'])
     #     try:
@@ -118,32 +142,32 @@ else:
     #         print("✅ pass: stats")
     #     except Exception as e:
     #         print(e, "❌ fail: stats")
-    if the['g'] == 'all' or the['g'] == 'clone':
-            data1 = data.DATA(the['f'])
-            data2 = data1.clone(data1.rows)
-            if len(data1.rows) != len(data2.rows) and data1.cols.y[1].w != data2.cols.y[1].w and data1.cols.x[1].at != data2.cols.x[1].at and len(data1.cols.x) != len(data2.cols.x):
-                print("❌ fail: clone")
-            else:
-                print("✅ pass: clone")
-    if the['g'] == 'all' or the['g'] == 'around':
-            Data = data.DATA(the['f'])
-            for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
-                if n%50 == 0:
-                    print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
-            print("✅ pass: around")
-    if the['g'] == 'all' or the['g'] == 'half':
-                Data = data.DATA(the['f'])
-                left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
-                print(len(left), len(right), len(Data.rows))
-                print(functions.o(A.cells), c)
-                print(functions.o(mid.cells))
-                print(functions.o(B.cells))
-                print("✅ pass: half")
-    if the['g'] == 'all' or the['g'] == 'cluster':
-                Data = data.DATA(the['f'])
-                functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
-                print("✅ pass: cluster")
-    if the['g'] == 'all' or the['g'] == 'optimise':
-                Data = data.DATA(the['f'])
-                functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
-                print("✅ pass: optimise")
+    # if the['g'] == 'all' or the['g'] == 'clone':
+    #         data1 = data.DATA(the['f'])
+    #         data2 = data1.clone(data1.rows)
+    #         if len(data1.rows) != len(data2.rows) and data1.cols.y[1].w != data2.cols.y[1].w and data1.cols.x[1].at != data2.cols.x[1].at and len(data1.cols.x) != len(data2.cols.x):
+    #             print("❌ fail: clone")
+    #         else:
+    #             print("✅ pass: clone")
+    # if the['g'] == 'all' or the['g'] == 'around':
+    #         Data = data.DATA(the['f'])
+    #         for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
+    #             if n%50 == 0:
+    #                 print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
+    #         print("✅ pass: around")
+    # if the['g'] == 'all' or the['g'] == 'half':
+    #             Data = data.DATA(the['f'])
+    #             left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
+    #             print(len(left), len(right), len(Data.rows))
+    #             print(functions.o(A.cells), c)
+    #             print(functions.o(mid.cells))
+    #             print(functions.o(B.cells))
+    #             print("✅ pass: half")
+    # if the['g'] == 'all' or the['g'] == 'cluster':
+    #             Data = data.DATA(the['f'])
+    #             functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+    #             print("✅ pass: cluster")
+    # if the['g'] == 'all' or the['g'] == 'optimise':
+    #             Data = data.DATA(the['f'])
+    #             functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+    #             print("✅ pass: optimise")

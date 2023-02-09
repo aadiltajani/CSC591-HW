@@ -1,7 +1,8 @@
 import math
 import csv
 import sys
-
+from copy import deepcopy
+import data
 sys.path.append("./src")
 
 
@@ -145,3 +146,38 @@ def show(node, what, cols, nPlaces, lvl = 0):
             show(None, what,cols,nPlaces, lvl+1)
     else:
         pass
+
+def copy(t):
+    if isinstance(t, list) or isinstance(t, dict):
+        return deepcopy(t)
+
+def repRows(t, rows, u):
+    rows = copy(rows)
+    for j,s in enumerate(rows[len(rows)-1]):
+        rows[1][j] = rows[1][j] + ' : ' + s
+    rows[len(rows)-1] = None
+    for n,row in enumerate(rows):
+        if n==1:
+            row.append('thingX')
+        else:
+            u = t.rows[len(t.rows) - 1 - n + 2]
+            row.append(u[len(u)-1])
+    return data.DATA(rows)
+
+def repPlace(data):
+    n,g = 20,{}
+    for i in range(1, n+1):
+        g[i] = {}
+        for j in range(1, n+1):
+            g[i][j] = " "
+    maxy = 0
+    print("")
+    for r,row in enumerate(data.rows):
+        c = chr(64+r)
+        print(c, row.cells[-1])
+        x,y = ((row.x)*n)//1, ((row.y)*n)//1
+        maxy = max(maxy, y+1)
+        g[y+1][x+1] = c
+    print("")
+    for y in range(1, maxy):
+        oo(g[y])

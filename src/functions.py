@@ -181,3 +181,21 @@ def repPlace(data):
     print("")
     for y in range(1, maxy):
         oo(g[y])
+ 
+def repgrid(sFile):
+    t = dofile(sFile)
+    rows = repRows(t, transpose(t.cols))
+    cols = repCols(t.cols)
+    print(rows.cluster())
+    print(cols.cluster())
+    repPlace(rows)
+
+def repCols(cols):
+    cols = copy(cols)
+    for col in cols:
+        col[-1] = f"{col[0]}:{col[-1]}"
+        col[:-1] = col[1:]
+        col.pop()
+    cols.insert(0, ["Num" + str(i) for i in range(len(cols[0]))])
+    cols[0][-1] = "thingX"
+    return data.DATA(cols)

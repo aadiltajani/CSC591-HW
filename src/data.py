@@ -111,3 +111,7 @@ class DATA:
             
         return node
 
+    def furthest(self, row1, p ,rows=None):
+        t = self.around(row1,p,rows)
+        return t
+

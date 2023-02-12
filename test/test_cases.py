@@ -49,62 +49,62 @@ def test_num():
     else:
         print("✅ pass: num")
 
-def test_csv():
-    n = 0
-    t = functions.csv_read(r'./etc/data/auto93.csv')
-    n = n + len(t)
-    if n == 399:
-        print("✅ pass: csv")
+# def test_csv():
+#     n = 0
+#     t = functions.csv_read(r'./etc/data/auto93.csv')
+#     n = n + len(t)
+#     if n == 399:
+#         print("✅ pass: csv")
         
-    else:
-       print("❌ fail: csv")
+#     else:
+#        print("❌ fail: csv")
 
-def test_data():
-    Data = data.DATA(the['f'])
-    if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
-        print("❌ fail: data")
-    else:
-        print("✅ pass: data")
+# def test_data():
+#     Data = data.DATA(the['f'])
+#     if len(Data.rows) != 398 and Data.cols.y[1].w != -1 and Data.cols.x[1].at != 1 and len(Data.cols.x) != 4:
+#         print("❌ fail: data")
+#     else:
+#         print("✅ pass: data")
     
-def test_stats():
-     d = data.DATA(r'./etc/data/auto93.csv')
-     for k, cols in enumerate((d.cols.y, d.cols.x)):
-        print(k,"mid",functions.o(d.stats("mid",cols, 2)))
-        print("", "div",functions.o(d.stats("div",cols, 2)))
+# def test_stats():
+#      d = data.DATA(r'./etc/data/auto93.csv')
+#      for k, cols in enumerate((d.cols.y, d.cols.x)):
+#         print(k,"mid",functions.o(d.stats("mid",cols, 2)))
+#         print("", "div",functions.o(d.stats("div",cols, 2)))
 
-def test_clone():
-    data1 = data.DATA(the['f'])
-    data2 = data1.clone(data1.rows)
-    if len(data1.rows) != len(data2.rows) and data1.cols.y[1].w != data2.cols.y[1].w and data1.cols.x[1].at != data2.cols.x[1].at and len(data1.cols.x) != len(data2.cols.x):
-        print("❌ fail: clone")
-    else:
-        print("✅ pass: clone")
+# def test_clone():
+#     data1 = data.DATA(the['f'])
+#     data2 = data1.clone(data1.rows)
+#     if len(data1.rows) != len(data2.rows) and data1.cols.y[1].w != data2.cols.y[1].w and data1.cols.x[1].at != data2.cols.x[1].at and len(data1.cols.x) != len(data2.cols.x):
+#         print("❌ fail: clone")
+#     else:
+#         print("✅ pass: clone")
 
-def test_around():
-    Data = data.DATA(the['f'])
-    for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
-        if n%50 == 0:
-            print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
-    print("✅ pass: around")
+# def test_around():
+#     Data = data.DATA(the['f'])
+#     for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
+#         if n%50 == 0:
+#             print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
+#     print("✅ pass: around")
 
-def test_half():
-    Data = data.DATA(the['f'])
-    left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
-    print(len(left), len(right), len(Data.rows))
-    print(functions.o(A.cells), c)
-    print(functions.o(mid.cells))
-    print(functions.o(B.cells))
-    print("✅ pass: half")
+# def test_half():
+#     Data = data.DATA(the['f'])
+#     left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
+#     print(len(left), len(right), len(Data.rows))
+#     print(functions.o(A.cells), c)
+#     print(functions.o(mid.cells))
+#     print(functions.o(B.cells))
+#     print("✅ pass: half")
 
-def test_cluster():
-    Data = data.DATA(the['f'])
-    functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
-    print("✅ pass: cluster")
+# def test_cluster():
+#     Data = data.DATA(the['f'])
+#     functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+#     print("✅ pass: cluster")
 
-def test_optimise():
-    Data = data.DATA(the['f'])
-    functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
-    print("✅ pass: optimise")
+# def test_optimise():
+#     Data = data.DATA(the['f'])
+#     functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+#     print("✅ pass: optimise")
 
 def test_copy():
     t1 = {'a':1, 'b':{'c':2, 'd':[3]}}

@@ -11,7 +11,7 @@ n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:F:m:p:S:'
 longs = ['dump', 'go=', 'help', 'seed=', 'file=', 'Far=', 'min=', 'p=', 'Sample=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv', 'p': 2, 'F': .95, 'm': .5,
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/repgrid1.json', 'p': 2, 'F': .95, 'm': .5,
        'S': 512}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
@@ -104,16 +104,19 @@ else:
         print("b4",functions.o(t1),"\nafter",functions.o(t2))
         print("✅ pass: eg")
     if the['g'] == 'all' or the['g'] == 'repcols':
-        t = functions.repCols(functions.dofile(the['f']).cols)
+        t = functions.repCols(functions.dofile(the['f']).get("cols"))
         map(functions.oo, t.cols.all)
         map(functions.oo, t.rows)
         print("✅ pass: eg")
     if the['g'] == 'all' or the['g'] == 'synonyms':
-        functions.show(functions.repCols(functions.dofile(the['f']).cols).cluster())
+        t = functions.repCols(functions.dofile(the['f']).get("cols"))
+        x = t.cluster(S = the['S'],F =  the['F'], p = the['p'])
+        functions.show(x, 3)
+        # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
         print("✅ pass: eg")
     if the['g'] == 'all' or the['g'] == 'reprows':
         t = functions.dofile(the['f'])
-        rows = functions.repRows(t, functions.transpose(t.cols))
+        rows = functions.repRows(t, functions.transpose(t['cols']))
         map(functions.oo, rows.cols.all)
         map(functions.oo, rows.rows)
         print("✅ pass: eg")

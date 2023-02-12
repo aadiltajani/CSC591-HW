@@ -1,3 +1,4 @@
+import json
 import math
 import csv
 import sys
@@ -27,13 +28,20 @@ def rnd(n, places=3):
 # Lists
 def map(t, fun):
     u = {}
-    for k, v in t.items():
-        v, k = fun(v)
-        if k in u.keys():
-            u[k] = v
-        else:
-            u[len(u) + 1] = v
-    return u
+    if(type(t) == dict):
+        for k,v in t.items():
+            v = fun(v)
+            if k is None:
+                k = 1+len(u)
+            u[k] = v 
+        return u
+    else:
+        for k,v in enumerate(t):
+            v = fun(v)
+            if k is None:
+                k = 1+len(u)
+            u[k] = v 
+        return u
 
 
 def kap(t, fun):
@@ -127,40 +135,40 @@ def cosine(a,b,c):
     y = abs((a**2 - x2**2)) ** 0.5
     return x2, y
 
-def show(node, what, cols, nPlaces, lvl = 0):
+def last(t):
+    if type(t) == dict:
+        x = list(t.values())[-1]
+    else:
+        x = t[-1] 
+    return x
+
+
+def show(node, nPlaces, lvl = 0):
 
     if node:
         s = "| " * lvl
-        print(s+ str(len(node.rows)) + " ")
-        if not hasattr(node, 'left'):
-            print(o(node.stats("mid",node.cols.y,nPlaces)))
-        elif lvl == 0 :
-            print(o(node.stats("mid",node.cols.y,nPlaces)))
-        if hasattr(node, 'left'):
-            show(node.left, what,cols, nPlaces, lvl+1)
+        print(s, end="")
+        if not node.get('left'):
+            print(last(last(node["data"].rows).cells))
         else:
-            show(None, what,cols, nPlaces, lvl+1)
-        if hasattr(node, 'right'):
-            show(node.right, what,cols,nPlaces, lvl+1)
-        else:
-            show(None, what,cols,nPlaces, lvl+1)
-    else:
-        pass
+            print("%.f" % round(100 * node["c"], nPlaces))
+        show(node.get("left"), nPlaces, lvl + 1)
+        show(node.get("right"), nPlaces, lvl + 1)
 
 def copy(t):
     if isinstance(t, list) or isinstance(t, dict):
         return deepcopy(t)
 
-def repRows(t, rows, u):
+def repRows(t, rows):
     rows = copy(rows)
     for j,s in enumerate(rows[len(rows)-1]):
-        rows[1][j] = rows[1][j] + ' : ' + s
-    rows[len(rows)-1] = None
+        rows[0][j] = str(rows[0][j]) + ' : ' + str(s)
+    rows.pop()
     for n,row in enumerate(rows):
-        if n==1:
+        if n==0:
             row.append('thingX')
         else:
-            u = t.rows[len(t.rows) - 1 - n + 2]
+            u = t.get('rows')[len(t.get('rows')) -n]
             row.append(u[len(u)-1])
     return data.DATA(rows)
 
@@ -190,12 +198,28 @@ def repgrid(sFile):
     print(cols.cluster())
     repPlace(rows)
 
+def transpose(t):
+    u = []
+    for i in range(len(t[0])):
+        row = []
+        for j in t:
+            row.append(j[i])
+        u.append(row)
+    return u
+
+def dofile(fileName):
+    with open(fileName) as f:
+        s = f.read()
+    return json.loads(s)
+
 def repCols(cols):
     cols = copy(cols)
-    for col in cols:
-        col[-1] = f"{col[0]}:{col[-1]}"
-        col[:-1] = col[1:]
+    for i, col in enumerate(cols):
+        col[-1] = str(col[0]) + ":" + str(col[-1])
+        for j in range(1, len(col)):
+            col[j-1] = col[j]
         col.pop()
-    cols.insert(0, ["Num" + str(i) for i in range(len(cols[0]))])
+    cols.insert(0, [f"Num{j}" for j in range(1, len(cols[0])+1)])    
     cols[0][-1] = "thingX"
+    cols = {k:{j:l for j,l in enumerate(v)} for k,v in enumerate(cols)}
     return data.DATA(cols)

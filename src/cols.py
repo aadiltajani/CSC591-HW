@@ -8,13 +8,17 @@ from row import Row
 class Cols:
 
     def __init__(self, names):
+        if(type(names) == dict):
+            temp = names.items()
+        else:
+            temp = enumerate(names)
         self.names = names
         self.all = []
         self.x = []
         self.y = []
         self.klass = None
 
-        for k, column_name in enumerate(self.names):
+        for k, column_name in temp:
             if column_name[0].isupper():
                 column = NUM(k, column_name)
             else:

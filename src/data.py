@@ -13,11 +13,12 @@ class DATA:
             for x in functions.csv_read(src):
                 self.add(x)
         else:
-            self.add(src)
+            # self.add(src)
+            functions.map(src, self.add)
 
     def add(self, t):
         if self.cols:
-            if isinstance(t, list):
+            if not hasattr(t, "cells"):
                 t = row.Row(t)
             self.rows.append(t)
             self.cols.add(t)
@@ -25,10 +26,16 @@ class DATA:
             self.cols = cols.Cols(t)
 
     def clone(self, init=None):
-        data = DATA(self.cols.names)
-        for x in init or []:
-            data.add(x)
-        return data
+        data = DATA({0:self.cols.names})
+        if(type(init) == dict):
+            for i, item in init.items():
+                data.add(item.cells)
+            return data
+        else:
+            for i, item in enumerate(init):
+                data.add(item.cells)
+            return data
+        
 
     def stats(self, what=None, cols=None, nPlaces=None):
         def fun(col):
@@ -89,12 +96,12 @@ class DATA:
         rows = rows if rows != None else self.rows
         cols = cols if cols != None else self.cols.x
         min = min if min != None else len(self.rows) ** 0.5 
-        node = self.clone(rows)
+        node = {'data': self.clone(rows)}
 
         if len(rows) > 2 * min:
-            left, right, node.A, node.B, node.mid, c = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
-            node.left  = self.cluster(S = S, F = F, p = p, rows = left, min = min,cols = cols, above = node.A)
-            node.right = self.cluster(S = S, F = F, p = p, rows = right, min = min, cols = cols, above = node.B)
+            left, right, node['A'], node['B'], node['mid'], node['c'] = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
+            node['left']  = self.cluster(S = S, F = F, p = p, rows = left, min = min,cols = cols, above = node['A'])
+            node['right'] = self.cluster(S = S, F = F, p = p, rows = right, min = min, cols = cols, above = node['B'])
         return node
 
     def sway(self, S = None, F = None, p = None, rows = None, min = None, cols = None, above = None):

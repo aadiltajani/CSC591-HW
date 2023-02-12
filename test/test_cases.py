@@ -4,7 +4,7 @@ import functions
 import NUM
 import sym
 import data
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/auto93.csv', 'p': 2, 'F': .95, 'm': .5,'S': 512}
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/repgrid1.json', 'p': 2, 'F': .95, 'm': .5,'S': 512}
 def test_the():
     if not functions.oo(the):
         print("❌ fail: eg")

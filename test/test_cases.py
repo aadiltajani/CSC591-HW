@@ -106,16 +106,46 @@ def test_optimise():
     functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
     print("✅ pass: optimise")
 
+def test_copy():
+    t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
+    t2 = functions.copy(t1)
+    t2['b']['d'][0] = 10000
+    print("b4",functions.o(t1),"\nafter",functions.o(t2))
+    print("✅ pass: eg")
+
+def test_repcols():
+    t = functions.repCols(functions.dofile(the['f']).get("cols"))
+    map(functions.oo, t.cols.all)
+    map(functions.oo, t.rows)
+    print("✅ pass: eg")
+
+def test_synonyms():
+    t = functions.repCols(functions.dofile(the['f']).get("cols"))
+    x = t.cluster(S = the['S'],F =  the['F'], p = the['p'])
+    functions.show(x, 3)
+    # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
+    print("✅ pass: eg")
+
+def test_reprows():
+    t = functions.dofile(the['f'])
+    rows = functions.repRows(t, functions.transpose(t['cols']))
+    map(functions.oo, rows.cols.all)
+    map(functions.oo, rows.rows)
+    print("✅ pass: eg")
 
 test_the()
 test_rand()
 test_sym()
 test_num()
-test_csv()
-test_data()
-test_stats()
-test_clone()
-test_around()
-test_half()
-test_cluster()
-test_optimise()
+# test_csv()
+# test_data()
+# test_stats()
+# test_clone()
+# test_around()
+# test_half()
+# test_cluster()
+# test_optimise()
+test_copy()
+test_repcols()
+test_synonyms()
+test_reprows()

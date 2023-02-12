@@ -98,7 +98,7 @@ class DATA:
         min = min if min != None else len(self.rows) ** 0.5 
         node = {'data': self.clone(rows)}
 
-        if len(rows) > 2 * min:
+        if len(rows) > 2:
             left, right, node['A'], node['B'], node['mid'], node['c'] = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
             node['left']  = self.cluster(S = S, F = F, p = p, rows = left, min = min,cols = cols, above = node['A'])
             node['right'] = self.cluster(S = S, F = F, p = p, rows = right, min = min, cols = cols, above = node['B'])
@@ -110,7 +110,7 @@ class DATA:
         min = min if min != None else len(self.rows) ** 0.5 
         node = self.clone(rows)
 
-        if len(rows) > 2 * min:
+        if len(rows) > 2:
             left, right, node.A, node.B, node.mid, c = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
             if self.better(node.B, node.A):
                 left,right,node.A,node.B = right,left,node.B,node.A

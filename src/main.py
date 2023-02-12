@@ -105,8 +105,8 @@ else:
         print("✅ pass: eg")
     if the['g'] == 'all' or the['g'] == 'repcols':
         t = functions.repCols(functions.dofile(the['f']).get("cols"))
-        map(functions.oo, t.cols.all)
-        map(functions.oo, t.rows)
+        functions.map(t.cols.all, functions.oo)
+        functions.map(t.rows, functions.oo)
         print("✅ pass: eg")
     if the['g'] == 'all' or the['g'] == 'synonyms':
         t = functions.repCols(functions.dofile(the['f']).get("cols"))
@@ -117,8 +117,8 @@ else:
     if the['g'] == 'all' or the['g'] == 'reprows':
         t = functions.dofile(the['f'])
         rows = functions.repRows(t, functions.transpose(t['cols']))
-        map(functions.oo, rows.cols.all)
-        map(functions.oo, rows.rows)
+        functions.map(rows.cols.all, functions.oo)
+        functions.map(rows.rows, functions.oo)
         print("✅ pass: eg")
 
 

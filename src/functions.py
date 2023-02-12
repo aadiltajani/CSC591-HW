@@ -4,6 +4,9 @@ import csv
 import sys
 from copy import deepcopy
 import data
+import NUM
+import sym
+import row
 sys.path.append("./src")
 
 
@@ -75,8 +78,16 @@ def fmt(s, *a):
 
 
 def o(t):
+    if(type(t) == NUM.NUM):
+        return t.__dict__
+    elif(type(t) == sym.sym):
+        return t.__dict__
+    elif(type(t) == row.Row):
+        return t.__dict__
+    
     if (not isinstance(t, dict)) and (not isinstance(t, list)):
         return str(t)
+
 
     def show(k, v):
         if str(k).find('_') != 0:

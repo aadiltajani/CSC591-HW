@@ -157,12 +157,12 @@ def last(t):
 def show(node, nPlaces, lvl = 0):
 
     if node:
-        s = "| " * lvl
+        s = "|.." * lvl
         print(s, end="")
         if not node.get('left'):
             print(last(last(node["data"].rows).cells))
         else:
-            print("%.f" % round(100 * node["c"], nPlaces))
+            print(str(int((100 * node["c"]))))
         show(node.get("left"), nPlaces, lvl + 1)
         show(node.get("right"), nPlaces, lvl + 1)
 
@@ -220,8 +220,7 @@ def transpose(t):
 
 def dofile(fileName):
     with open(fileName) as f:
-        s = f.read()
-    return json.loads(s)
+        return json.load(f)
 
 def repCols(cols):
     cols = copy(cols)
@@ -232,5 +231,5 @@ def repCols(cols):
         col.pop()
     cols.insert(0, [f"Num{j}" for j in range(1, len(cols[0])+1)])    
     cols[0][-1] = "thingX"
-    cols = {k:{j:l for j,l in enumerate(v)} for k,v in enumerate(cols)}
+    # cols = {k:{j:l for j,l in enumerate(v)} for k,v in enumerate(cols)}
     return data.DATA(cols)

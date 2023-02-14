@@ -75,15 +75,15 @@ class DATA:
     def half(self, S = None, F = None, p = None, rows = None, cols = None, above = None):
         mid = None
         rows = rows if rows else self.rows
-        some = random.choices(rows, k=S)
-        A = above or random.choice(some)
-        B = self.around(A, p, some)[int(F*len(rows))]['row']
+        A = above or random.choice(rows)
+        B = self.furthest(A, p, rows)
         c = self.dist(A, B,p)
         def project(row): 
-            return {'row': row, 'dist': functions.cosine(self.dist(row,A,p), self.dist(row, B,p), c)}
+            x, y = functions.cosine(self.dist(row,A,p), self.dist(row, B,p), c)
+            return {'row': row, 'x':x, 'y':y }
         left, right = [], []
-        for n, tmp in enumerate(sorted(map(project, rows), key=lambda x:x['dist'])):
-            if n <= len(rows)//2:
+        for n, tmp in enumerate(sorted(map(project, rows), key=lambda x:x['x'])):
+            if n <= len(rows)//2 - 1:
                 left.append(tmp['row'])
                 mid = tmp['row']
             else:
@@ -92,16 +92,15 @@ class DATA:
 
 
 
-    def cluster(self, S = None, F = None, p = None, rows = None, min = None, cols = None, above = None):
+    def cluster(self, S = None, F = None, p = None, rows = None, cols = None, above = None):
         rows = rows if rows != None else self.rows
         cols = cols if cols != None else self.cols.x
-        min = min if min != None else len(self.rows) ** 0.5 
         node = {'data': self.clone(rows)}
 
-        if len(rows) > 2:
+        if len(rows) >= 2:
             left, right, node['A'], node['B'], node['mid'], node['c'] = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
-            node['left']  = self.cluster(S = S, F = F, p = p, rows = left, min = min,cols = cols, above = node['A'])
-            node['right'] = self.cluster(S = S, F = F, p = p, rows = right, min = min, cols = cols, above = node['B'])
+            node['left']  = self.cluster(S = S, F = F, p = p, rows = left, cols = cols, above = node['A'])
+            node['right'] = self.cluster(S = S, F = F, p = p, rows = right, cols = cols, above = node['B'])
         return node
 
     def sway(self, S = None, F = None, p = None, rows = None, min = None, cols = None, above = None):
@@ -120,5 +119,5 @@ class DATA:
 
     def furthest(self, row1, p ,rows=None):
         t = self.around(row1,p,rows)
-        return t
+        return t[-1]['row']
 

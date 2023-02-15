@@ -35,7 +35,7 @@ class NUM:
         return x if x == "?" else functions.rnd(x, n)
     
     def norm(self, n):
-        return n if n == "?" else (n - self.lo) / (self.hi - self.lo + 1e-32)
+        return n if n == "?" else (float(n) - self.lo) / (self.hi - self.lo + 1 + (10**(-32)))
     
     def dist(self, n1, n2):
         if n1 == "?" and n2 == "?":

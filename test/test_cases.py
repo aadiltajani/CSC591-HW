@@ -115,23 +115,49 @@ def test_copy():
 
 def test_repcols():
     t = functions.repCols(functions.dofile(the['f']).get("cols"))
-    functions.map(t.cols.all, functions.oo)
-    functions.map(t.rows, functions.oo)
-    print("✅ pass: eg")
+    for col in t.cols.all:
+        print(vars(col))
+    for row in t.rows:
+        print(vars(row))
+    print("✅ pass: repcols")
 
 def test_synonyms():
-    t = functions.repCols(functions.dofile(the['f']).get("cols"))
-    x = t.cluster(S = the['S'],F =  the['F'], p = the['p'])
-    functions.show(x, 3)
+    t = functions.dofile(the['f'])["cols"]
+    cols = functions.repCols(t)
+    x = cols.cluster()
+    functions.show(x)
     # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
-    print("✅ pass: eg")
+    print("✅ pass: synonyms")
 
 def test_reprows():
     t = functions.dofile(the['f'])
     rows = functions.repRows(t, functions.transpose(t['cols']))
     functions.map(rows.cols.all, functions.oo)
     functions.map(rows.rows, functions.oo)
-    print("✅ pass: eg")
+    print("✅ pass: reprows")
+
+def test_prototypes():
+    t = functions.dofile(the['f'])
+    
+    rows = functions.repRows(t, functions.transpose(t["cols"]))
+    functions.show(rows.cluster())
+    print("✅ pass: prototypes")
+
+def test_position():
+    t = functions.dofile(the['f'])
+    rows = functions.repRows(t, functions.transpose(t["cols"]))
+    rows.cluster()
+    functions.repPlace(rows)
+    print("✅ pass: position")
+
+def test_repgrid():
+    t = functions.dofile(the['f'])
+    rows = functions.repRows(t, functions.transpose(t["cols"]))
+    cols = functions.repCols(t["cols"])
+    functions.show(rows.cluster())
+    functions.show(cols.cluster())
+    functions.repPlace(rows)
+    print("✅ pass: repgrid")
 
 test_the()
 test_rand()
@@ -149,3 +175,6 @@ test_copy()
 test_repcols()
 test_synonyms()
 test_reprows()
+test_prototypes()
+test_position()
+test_repgrid()

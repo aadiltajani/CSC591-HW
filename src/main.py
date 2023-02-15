@@ -11,8 +11,7 @@ n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:F:m:p:S:'
 longs = ['dump', 'go=', 'help', 'seed=', 'file=', 'Far=', 'min=', 'p=', 'Sample=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/repgrid1.json', 'p': 2, 'F': .95, 'm': .5,
-       'S': 512}
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/repgrid1.json', 'p': 2}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
@@ -31,18 +30,16 @@ ACTIONS:
 
 
 def rand():
-    num1, num2 = NUM.NUM(), NUM.NUM()
-    tempSeed = the['s']
-    for i in range(1000):
-        tm, tempSeed = functions.rand(tempSeed, 0, 1)
-        num1.add(tm)
-    tempSeed = the['s']
-    for i in range(1000):
-        tm, tempSeed = functions.rand(tempSeed, 0, 1)
-        num2.add(tm)
-    m1, m2 = functions.rnd(num1.mid(), 10), functions.rnd(num2.mid(), 10)
-    temp = functions.rnd(m1, 1)
-    return m1 == m2 and 0.5 == functions.rnd(m1, 1)
+    num1, num2 = NUM(), NUM()
+    Seed=the['seed']
+    for i in range(1, 1000):
+        num1.add(functions.rand(0, 1))
+    Seed=the['seed']
+    for i in range(1, 1000):
+        num2.add(functions.rand(0, 1))
+    m1 = functions.rnd(num1.mid(), 10)
+    m2 = functions.rnd(num2.mid(), 10)
+    return m1==m2 and .5 == functions.rnd(m1,1)
 
 
 if n > 0:
@@ -115,15 +112,19 @@ else:
 
     if the['g'] == 'all' or the['g'] == 'repcols':
         t = functions.repCols(functions.dofile(the['f']).get("cols"))
-        functions.map(t.cols.all, functions.oo)
-        functions.map(t.rows, functions.oo)
+        for col in t.cols.all:
+            print(vars(col))
+        for row in t.rows:
+            print(vars(row))
         print("✅ pass: repcols")
 
 
     if the['g'] == 'all' or the['g'] == 'synonyms':
-        t = functions.repCols(functions.dofile(the['f']).get("cols"))
-        x = t.cluster(S = the['S'],F =  the['F'], p = the['p'])
-        functions.show(x, 3)
+        
+        t = functions.dofile(the['f'])["cols"]
+        cols = functions.repCols(t)
+        x = cols.cluster()
+        functions.show(x)
         # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
         print("✅ pass: synonyms")
 
@@ -135,13 +136,36 @@ else:
         functions.map(rows.rows, functions.oo)
         print("✅ pass: reprows")
 
+    if the['g'] == 'all' or the['g'] == 'prototypes':
+        t = functions.dofile(the['f'])
+        
+        rows = functions.repRows(t, functions.transpose(t["cols"]))
+        functions.show(rows.cluster())
+        print("✅ pass: prototypes")
 
+    if the['g'] == 'all' or the['g'] == 'position':
+        t = functions.dofile(the['f'])
+        rows = functions.repRows(t, functions.transpose(t["cols"]))
+        rows.cluster()
+        functions.repPlace(rows)
+        print("✅ pass: position")
+
+    if the['g'] == 'all' or the['g'] == 'repgrid':
+        t = functions.dofile(the['f'])
+        rows = functions.repRows(t, functions.transpose(t["cols"]))
+        cols = functions.repCols(t["cols"])
+        functions.show(rows.cluster())
+        functions.show(cols.cluster())
+        functions.repPlace(rows)
+        print("✅ pass: repgrid")
+
+    
 
 
     # if the['g'] == 'all' or the['g'] == 'csv':
     #     n = functions.csv_read(the['f'])
     #     if len([i for sublist in n for i in sublist]) != 8 * 399:
-    #         print("❌ fail: csv")
+    #         print("❌ fail: csv") 
     #     else:
     #         print("✅ pass: csv")
     # if the['g'] == 'all' or the['g'] == 'data':

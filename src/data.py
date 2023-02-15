@@ -1,9 +1,7 @@
-from typing import Iterable
 import functions
 import row
 import cols
-import math
-import random
+
 
 class DATA:
     def __init__(self, src=None):
@@ -71,30 +69,32 @@ class DATA:
         if isinstance(rows, Iterable):
             iterable = rows
         else:
-            iterable = self.rows
-        rows_with_distance = [(row2, self.dist(row1, row2, cols))
-                              for row2 in iterable]
-        sorted_rows = sorted(rows_with_distance, key=lambda x: x[1])
-        return [(row, dist) for row, dist in sorted_rows]
+            return False
 
-    def half(self, rows=None, cols=None, above=None):
-        A, B, left, right, c, mid, some = None, None, None, None, None, None, None
-        
-        
-       
-            
-        
-        def project(row):
-            x, y  = functions.cosine(dist(row, A), dist(row, B), c)
-            row.x = x or row.x
-            row.y = y or row.y
-            return {'row': row, 'x': x, 'y': y}
-        def dist(row1, row2, cols=None):         
-            return self.dist(row1, row2, cols)
-        rows = rows or self.rows
-        A = functions.any(rows)
-        B = self.furthest(A, rows)
-        c = dist(A, B)
+
+    def dist(self, row1, row2, p, cols=None):
+        n,d = 0,0
+        cols = self.cols if cols is None else cols
+        for col in cols.x:
+            n =+1
+            d =d + (col.dist(row1.cells[int(col.at)], row2.cells[int(col.at)])) ** p
+        return (d/n)**(1/p)
+
+    def around(self, row1, p, rows=None):
+        rows = self.rows if rows is None else rows
+        return sorted(
+            [{'row': row2, 'dist': self.dist(row1, row2, p, self.cols)} for row2 in rows], key=lambda x:x['dist']
+        )
+
+    def half(self, S = None, F = None, p = None, rows = None, cols = None, above = None):
+        mid = None
+        rows = rows if rows else self.rows
+        A = above or random.choice(rows)
+        B = self.furthest(A, p, rows)
+        c = self.dist(A, B,p)
+        def project(row): 
+            x, y = functions.cosine(self.dist(row,A,p), self.dist(row, B,p), c)
+            return {'row': row, 'x':x, 'y':y }
         left, right = [], []
         mapVAR = [project(row) for row in rows]
         sorted_rows = sorted(mapVAR, key=lambda x: x["x"])
@@ -105,20 +105,19 @@ class DATA:
             else:
                 right.append(tmp["row"])
         return left, right, A, B, mid, c
+        
 
 
+    def cluster(self, S = None, F = None, p = None, rows = None, cols = None, above = None):
+        rows = rows if rows != None else self.rows
+        cols = cols if cols != None else self.cols.x
+        node = {'data': self.clone(rows)}
 
-
-    def cluster(self, rows=None, cols=None, above=None):
-            rows = rows if rows else self.rows
-            cols = cols if cols else self.cols.x
-            node = {"data": self.clone(rows)}
-            
-            if len(rows) >= 2:
-                left, right, node["A"], node["B"], node["mid"], node["C"] = self.half(rows, cols, above)
-                node["left"] = self.cluster(left, cols, node["A"])
-                node["right"] = self.cluster(right, cols, node["B"])
-            return node
+        if len(rows) >= 2:
+            left, right, node['A'], node['B'], node['mid'], node['c'] = self.half(S= S, F= F, p= p , rows= rows, cols= cols, above= above)
+            node['left']  = self.cluster(S = S, F = F, p = p, rows = left, cols = cols, above = node['A'])
+            node['right'] = self.cluster(S = S, F = F, p = p, rows = right, cols = cols, above = node['B'])
+        return node
 
     # def sway(self, S = None, F = None, p = None, rows = None, min = None, cols = None, above = None):
     #     rows = rows if rows != None else self.rows
@@ -134,7 +133,7 @@ class DATA:
             
     #     return node
 
-    def furthest(self, row1, rows=None, cols=None):
-        t = self.around(row1, rows,cols)
-        return t[-1][0]
+    def furthest(self, row1, p ,rows=None):
+        t = self.around(row1,p,rows)
+        return t[-1]['row']
 

@@ -136,30 +136,7 @@ else:
         functions.map(rows.rows, functions.oo)
         print("✅ pass: reprows")
 
-    if the['g'] == 'all' or the['g'] == 'prototypes':
-        t = functions.dofile(the['f'])
-        
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        functions.show(rows.cluster())
-        print("✅ pass: prototypes")
 
-    if the['g'] == 'all' or the['g'] == 'position':
-        t = functions.dofile(the['f'])
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        rows.cluster()
-        functions.repPlace(rows)
-        print("✅ pass: position")
-
-    if the['g'] == 'all' or the['g'] == 'repgrid':
-        t = functions.dofile(the['f'])
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        cols = functions.repCols(t["cols"])
-        functions.show(rows.cluster())
-        functions.show(cols.cluster())
-        functions.repPlace(rows)
-        print("✅ pass: repgrid")
-
-    
 
 
     # if the['g'] == 'all' or the['g'] == 'csv':

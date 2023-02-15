@@ -121,9 +121,11 @@ else:
 
 
     if the['g'] == 'all' or the['g'] == 'synonyms':
-        t = functions.repCols(functions.dofile(the['f']).get("cols"))
-        x = t.cluster(S = the['S'],F =  the['F'], p = the['p'])
-        functions.show(x, 3)
+        
+        t = functions.dofile(the['f'])["cols"]
+        cols = functions.repCols(t)
+        x = cols.cluster()
+        functions.show(x)
         # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
         print("✅ pass: synonyms")
 
@@ -134,6 +136,29 @@ else:
         functions.map(rows.cols.all, functions.oo)
         functions.map(rows.rows, functions.oo)
         print("✅ pass: reprows")
+
+    if the['g'] == 'all' or the['g'] == 'prototypes':
+        t = functions.dofile(the['f'])
+        
+        rows = functions.repRows(t, functions.transpose(t["cols"]))
+        functions.show(rows.cluster())
+        print("✅ pass: prototypes")
+
+    if the['g'] == 'all' or the['g'] == 'position':
+        t = functions.dofile(the['f'])
+        rows = functions.repRows(t, functions.transpose(t["cols"]))
+        rows.cluster()
+        functions.repPlace(rows)
+        print("✅ pass: position")
+
+    if the['g'] == 'all' or the['g'] == 'repgrid':
+        t = functions.dofile(the['f'])
+        rows = functions.repRows(t, functions.transpose(t["cols"]))
+        cols = functions.repCols(t["cols"])
+        functions.show(rows.cluster())
+        functions.show(cols.cluster())
+        functions.repPlace(rows)
+        print("✅ pass: repgrid")
 
 
 

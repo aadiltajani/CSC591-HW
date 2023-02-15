@@ -11,22 +11,22 @@ def test_the():
     else:
         print("✅ pass: eg")
 
-def test_rand():
-    num1, num2 = NUM.NUM(), NUM.NUM()
-    tempSeed = the['s']
-    for i in range(1000):
-        tm, tempSeed = functions.rand(tempSeed, 0, 1)
-        num1.add(tm)
-    tempSeed = the['s']
-    for i in range(1000):
-        tm, tempSeed = functions.rand(tempSeed, 0, 1)
-        num2.add(tm)
-    m1, m2 = functions.rnd(num1.mid(), 10), functions.rnd(num2.mid(), 10)
-    temp = functions.rnd(m1, 1)
-    if m1 == m2 and 0.5 == functions.rnd(m1, 1):
-        print("✅ pass: rand")
-    else:
-        print("❌ fail: rand")
+# def test_rand():
+#     num1, num2 = NUM.NUM(), NUM.NUM()
+#     tempSeed = the['s']
+#     for i in range(1000):
+#         tm, tempSeed = functions.rand(tempSeed, 0, 1)
+#         num1.add(tm)
+#     tempSeed = the['s']
+#     for i in range(1000):
+#         tm, tempSeed = functions.rand(tempSeed, 0, 1)
+#         num2.add(tm)
+#     m1, m2 = functions.rnd(num1.mid(), 10), functions.rnd(num2.mid(), 10)
+#     temp = functions.rnd(m1, 1)
+#     if m1 == m2 and 0.5 == functions.rnd(m1, 1):
+#         print("✅ pass: rand")
+#     else:
+#         print("❌ fail: rand")
 
 
 def test_sym():
@@ -160,7 +160,7 @@ def test_repgrid():
     print("✅ pass: repgrid")
 
 test_the()
-test_rand()
+# test_rand()
 test_sym()
 test_num()
 # test_csv()

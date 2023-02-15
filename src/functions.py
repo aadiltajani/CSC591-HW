@@ -14,13 +14,17 @@ sys.path.append("./src")
 # Seed = 937162211
 
 
-def rint(lo, hi):
-    return math.floor(0.5 + rand(lo, hi))
+# def rint(lo, hi):
+#     return math.floor(0.5 + rand(lo, hi))
 
+global Seed
 
-def rand(seed, lo=0, hi=1):
-    seed = (16807 * (seed)) % 2147483647
-    return lo + (hi - lo) * seed / 2147483647, seed
+def rand(lo, hi):
+  Seed =  93716211
+  lo = lo or 0
+  hi = hi or 1
+  Seed = (16807 * Seed) % 2147483647
+  return lo + (hi - lo) * Seed / 2147483647
 
 
 def rnd(n, places=3):
@@ -154,17 +158,16 @@ def last(t):
     return x
 
 
-def show(node, nPlaces, lvl = 0):
-
+def show(node, what=None, cols=None, n_places=None, lvl=None):
     if node:
-        s = "|.." * lvl
-        print(s, end="")
-        if not node.get('left'):
-            print(last(last(node["data"].rows).cells))
-        else:
-            print(str(int((100 * node["c"]))))
-        show(node.get("left"), nPlaces, lvl + 1)
-        show(node.get("right"), nPlaces, lvl + 1)
+      lvl = lvl or 0
+      print("|.. " * lvl, end="")
+      if ("left" not in node):
+          print(last(last(node["data"].rows).cells))
+      else:
+          print(str(int(100 * node["c"])))
+      show(node.get("left", None), what, cols, n_places, lvl+1)
+      show(node.get("right", None), what, cols, n_places, lvl+1)
 
 def copy(t):
     if isinstance(t, list) or isinstance(t, dict):
@@ -184,30 +187,30 @@ def repRows(t, rows):
     return data.DATA(rows)
 
 def repPlace(data):
-    n,g = 20,{}
-    for i in range(1, n+1):
-        g[i] = {}
-        for j in range(1, n+1):
-            g[i][j] = " "
+    n,g = 20,[]
+    for i in range(n+1):
+        g.append([])
+        for j in range(n+1):
+            g[i].append(" ")
     maxy = 0
     print("")
     for r,row in enumerate(data.rows):
-        c = chr(64+r)
-        print(c, row.cells[-1])
-        x,y = ((row.x)*n)//1, ((row.y)*n)//1
-        maxy = max(maxy, y+1)
-        g[y+1][x+1] = c
+        c = chr(r+65)
+        print(c, last(row.cells))
+        x,y = (int(row.x)*n), (int(row.y)*n)
+        maxy = max(maxy, y)
+        g[y][x] = c
     print("")
-    for y in range(1, maxy):
-        oo(g[y])
+    for y in range(maxy):
+        print("{" + "".join(g[y]) + "}")
  
-def repgrid(sFile):
-    t = dofile(sFile)
-    rows = repRows(t, transpose(t.cols))
-    cols = repCols(t.cols)
-    print(rows.cluster())
-    print(cols.cluster())
-    repPlace(rows)
+def repgrid(sFile, t, rows, cols):
+  t = exec(open(sFile).read())
+  rows = repRows(t, transpose(t["cols"]))
+  cols = repCols(t["cols"])
+  show(rows.cluster())
+  show(cols.cluster())
+  repPlace(rows)
 
 def transpose(t):
     u = []
@@ -223,13 +226,21 @@ def dofile(fileName):
         return json.load(f)
 
 def repCols(cols):
-    cols = copy(cols)
-    for i, col in enumerate(cols):
+    copycols = deepcopy(cols)
+    for col in cols:
         col[-1] = str(col[0]) + ":" + str(col[-1])
         for j in range(1, len(col)):
             col[j-1] = col[j]
         col.pop()
-    cols.insert(0, [f"Num{j}" for j in range(1, len(cols[0])+1)])    
+    cols.insert(0, [f"Num" + str(k) for k in range(len(cols[0]))])    
     cols[0][-1] = "thingX"
     # cols = {k:{j:l for j,l in enumerate(v)} for k,v in enumerate(cols)}
     return data.DATA(cols)
+
+def any(t):
+    rintVal = rint(None, len(t)-1)
+    return t[rintVal]
+
+def rint(lo, hi):
+            return math.floor(0.5 + rand(lo, hi))
+

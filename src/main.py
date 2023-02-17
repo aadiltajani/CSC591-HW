@@ -11,7 +11,7 @@ n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'dg:hs:f:F:m:p:S:'
 longs = ['dump', 'go=', 'help', 'seed=', 'file=', 'Far=', 'min=', 'p=', 'Sample=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/data/repgrid_test3.json', 'p': 2}
+the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/repgrid1.json', 'p': 2}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]

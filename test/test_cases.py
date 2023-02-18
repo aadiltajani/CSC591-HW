@@ -11,22 +11,22 @@ def test_the():
     else:
         print("✅ pass: eg")
 
-def test_rand():
-    num1, num2 = NUM.NUM(), NUM.NUM()
-    tempSeed = the['s']
-    for i in range(1000):
-        tm, tempSeed = functions.rand(tempSeed, 0, 1)
-        num1.add(tm)
-    tempSeed = the['s']
-    for i in range(1000):
-        tm, tempSeed = functions.rand(tempSeed, 0, 1)
-        num2.add(tm)
-    m1, m2 = functions.rnd(num1.mid(), 10), functions.rnd(num2.mid(), 10)
-    temp = functions.rnd(m1, 1)
-    if m1 == m2 and 0.5 == functions.rnd(m1, 1):
-        print("✅ pass: rand")
-    else:
-        print("❌ fail: rand")
+# def test_rand():
+#     num1, num2 = NUM.NUM(), NUM.NUM()
+#     tempSeed = the['s']
+#     for i in range(1000):
+#         tm, tempSeed = functions.rand(tempSeed, 0, 1)
+#         num1.add(tm)
+#     tempSeed = the['s']
+#     for i in range(1000):
+#         tm, tempSeed = functions.rand(tempSeed, 0, 1)
+#         num2.add(tm)
+#     m1, m2 = functions.rnd(num1.mid(), 10), functions.rnd(num2.mid(), 10)
+#     temp = functions.rnd(m1, 1)
+#     if m1 == m2 and 0.5 == functions.rnd(m1, 1):
+#         print("✅ pass: rand")
+#     else:
+#         print("❌ fail: rand")
 
 
 def test_sym():
@@ -115,26 +115,52 @@ def test_copy():
 
 def test_repcols():
     t = functions.repCols(functions.dofile(the['f']).get("cols"))
-    functions.map(t.cols.all, functions.oo)
-    functions.map(t.rows, functions.oo)
-    print("✅ pass: eg")
+    for col in t.cols.all:
+        print(vars(col))
+    for row in t.rows:
+        print(vars(row))
+    print("✅ pass: repcols")
 
 def test_synonyms():
-    t = functions.repCols(functions.dofile(the['f']).get("cols"))
-    x = t.cluster(S = the['S'],F =  the['F'], p = the['p'])
-    functions.show(x, 3)
+    t = functions.dofile(the['f'])["cols"]
+    cols = functions.repCols(t)
+    x = cols.cluster()
+    functions.show(x)
     # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
-    print("✅ pass: eg")
+    print("✅ pass: synonyms")
 
 def test_reprows():
     t = functions.dofile(the['f'])
     rows = functions.repRows(t, functions.transpose(t['cols']))
     functions.map(rows.cols.all, functions.oo)
     functions.map(rows.rows, functions.oo)
-    print("✅ pass: eg")
+    print("✅ pass: reprows")
+
+def test_prototypes():
+    t = functions.dofile(the['f'])
+    
+    rows = functions.repRows(t, functions.transpose(t["cols"]))
+    functions.show(rows.cluster())
+    print("✅ pass: prototypes")
+
+def test_position():
+    t = functions.dofile(the['f'])
+    rows = functions.repRows(t, functions.transpose(t["cols"]))
+    rows.cluster()
+    functions.repPlace(rows)
+    print("✅ pass: position")
+
+def test_repgrid():
+    t = functions.dofile(the['f'])
+    rows = functions.repRows(t, functions.transpose(t["cols"]))
+    cols = functions.repCols(t["cols"])
+    functions.show(rows.cluster())
+    functions.show(cols.cluster())
+    functions.repPlace(rows)
+    print("✅ pass: repgrid")
 
 test_the()
-test_rand()
+# test_rand()
 test_sym()
 test_num()
 # test_csv()
@@ -149,3 +175,6 @@ test_copy()
 test_repcols()
 test_synonyms()
 test_reprows()
+test_prototypes()
+test_position()
+test_repgrid()

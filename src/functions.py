@@ -238,8 +238,6 @@ def repCols(cols):
         col.pop()
     cols.insert(0, ['Num' + str(k) for k in range(len(cols[0]))])   
     cols[0][-1] = "thingX"
-    for i in cols:
-        print(i)
     # cols = {k:{j:l for j,l in enumerate(v)} for k,v in enumerate(cols)}
     return data.DATA(cols)
 

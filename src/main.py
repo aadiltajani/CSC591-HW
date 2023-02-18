@@ -159,8 +159,16 @@ else:
         functions.repPlace(rows)
         print("✅ pass: repgrid")
 
-    
+    print("======================================================================================================")
+    print('Test Cases')
+    print("======================================================================================================")
 
+    for f in ['./etc/data/repgrid_test1.json','./etc/data/repgrid_test2.json','./etc/data/repgrid_test3.json']:
+        t = functions.dofile(f)["cols"]
+        cols = functions.repCols(t)
+        x = cols.cluster()
+        functions.show(x)
+        print("✅ pass: synonyms", f.split('/')[-1])
 
     # if the['g'] == 'all' or the['g'] == 'csv':
     #     n = functions.csv_read(the['f'])

@@ -14,7 +14,10 @@ class DATA:
                 self.add(x)
         else:
             # self.add(src)
-            functions.map(src, self.add)
+            # functions.map(src, self.add)
+            map(self.add, src)
+            # for i in range(len(src)):
+            #     self.add(src[i])
 
     def add(self, t):
         if self.cols:

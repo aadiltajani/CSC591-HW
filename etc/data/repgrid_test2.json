@@ -1,24 +1,23 @@
 {
-    "domain": "movies",
-    "cols": [    ["Action", 5, 4, 3, 1, 2, 1, 2, 3, 5, 5, "Drama"],
-      ["Horror", 1, 2, 1, 5, 4, 4, 5, 5, 1, 2, "Romantic"],
-      ["Thriller", 1, 3, 1, 3, 2, 5, 4, 3, 1, 1, "Comedy"],
-      ["Western", 2, 1, 1, 2, 3, 5, 3, 2, 2, 2, "Science fiction"],
-      ["Crime", 1, 5, 4, 4, 1, 1, 4, 5, 4, 4, "Adventure"],
-      ["Fantasy", 1, 4, 1, 1, 1, 1, 1, 5, 3, 1, "Documentary"],
-      ["Animation", 1, 1, 1, 1, 1, 2, 5, 5, 1, 1, "Patriotic"],
-      ["Musical", 1, 1, 2, 2, 1, 2, 2, 3, 3, 5, "Art"]
-    ],
-    "rows": [    [null, null, null, null, null, null, null, null, null, "Mission Impossible"],
-      [null, null, null, null, null, null, null, null, "Babylon"],
-      [null, null, null, null, null, null, null, "Catch me if you can"],
-      [null, null, null, null, null, null, "Conjuring 2"],
-      [null, null, null, null, null, "500 days of summer"],
-      [null, null, null, null, "Interstellar"],
-      [null, null, null, "Jumanji"],
-      [null, null, "American sniper"],
-      [null, "Citizenfour"],
-      ["The Wizard of oz"]
-    ]
-  }
-  
+  "domain": "movies",
+  "cols": [    ["Action", 1, 2, 4, 1, 4, 5, 5, 4, 2, 1, "Drama"],
+    ["High Budget", 1, 2, 4, 1, 1, 4, 2, 3, 3, 1, "Low Budget"],
+    ["Boring", 2, 1, 1, 3, 4, 2, 2, 3, 2, 5, "Exciting"],
+    ["Fiction", 3, 4, 4, 1, 1, 4, 3, 2, 3, 1, "Real Life"],
+    ["Mild", 4, 3, 3, 5, 5, 2, 4, 4, 3, 5, "Spicy"],
+    ["High Rated", 3, 4, 4, 2, 2, 1, 4, 2, 4, 1, "Low Rated"],
+    ["New", 5, 5, 5, 4, 3, 3, 4, 4, 2, 2, "Old"],
+    ["PG Rated", 2, 4, 4, 1, 2, 3, 5, 3, 4, 3, "R Rated"]
+  ],
+  "rows": [    [null, null, null, null, null, null, null, null, null, "Mission Impossible"],
+    [null, null, null, null, null, null, null, null, "Babylon"],
+    [null, null, null, null, null, null, null, "Catch me if you can"],
+    [null, null, null, null, null, null, "Conjuring 2"],
+    [null, null, null, null, null, "500 days of summer"],
+    [null, null, null, null, "Interstellar"],
+    [null, null, null, "Jumanji"],
+    [null, null, "American sniper"],
+    [null, "Citizenfour"],
+    ["The Wizard of oz"]
+  ]
+}

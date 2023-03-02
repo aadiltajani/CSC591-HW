@@ -8,7 +8,7 @@ def num(n=0,s=""):
         'txt': s,
         'n' : 0,
         'hi' : float('-inf'),
-        'low' : float('inf'),
+        'lo' : float('inf'),
         'ok' : True,
         'has' : {},
         'w' : -1 if s.endswith('-') else 1

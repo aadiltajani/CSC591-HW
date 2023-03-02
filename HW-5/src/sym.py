@@ -1,6 +1,6 @@
 # import math
 
-def sym(n,s):
+def SYM(n,s):
     d={'at' : n, 
         'txt': s,
         'n' : 0,

@@ -5,9 +5,10 @@ import sys
 from copy import deepcopy
 import data
 import NUM
+import SYM
 import sym
 import row
-sys.path.append("./src")
+sys.path.append("./HW-5/src")
 
 
 # Numerics
@@ -253,3 +254,12 @@ def any(t):
 def rint(lo, hi):
             return math.floor(0.5 + rand(lo, hi))
 
+
+def range(at, txt, lo, hi):
+    d = {
+        'at' : at,
+        'txt' : txt,
+        'lo' : lo,
+        'hi' : lo or hi or lo,
+        'y' : SYM.SYM()
+    }

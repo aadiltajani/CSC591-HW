@@ -49,7 +49,16 @@ def extend(range, n, s):
     add(range['y'], s)
     
 
+def has(col):
+    if not col['isSym'] and not col['ok']:
+        col['has'] = dict(sorted(col['has']))
+    col['ok'] = True
+    return col['has']
+    
 
+def per(t, p=0.5):
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(0, min(len(t), p - 1))] 
 
 # Numerics
 # Seed = 937162211

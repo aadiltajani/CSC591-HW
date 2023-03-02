@@ -2,7 +2,7 @@ import NUM
 import sym
 
 def col(n,s):
-    if s[0].isupper():
+    if not s[0].isupper():
         col = sym.sym(n,s)
     else:
         col = NUM.NUM(n,s)

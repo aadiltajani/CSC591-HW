@@ -37,6 +37,17 @@ def add(col,x):
                     col['ok'] = False
 
 
+def adds(col, t):
+    for _,x in enumerate(t):
+        add(col, x)
+    return col
+
+def extend(range, n, s):
+    range['lo'] = min(n, range['lo'])
+    range['hi'] = max(n, range['hi'])
+
+    add(range['y'], s)
+    
 
 
 

@@ -90,7 +90,7 @@ def norm(num,n):
     if n == '?':
         return n
     else:
-        return (n - num['lo'])/(num['hi'] - num['lo'] + 1/loat('inf'))
+        return (n - num['lo'])/(num['hi'] - num['lo'] + 1/float('inf'))
 
 def value(has):
     sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
@@ -153,6 +153,38 @@ def map(t, fun):
         return u
 
 
+def dist(data, t1, t2, cols= None):
+    def dist1(col, x, y):
+        if x == '?' and y =='?':
+            return 1
+        if col['isSym']:
+            return 0 if x == y else 1
+        
+        x, y = norm(col, x), norm(col, y)
+        if x == "?":
+            x = 1 if y < 0.5 else 1
+        if y == "?":
+            y = 1 if x < 0.5 else 1
+        return abs(x - y)
+    
+    d, n = 0, 1/float('inf')
+
+    cols = cols if cols else data['cols']['x']
+    for col in cols:
+        n += 1
+        d += dist1(col, t1[col['at']], t2[col['at']])
+
+    return (d / n)**(1 / 2)
+
+
+def better(data, row1, row2):
+    s1,s2,ys = 0,0,data['cols']['y']
+    for _, col in enumerate(ys):
+        x, y = norm(col, row1[col['at']]), norm(col, row2[col['at']])
+        s1 = s1 - math.exp(col['w'] * (x-y)/len(ys))
+        s2 = s2 - math.exp(col['w'] * (y - x)/len(ys))
+
+    return s1/len(ys) < s2 / len(ys)
 # def many(t, n):
 #     u = []
 #     for i in range(n):

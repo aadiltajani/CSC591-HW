@@ -9,6 +9,7 @@ import SYM
 import sym
 import row
 import col
+import data
 sys.path.append("./HW-5/src")
 
 def range(at, txt, lo, hi):
@@ -60,6 +61,57 @@ def per(t, p=0.5):
     p = math.floor(((p or 0.5) * len(t)) + 0.5)
     return t[max(0, min(len(t), p - 1))] 
 
+def mid(col):
+    if col['isSym']:
+        return col['mode']
+    else:
+        return per(has(col), .5)
+
+def div(col):
+    if col['isSym']:
+        e=0
+        for _,n in col['has']:
+            e= e-n/col['n'] * math.log(n/col['n'],2)
+        return e
+    else:
+        return (per(has(col),.9) - per(has(col), .1))/2.58
+
+def stats(data, fun = None, places = 3):
+    cols= cols or data['cols']['y']
+    def temp(k,col):
+        return rnd(fun(col) if fun else mid(col), places), col['txt']
+
+    tmp = kap(cols, temp)
+    tmp['N'] = len(data['rows'])
+
+    return tmp, map(cols, mid)
+
+def norm(num,n):
+    if n == '?':
+        return n
+    else:
+        return (n - num['lo'])/(num['hi'] - num['lo'] + 1/loat('inf'))
+
+def value(has):
+    sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
+    b,r = 0,0
+    for x,n in enumerate(has):
+        if x==sGoal:
+            b = b + n 
+        else:
+            r = r + n
+    b,r = b/(nB+1/float('inf')), r/(nR+1/float('inf'))
+    return b**2/(b+r)
+
+def kap(t, fun):
+    u = {}
+    for v in t:
+        v, k = fun(t.index(v), v)
+        if k in u.keys():
+            u[k] = v
+        else:
+            u[len(u) + 1] = v
+    return u
 # Numerics
 # Seed = 937162211
 
@@ -77,28 +129,28 @@ def per(t, p=0.5):
 #   Seed = (16807 * Seed) % 2147483647
 #   return lo + (hi - lo) * Seed / 2147483647
 
-# def rnd(n, places=3):
-#     mult = 10 ** places
-#     return math.floor(n * mult + 0.5) / mult
+def rnd(n, places=3):
+    mult = 10 ** places
+    return math.floor(n * mult + 0.5) / mult
 
 
 # # Lists
-# def map(t, fun):
-#     u = {}
-#     if(type(t) == dict):
-#         for k,v in t.items():
-#             v = fun(v)
-#             if k is None:
-#                 k = 1+len(u)
-#             u[k] = v 
-#         return u
-#     else:
-#         for k,v in enumerate(t):
-#             v = fun(v)
-#             if k is None:
-#                 k = 1+len(u)
-#             u[k] = v 
-#         return u
+def map(t, fun):
+    u = {}
+    if(type(t) == dict):
+        for k,v in t.items():
+            v = fun(v)
+            if k is None:
+                k = 1+len(u)
+            u[k] = v 
+        return u
+    else:
+        for k,v in enumerate(t):
+            v = fun(v)
+            if k is None:
+                k = 1+len(u)
+            u[k] = v 
+        return u
 
 
 # def many(t, n):
@@ -106,15 +158,7 @@ def per(t, p=0.5):
 #     for i in range(n):
 #         u.append(any(t))
 
-# def kap(t, fun):
-#     u = {}
-#     for v in t:
-#         v, k = fun(t.index(v), v)
-#         if k in u.keys():
-#             u[k] = v
-#         else:
-#             u[len(u) + 1] = v
-#     return u
+
 
 
 # def sort(t):

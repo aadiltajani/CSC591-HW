@@ -37,6 +37,8 @@ def add(col,x):
                     col['has'][pos] = x
                     col['ok'] = False
 
+def itself(x):
+    return x
 
 def adds(col, t):
     for _,x in enumerate(t):
@@ -122,12 +124,31 @@ def kap(t, fun):
 # global Seed
 
 
-# def rand(lo, hi):
-#   Seed =  93716211
-#   lo = lo or 0
-#   hi = hi or 1
-#   Seed = (16807 * Seed) % 2147483647
-#   return lo + (hi - lo) * Seed / 2147483647
+def rand(lo, hi):
+  Seed =  93716211
+  lo = lo or 0
+  hi = hi or 1
+  Seed = (16807 * Seed) % 2147483647
+  return lo + (hi - lo) * Seed / 2147483647
+
+def cliffsDelta(ns1, ns2, the):
+    if len(ns1) > 256:
+        ns1 = many(ns1, 256)
+    if len(ns2) > 256:
+        ns2 = many(ns2, 256)
+    if len(ns1) > 10*len(ns2):
+        ns1 = many(ns1, 10*len(ns2))
+    if len(ns2) > 10*len(ns1):
+        ns2 = many(ns2, 10*len(ns1))
+    n, gt, lt = 0, 0, 0
+    for x in ns1:
+        for y in ns2:
+            n += 1
+            if x > y:
+                gt += 1
+            if x < y:
+                lt += 1
+    return abs(lt-gt)/n > the.cliffs
 
 def rnd(n, places=3):
     mult = 10 ** places
@@ -185,10 +206,10 @@ def better(data, row1, row2):
         s2 = s2 - math.exp(col['w'] * (y - x)/len(ys))
 
     return s1/len(ys) < s2 / len(ys)
-# def many(t, n):
-#     u = []
-#     for i in range(n):
-#         u.append(any(t))
+def many(t, n):
+    u = []
+    for i in range(n):
+        u.append(any(t))
 
 
 
@@ -317,9 +338,8 @@ def better(data, row1, row2):
 #             row.append(u[len(u)-1])
 #     return data.DATA(rows)
 
-# def any(t):
-#     rintVal = rint1(None, len(t)-1)
-#     return t[rintVal]
+def any(t):
+    return t[rint[len(t) - 1]]
 
 # def rint1(lo, hi):
 #             return math.floor(0.5 + rand(lo, hi))
@@ -376,7 +396,7 @@ def better(data, row1, row2):
 #     rintVal = rint(None, len(t)-1)
 #     return t[rintVal]
 
-# def rint(lo, hi):
-#             return math.floor(0.5 + rand(lo, hi))
+def rint(lo, hi):
+            return math.floor(0.5 + rand(lo, hi))
 
 

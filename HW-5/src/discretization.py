@@ -42,3 +42,19 @@ def mergeAny(ranges0):
         j += 1
     return noGaps(ranges0) if len(ranges0) == len(ranges1) else mergeAny(ranges1)
 
+def merge2(col1, col2):
+    new = merge(col1, col2)
+    if functions.div(new) <= (functions.div(col1)*col1.n + functions.div(col2)*col2.n) / new.n:
+        return new
+
+def merge(col1, col2):
+    new = merge(col1, col2)
+    if col1.isSym:
+        for x,n in enumerate(col2.has):
+            functions.add(new, x, n)
+    else:
+        for n in col2.has:
+            functions.add(new, n)
+        new.lo = min(col1.lo, col2.lo)
+        new.hi = max(col1.hi, col2.hi)
+    return new

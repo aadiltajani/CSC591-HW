@@ -197,6 +197,11 @@ def dist(data, t1, t2, cols= None):
 
     return (d / n)**(1 / 2)
 
+def temp(k, nums, nums2, the):
+    return cliffsDelta(nums.has, nums2[k].has, the), nums.txt
+
+def diffs(nums1, nums2, the):
+    return kap(nums1, lambda k,nums: temp(k, nums, nums2, the))
 
 def better(data, row1, row2):
     s1,s2,ys = 0,0,data['cols']['y']

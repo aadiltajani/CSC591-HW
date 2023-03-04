@@ -217,6 +217,40 @@ def many(t, n):
         u.append(any(t))
 
 
+def tree(data, rows=None, cols=None, above=None):
+    rows = rows if rows else data['rows']
+    here = {"data": data.clone(data, rows)}
+    if len(rows) >= 2 * (len(data['rows']) ** the['min']):
+        left, right, A, B, _ = half(data, rows, cols, above)
+        here['left'] = tree(data, left, cols, A)
+        here['right'] = tree(data, right, cols, B)
+    return here
+
+def showTree(tree, lvl=0, post=None):
+    if tree:
+        print("{}[{}]".format("|.. " * lvl, len(tree["data"]["rows"])), end="")
+        if not "left" in tree or lvl == 0:
+            print(stats(tree["data"]))
+        else:
+            print("")
+
+        showTree(tree.get('left'), lvl + 1)
+        showTree(tree.get('right'), lvl + 1)
+
+def sway(data):
+    def worker(rows, worse, above=None):
+        if len(rows) <= len(data['rows']) ** the['min']:
+            return rows, many(worse, the['rest'] * len(rows))
+        else:
+            l, r, A, B, dummy = half(data, rows, None, above)
+            if better(data, B, A):
+                l, r, A, B = r, l, B, A
+            for row in r:
+                worse.append(row)
+            return worker(l, worse, A)
+
+    best, rest = worker(data["rows"], [])
+    return clone(data, best), clone(data, rest)
 
 
 # def sort(t):

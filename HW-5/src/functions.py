@@ -6,7 +6,6 @@ from copy import deepcopy
 import data
 import NUM
 import SYM
-import sym
 import row
 import col
 import data
@@ -26,16 +25,16 @@ def add(col,x):
         n=1
         col['n'] = col['n'] + n
         if col['isSym']:
-            col['has']['x'] = n + (col['has']['x'] or 0)
+            col['has']['x'] = n + (col['has']['x'] if 'x' in col['has'].keys() else 0)
             if col['has']['x'] > col['most']:
                 col['most'], col['mode'] = col['has']['x'],x
-            else:
-                col['lo'], col['hi'] = math.min(x,col['lo']), math.max(x,col['hi'])
-                all = len(col['has'])
-                pos = (all < 512 and all+1) or (function.rand() < 512/col['n'] and function.rint(1,all))
-                if pos:
-                    col['has'][pos] = x
-                    col['ok'] = False
+        else:
+            col['lo'], col['hi'] = math.min(x,col['lo']), math.max(x,col['hi'])
+            all = len(col['has'])
+            pos = (all < 512 and all+1) or (function.rand() < 512/col['n'] and function.rint(1,all))
+            if pos:
+                col['has'][pos] = x
+                col['ok'] = False
 
 def itself(x):
     return x
@@ -72,7 +71,7 @@ def mid(col):
 def div(col):
     if col['isSym']:
         e=0
-        for _,n in col['has']:
+        for n in col['has'].values():
             e= e-n/col['n'] * math.log(n/col['n'],2)
         return e
     else:
@@ -124,8 +123,8 @@ def kap(t, fun):
 # global Seed
 
 
-def rand(lo, hi):
-  Seed =  93716211
+def rand(lo, hi, Seed =  93716211):
+#   Seed =  93716211
   lo = lo or 0
   hi = hi or 1
   Seed = (16807 * Seed) % 2147483647
@@ -263,47 +262,43 @@ def sway(data):
 
 
 # # Strings
-# def oo(t):
-#     print(o(t))
-#     return True
+def oo(t):
+    print(o(t))
+    return True
 
 
 # def fmt(s, *a):
 #     return str.format(s, a)
 
 
-# def o(t):
-#     if(type(t) == NUM.NUM):
-#         return t.__dict__
-#     elif(type(t) == sym.sym):
-#         return t.__dict__
-#     elif(type(t) == row.Row):
-#         return t.__dict__
+def o(t):
+    if isinstance(t, dict):
+        return t
     
-#     if (not isinstance(t, dict)) and (not isinstance(t, list)):
-#         return str(t)
+    if (not isinstance(t, dict)) and (not isinstance(t, list)):
+        return str(t)
 
 
-#     def show(k, v):
-#         if str(k).find('_') != 0:
-#             v = o(v)
-#             return isinstance(t, dict) and (":" + str(k) + " " + str(v)) or str(v)
+    def show(k, v):
+        if str(k).find('_') != 0:
+            v = o(v)
+            return isinstance(t, dict) and (":" + str(k) + " " + str(v)) or str(v)
 
-#     u = []
-#     if isinstance(t, dict):
-#         for k, v in t.items():
-#             showop = show(k, v)
-#             if showop:
-#                 u.append(showop)
-#             u.sort()
+    u = []
+    if isinstance(t, dict):
+        for k, v in t.items():
+            showop = show(k, v)
+            if showop:
+                u.append(showop)
+            u.sort()
 
-#     elif isinstance(t, list):
-#         u = t
-#     return "{" + " ".join(str(val) for val in u) + "}"
+    elif isinstance(t, list):
+        u = t
+    return "{" + " ".join(str(val) for val in u) + "}"
 
 
-# def the(t):
-#     oo(t)
+def the(t):
+    oo(t)
 
 
 # def typecheck(x):
@@ -378,7 +373,7 @@ def sway(data):
 #     return data.DATA(rows)
 
 def any(t):
-    return t[rint[len(t) - 1]]
+    return t[rint(0, len(t) - 1)]
 
 # def rint1(lo, hi):
 #             return math.floor(0.5 + rand(lo, hi))
@@ -435,7 +430,7 @@ def any(t):
 #     rintVal = rint(None, len(t)-1)
 #     return t[rintVal]
 
-def rint(lo, hi):
-            return math.floor(0.5 + rand(lo, hi))
+def rint(lo, hi, Seed =  93716211):
+            return math.floor(0.5 + rand(lo, hi, Seed))
 
 

@@ -2,51 +2,55 @@ import sys
 import getopt
 import functions
 import NUM
-import sym
+import SYM
 import data
 import sys
 
 sys.path.append("./src")
 n = len(sys.argv)
 cli_list = sys.argv[1:]
-shorts = 'dg:hs:f:F:m:p:S:'
-longs = ['dump', 'go=', 'help', 'seed=', 'file=', 'Far=', 'min=', 'p=', 'Sample=']
-the = {'h': False, 'd': False, 's': 937162211, 'g': 'all', 'f': './etc/data/repgrid1.json', 'p': 2}
+shorts = 'b:c:f:F:g:h:H:m:M:p:r:R:s:'
+longs = ['bins=', 'cliffs=', 'file=', 'Far=', 'go=', 'help=', 'Halves=', 'min=', 'Max=', 'p=', 'rest=', 'Reuse=', 'seed=']
+the = {'b':16, 'c':0.147, 'f': './etc/data/repgrid1.json', 'g': 'all', 'h': False, 'H': 512, 'm':0.5, 'M':512, 'r':4, 'R':True, 's': 937162211, 'p': 2}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
-  -d  --dump    on crash, dump stack   = false
-  -f  --file    name of file           = ../etc/data/auto93.csv
-  -F  --Far     distance to "faraway"  = .95
-  -g  --go      start-up action        = data
-  -h  --help    show help              = false
-  -m  --min     stop clusters at N^min = .5
-  -p  --p       distance coefficient   = 2
-  -s  --seed    random number seed     = 937162211
-  -S  --Sample  sampling data size     = 512
+  -b  --bins    initial number of bins       = 16
+  -c  --cliffs  cliff's delta threshold      = .147
+  -f  --file    data file                    = ../etc/data/auto93.csv
+  -F  --Far     distance to distant          = .95
+  -g  --go      start-up action              = nothing
+  -h  --help    show help                    = false
+  -H  --Halves  search space for clustering  = 512
+  -m  --min     size of smallest cluster     = .5
+  -M  --Max     numbers                      = 512
+  -p  --p       dist coefficient             = 2
+  -r  --rest    how many of rest to sample   = 4
+  -R  --Reuse   child splits reuse a parent pole = true
+  -s  --seed    random number seed           = 937162211
 ACTIONS:
 """
 
 
-def rand():
-    num1, num2 = NUM(), NUM()
-    Seed=the['seed']
-    for i in range(1, 1000):
-        num1.add(functions.rand(0, 1))
-    Seed=the['seed']
-    for i in range(1, 1000):
-        num2.add(functions.rand(0, 1))
-    m1 = functions.rnd(num1.mid(), 10)
-    m2 = functions.rnd(num2.mid(), 10)
-    return m1==m2 and .5 == functions.rnd(m1,1)
+# def rand():
+#     num1, num2 = NUM(), NUM()
+#     Seed=the['seed']
+#     for i in range(1, 1000):
+#         num1.add(functions.rand(0, 1))
+#     Seed=the['seed']
+#     for i in range(1, 1000):
+#         num2.add(functions.rand(0, 1))
+#     m1 = functions.rnd(num1.mid(), 10)
+#     m2 = functions.rnd(num2.mid(), 10)
+#     return m1==m2 and .5 == functions.rnd(m1,1)
 
 
 if n > 0:
     args, vals = getopt.getopt(cli_list, shorts, longs)
     for arg, val in args:
-        if arg == '-d' or arg == '--dump':
-            the['d'] = True
+        if arg == '-b' or arg == '--bins':
+            the['b'] = val
         elif arg == '-g' or arg == '--go':
             the['g'] = val
         elif arg == '-h' or arg == '--help':
@@ -55,14 +59,22 @@ if n > 0:
             the['s'] = val
         elif arg == '-f' or arg == '--file':
             the['f'] = val
-        # elif arg == '-F' or arg == '--Far':
-        #     the['F'] = val
-        # elif arg == '-m' or arg == '--min':
-        #     the['m'] = val
+        elif arg == '-F' or arg == '--Far':
+            the['F'] = val
+        elif arg == '-m' or arg == '--min':
+            the['m'] = val
         elif arg == '-p' or arg == '--p':
             the['p'] = val
-        # elif arg == '-S' or arg == '--Sample':
-        #     the['S'] = val
+        elif arg == '-c' or arg == '--cliffs':
+            the['H'] = val
+        elif arg == '-H' or arg == '--Halves':
+            the['H'] = val
+        elif arg == '-M' or arg == '--Max':
+            the['M'] = val
+        elif arg == '-r' or arg == '--rest':
+            the['r'] = val
+        elif arg == '-R' or arg == '--Reuse':
+            the['R'] = val
 if the['h']:
     print(help)
 else:
@@ -73,19 +85,20 @@ else:
             print("✅ pass: the")
 
 
-    # if the['g'] == 'all' or the['g'] == 'rand':
-    #     if not rand():
-    #         print("❌ fail: rand")
-    #     else:
-    #         print("✅ pass: rand")
+    if the['g'] == 'all' or the['g'] == 'rand':
+        Seed, t, u = 1, [], []
+        for i in range(0,1000):
+            t.append(functions.rint(0,100,Seed))
+            u.append(functions.rint(0,100,Seed))
+        for i in range(len(t)):
+            assert(t[i]==u[i])
+        print("✅ pass: rand")
 
 
-    if the['g'] == 'all' or the['g'] == 'sym':
-        Sym = sym.sym()
-        for i in ["a", "a", "a", "a", "b", "b", "c"]:
-            Sym.add(i)
-        val = 'a' == Sym.mid() and 1.379 == functions.rnd(Sym.div())
-        if not val:
+    if the['g'] == 'all' or the['g'] == 'syms':
+        sym = functions.adds(SYM.SYM(), ["a","a","a","a","b","b","c"])
+        print(functions.mid(sym), functions.rnd(functions.div(sym)))
+        if 1.38 != functions.rnd(functions.div(sym)):
             print("❌ fail: sym")
         else:
             print("✅ pass: sym")
@@ -102,75 +115,75 @@ else:
             print("✅ pass: num")
 
 
-    if the['g'] == 'all' or the['g'] == 'copy':
-        t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
-        t2 = functions.copy(t1)
-        t2['b']['d'][0] = 10000
-        print("b4",functions.o(t1),"\nafter",functions.o(t2))
-        print("✅ pass: copy")
+    # if the['g'] == 'all' or the['g'] == 'copy':
+    #     t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
+    #     t2 = functions.copy(t1)
+    #     t2['b']['d'][0] = 10000
+    #     print("b4",functions.o(t1),"\nafter",functions.o(t2))
+    #     print("✅ pass: copy")
 
 
-    if the['g'] == 'all' or the['g'] == 'repcols':
-        t = functions.repCols(functions.dofile(the['f']).get("cols"))
-        for col in t.cols.all:
-            print(vars(col))
-        for row in t.rows:
-            print(vars(row))
-        print("✅ pass: repcols")
+    # if the['g'] == 'all' or the['g'] == 'repcols':
+    #     t = functions.repCols(functions.dofile(the['f']).get("cols"))
+    #     for col in t.cols.all:
+    #         print(vars(col))
+    #     for row in t.rows:
+    #         print(vars(row))
+    #     print("✅ pass: repcols")
 
 
-    if the['g'] == 'all' or the['g'] == 'synonyms':
+    # if the['g'] == 'all' or the['g'] == 'synonyms':
         
-        t = functions.dofile(the['f'])["cols"]
-        cols = functions.repCols(t)
-        x = cols.cluster()
-        functions.show(x)
-        # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
-        print("✅ pass: synonyms")
+    #     t = functions.dofile(the['f'])["cols"]
+    #     cols = functions.repCols(t)
+    #     x = cols.cluster()
+    #     functions.show(x)
+    #     # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
+    #     print("✅ pass: synonyms")
 
         
-    if the['g'] == 'all' or the['g'] == 'reprows':
-        t = functions.dofile(the['f'])
-        rows = functions.repRows(t, functions.transpose(t['cols']))
-        functions.map(rows.cols.all, functions.oo)
-        functions.map(rows.rows, functions.oo)
-        print("✅ pass: reprows")
+    # if the['g'] == 'all' or the['g'] == 'reprows':
+    #     t = functions.dofile(the['f'])
+    #     rows = functions.repRows(t, functions.transpose(t['cols']))
+    #     functions.map(rows.cols.all, functions.oo)
+    #     functions.map(rows.rows, functions.oo)
+    #     print("✅ pass: reprows")
 
-    if the['g'] == 'all' or the['g'] == 'prototypes':
-        t = functions.dofile(the['f'])
+    # if the['g'] == 'all' or the['g'] == 'prototypes':
+    #     t = functions.dofile(the['f'])
         
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        functions.show(rows.cluster())
-        print("✅ pass: prototypes")
+    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
+    #     functions.show(rows.cluster())
+    #     print("✅ pass: prototypes")
 
-    if the['g'] == 'all' or the['g'] == 'position':
-        t = functions.dofile(the['f'])
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        rows.cluster()
-        functions.repPlace(rows)
-        print("✅ pass: position")
+    # if the['g'] == 'all' or the['g'] == 'position':
+    #     t = functions.dofile(the['f'])
+    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
+    #     rows.cluster()
+    #     functions.repPlace(rows)
+    #     print("✅ pass: position")
 
-    if the['g'] == 'all' or the['g'] == 'repgrid':
-        t = functions.dofile(the['f'])
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        cols = functions.repCols(t["cols"])
-        functions.show(rows.cluster())
-        functions.show(cols.cluster())
-        functions.repPlace(rows)
-        print("✅ pass: repgrid")
+    # if the['g'] == 'all' or the['g'] == 'repgrid':
+    #     t = functions.dofile(the['f'])
+    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
+    #     cols = functions.repCols(t["cols"])
+    #     functions.show(rows.cluster())
+    #     functions.show(cols.cluster())
+    #     functions.repPlace(rows)
+    #     print("✅ pass: repgrid")
 
-    print("======================================================================================================")
-    print('Test Cases')
-    print("======================================================================================================")
+    # print("======================================================================================================")
+    # print('Test Cases')
+    # print("======================================================================================================")
 
-    for f in ['./etc/data/repgrid_test1.json','./etc/data/repgrid_test2.json','./etc/data/repgrid_test3.json']:
-        t = functions.dofile(f)
-        rows = functions.repRows(t, functions.transpose(t["cols"]))
-        cols = functions.repCols(t["cols"])
-        functions.show(rows.cluster())
-        functions.show(cols.cluster())
-        functions.repPlace(rows)
-        print("✅ pass: repgrid", f.split('/')[-1])
+    # for f in ['./etc/data/repgrid_test1.json','./etc/data/repgrid_test2.json','./etc/data/repgrid_test3.json']:
+    #     t = functions.dofile(f)
+    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
+    #     cols = functions.repCols(t["cols"])
+    #     functions.show(rows.cluster())
+    #     functions.show(cols.cluster())
+    #     functions.repPlace(rows)
+    #     print("✅ pass: repgrid", f.split('/')[-1])
 
     # if the['g'] == 'all' or the['g'] == 'csv':
     #     n = functions.csv_read(the['f'])

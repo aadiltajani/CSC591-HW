@@ -1,8 +1,5 @@
 import sys
 # sys.path.append("./code")
-from NUM import NUM
-from sym import sym
-from row import Row
 import col
 
 def cols(ss):

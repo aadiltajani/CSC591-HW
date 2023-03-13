@@ -13,13 +13,13 @@ def bins(cols, rowss, the):
                     ranges[k] = ranges[k] or functions.range(col['at'], col['txt'], x)
                     functions.extend(ranges[k], x, y)
         ranges = sorted(functions.map(ranges, functions.itself))
-        out[len(out)] = ranges if col.isSym else mergeAny(ranges)
+        out[len(out)] = ranges if col['isSym'] else mergeAny(ranges)
     return out
 
 def bin(col, x, the):
-    if x == '?' or col.isSym:
+    if x == '?' or col['isSym']:
         return x
-    tmp = (col['hi'] - col['lo'] / (the.bins - 1))
+    tmp = (col['hi'] - col['lo'] / (the['b'] - 1))
     return 1 if col['hi'] == col['lo'] else math.floor(x/tmp + 0.5)*tmp
 
 def noGaps(t):
@@ -37,19 +37,19 @@ def mergeAny(ranges0):
             y = merge2(left.y, right.y)
             if y:
                 j += 1
-                left.hi, left.y = right.hi, y
+                left['hi'], left['y'] = right['hi'], y
         ranges1.append(left)
         j += 1
     return noGaps(ranges0) if len(ranges0) == len(ranges1) else mergeAny(ranges1)
 
 def merge2(col1, col2):
     new = merge(col1, col2)
-    if functions.div(new) <= (functions.div(col1)*col1.n + functions.div(col2)*col2.n) / new.n:
+    if functions.div(new) <= (functions.div(col1)*col1['n'] + functions.div(col2)*col2['n']) / new['n']:
         return new
 
 def merge(col1, col2):
     new = merge(col1, col2)
-    if col1.isSym:
+    if col1['isSym']:
         for x,n in enumerate(col2['has']):
             functions.add(new, x, n)
     else:

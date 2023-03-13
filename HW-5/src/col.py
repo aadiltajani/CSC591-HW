@@ -1,11 +1,11 @@
 import NUM
-import sym
+import SYM
 
 def col(n,s):
     if not s[0].isupper():
-        col = sym.sym(n,s)
+        col = SYM.SYM(n,s)
     else:
-        col = NUM.NUM(n,s)
+        col = NUM.num(n,s)
 
     col.isIgnored = s.endswith('X')
     col.isKlass = s. endswith(';')

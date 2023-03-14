@@ -171,21 +171,21 @@ else:
             'div': functions.rnd(functions.div(num))
                       })
         
-    # if the['g'] == 'all' or the['g'] == 'tree':
-    #     functions.showTree(functions.tree(data.read(the['f'])))
+    if the['g'] == 'all' or the['g'] == 'tree':
+        functions.showTree(functions.tree(data.read(the['f'])))
 
 
-    # if the['g'] == 'all' or the['g'] == 'sway':
-    #     d = data.read(the['f'])
-    #     best, rest = functions.sway(d)
-    #     print("\nall ", functions.o(functions.stats(d))) 
-    #     print("    ",   functions.o(functions.stats(d,functions.div))) 
-    #     print("\nbest", functions.o(functions.stats(best))) 
-    #     print("    ",   functions.o(functions.stats(best,functions.div))) 
-    #     print("\nrest", functions.o(functions.stats(rest))) 
-    #     print("    ",   functions.o(functions.stats(rest,functions.div))) 
-    #     print("\nall ~= best?", functions.o(functions.diffs(best['cols']['y'], d['cols']['y'])))
-    #     print("best ~= rest?", functions.o(functions.diffs(best['cols']['y'], rest['cols']['y'])))
+    if the['g'] == 'all' or the['g'] == 'sway':
+        d = data.read(the['f'])
+        best, rest = functions.sway(d)
+        print("\nall ", functions.o(functions.stats(d))) 
+        print("    ",   functions.o(functions.stats(d,functions.div))) 
+        print("\nbest", functions.o(functions.stats(best))) 
+        print("    ",   functions.o(functions.stats(best,functions.div))) 
+        print("\nrest", functions.o(functions.stats(rest))) 
+        print("    ",   functions.o(functions.stats(rest,functions.div))) 
+        print("\nall ~= best?", functions.o(functions.diffs(best['cols']['y'], d['cols']['y'])))
+        print("best ~= rest?", functions.o(functions.diffs(best['cols']['y'], rest['cols']['y'])))
 
 
     if the['g'] == 'all' or the['g'] == 'bins':

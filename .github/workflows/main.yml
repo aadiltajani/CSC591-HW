@@ -35,7 +35,7 @@ jobs:
     - name: Running main file help
       run: python ./src/main.py -h
     - name: Running custom test engine to output
-      run: python ./test/test_cases.py
+      run: python ./HW-5/test/test_cases.py
     - name: Generate Report
       run: |
         pip install coverage

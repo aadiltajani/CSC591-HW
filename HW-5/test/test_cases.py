@@ -1,6 +1,6 @@
 import random
 import sys
-sys.path.append('./src')
+sys.path.append('./HW-5/src')
 
 import getopt
 import functions

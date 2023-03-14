@@ -4,21 +4,21 @@ import data
 import functions
 import cols
 
-def row(data,t):
-    if data['cols']:
-        data['rows'].append(t)
-        for _,colss in [data['cols']['x'],data['cols']['y']]:
-            for _,col in colss:
-                functions.add(col, t[col.at])
-    else:
-        data['cols'] = cols.cols(t)
+# def row(data,t):
+#     if data['cols']:
+#         data['rows'].append(t)
+#         for _,colss in [data['cols']['x'],data['cols']['y']]:
+#             for _,col in colss:
+#                 functions.add(col, t[col.at])
+#     else:
+#         data['cols'] = cols.cols(t)
 
-    return data
+#     return data
 
 
-# class Row:
+class Row:
 
-#     def __init__(self, t:list):
-#         self.cells = t
-#         self.x = None
-#         self.y = None
+    def __init__(self, t:list):
+        self.cells = t
+        self.x = None
+        self.y = None

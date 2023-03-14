@@ -1,3 +1,4 @@
+import random
 import sys
 import getopt
 import functions
@@ -5,7 +6,7 @@ import NUM
 import SYM
 import data
 import sys
-
+import discretization
 sys.path.append("./src")
 n = len(sys.argv)
 cli_list = sys.argv[1:]
@@ -127,20 +128,76 @@ else:
             print("✅ pass: sym")
 
     if the['g'] == 'all' or the['g'] == 'data':
-        data = data.DATA().read(the['f'])
+        d = data.read(the['f'])
+        col = d["cols"]["x"][0]
+        print(col['lo'], col['hi'], functions.mid(col), functions.div(col))
+        functions.oo(functions.stats(d))
+
+    if the['g'] == 'all' or the['g'] == 'clone':
+        data1 = data.read(the['f'])
+        data2= data.clone(data1, data1['rows'])
+        functions.oo(functions.stats(data1))
+        functions.oo(functions.stats(data2))
 
 
-        n = 0
-        t = functions.csv_read(the['f'])
-        for i in t:
-            n+=len(i)
-        if 3192 != n:
-            print("❌ fail: sym")
-        else:
-            print("✅ pass: sym")
+    if the['g'] == 'all' or the['g'] == 'cliffs':
+        assert functions.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "1"
+        assert functions.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2"
+        t1 = []
+        t2 = []
+        for i in range(0, 1000):
+            t1.append(random.random())
+            t2.append(random.random() ** 0.5)
+        assert functions.cliffsDelta(t1, t1) == False, "3"
+        assert functions.cliffsDelta(t1, t2) == True, "4"
+        diff = False
+        j = 1.0
+        while not diff:
+            t3 = list(map(lambda x: x*j, t1))
+            diff = functions.cliffsDelta(t1, t3)
+            print(">", round(j, 4), diff)
+            j *= 1.025      
 
 
+    if the['g'] == 'all' or the['g'] == 'dist':
+        d = data.read(the['f'])
+        num = NUM.num()
+        for row in d['rows']:
+            functions.add(num, functions.dist(d, row, d['rows'][0]))
+        functions.oo({
+            'lo': num['lo'],
+            'hi': num['hi'],
+            'mid': functions.rnd(functions.mid(num)),
+            'div': functions.rnd(functions.div(num))
+                      })
+        
+    # if the['g'] == 'all' or the['g'] == 'tree':
+    #     functions.showTree(functions.tree(data.read(the['f'])))
 
+
+    # if the['g'] == 'all' or the['g'] == 'sway':
+    #     d = data.read(the['f'])
+    #     best, rest = functions.sway(d)
+    #     print("\nall ", functions.o(functions.stats(d))) 
+    #     print("    ",   functions.o(functions.stats(d,functions.div))) 
+    #     print("\nbest", functions.o(functions.stats(best))) 
+    #     print("    ",   functions.o(functions.stats(best,functions.div))) 
+    #     print("\nrest", functions.o(functions.stats(rest))) 
+    #     print("    ",   functions.o(functions.stats(rest,functions.div))) 
+    #     print("\nall ~= best?", functions.o(functions.diffs(best['cols']['y'], d['cols']['y'])))
+    #     print("best ~= rest?", functions.o(functions.diffs(best['cols']['y'], rest['cols']['y'])))
+
+
+    if the['g'] == 'all' or the['g'] == 'bins':
+        d = data.read(the['f'])
+        best,rest = functions.sway(d)
+        print("all","","","",functions.o({'best': len(best['rows']), 'rest': len(rest['rows'])}))
+        for k,t in discretization.bins(d['cols']['x'],{'best':best['rows'], 'rest':rest['rows']}):
+            for _,range in enumerate(t):
+                b4 = range['txt']
+                print(range['txt'],range['lo'],range['hi'],
+                functions.rnd(functions.value(range['y']['has'], len(best['rows']),len(rest['rows']),"best")), 
+                functions.o(range['y']['has']))
     # if the['g'] == 'all' or the['g'] == 'copy':
     #     t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
     #     t2 = functions.copy(t1)

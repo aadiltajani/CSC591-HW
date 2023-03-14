@@ -1,7 +1,7 @@
 import functions
 import math
 
-def bins(cols, rowss, the):
+def bins(cols, rowss):
     out = []
     for col in cols:
         ranges = []
@@ -9,17 +9,17 @@ def bins(cols, rowss, the):
             for row in rows:
                 x,k = row[col['at']]
                 if x != '?':
-                    k = bin(col, x, the)
-                    ranges[k] = ranges[k] or functions.range(col['at'], col['txt'], x)
+                    k = bin(col, x)
+                    ranges[k] = ranges[k] or functions.Range(col['at'], col['txt'], x)
                     functions.extend(ranges[k], x, y)
         ranges = sorted(functions.map(ranges, functions.itself))
         out[len(out)] = ranges if col['isSym'] else mergeAny(ranges)
     return out
 
-def bin(col, x, the):
+def bin(col, x):
     if x == '?' or col['isSym']:
         return x
-    tmp = (col['hi'] - col['lo'] / (the['b'] - 1))
+    tmp = (col['hi'] - col['lo'] / (16 - 1))
     return 1 if col['hi'] == col['lo'] else math.floor(x/tmp + 0.5)*tmp
 
 def noGaps(t):

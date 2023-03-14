@@ -1,6 +1,7 @@
 import json
 import math
 import csv
+import re
 import sys
 from copy import deepcopy
 import data
@@ -11,14 +12,27 @@ import col
 import data
 sys.path.append("./HW-5/src")
 
-def range(at, txt, lo, hi):
-    d = {
-        'at' : at,
-        'txt' : txt,
-        'lo' : lo,
-        'hi' : lo or hi or lo,
-        'y' : SYM.SYM()
-    }
+def Range(at,txt,lo,hi = None):
+    if hi is None:
+        hi = lo
+    y = SYM.SYM()
+    return {'at': at, 'txt': txt, 'lo': lo, 'hi': hi, 'y': y}
+
+def coerce(s: str):
+    def fun(s1: str):
+        if s1 == 'true' or s1.lower() == 'true':
+            return True
+        if s1 == 'false' or s1.lower() == 'false':
+            return False
+        return s1
+    val = s
+    try:
+        val = float(s)
+        if val == int(val):
+            val = int(val)
+    except ValueError:
+        val = fun(re.search('^\s*(.+?)\s*$', s).group(1))
+    return val
 
 def add(col,x, n=1):
     if x != "?":
@@ -76,7 +90,7 @@ def div(col):
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 
-def stats(data, fun = None, places = 3):
+def stats(data, fun = None, places = 3,cols = None):
     cols= cols or data['cols']['y']
     def temp(k,col):
         return rnd(fun(col) if fun else mid(col), places), col['txt']
@@ -126,7 +140,7 @@ def rand(lo=0, hi=1, Seed =  93716211):
   Seed = (16807 * Seed) % 2147483647
   return lo + (hi - lo) * Seed / 2147483647
 
-def cliffsDelta(ns1, ns2, the):
+def cliffsDelta(ns1, ns2):
     if len(ns1) > 256:
         ns1 = many(ns1, 256)
     if len(ns2) > 256:
@@ -143,7 +157,7 @@ def cliffsDelta(ns1, ns2, the):
                 gt += 1
             if x < y:
                 lt += 1
-    return abs(lt-gt)/n > the.cliffs
+    return abs(lt-gt)/n > 0.147
 
 def rnd(n, places=3):
     mult = 10 ** places
@@ -195,30 +209,37 @@ def dist(data, t1, t2, cols= None):
 def temp(k, nums, nums2, the):
     return cliffsDelta(nums.has, nums2[k].has, the), nums.txt
 
-def diffs(nums1, nums2, the):
-    return kap(nums1, lambda k,nums: temp(k, nums, nums2, the))
+def diffs(nums1, nums2):
+    def kap(nums1, func):
+        return [func(k, nums) for k, nums in enumerate(nums1)]
+
+    return kap(nums1, lambda k, nums: (cliffsDelta(nums["has"], nums2[k]["has"]), nums["txt"]))
 
 def better(data, row1, row2):
-    s1,s2,ys = 0,0,data['cols']['y']
+    s1 = 0
+    s2 = 0
+    ys = data["cols"]["y"]
     for _, col in enumerate(ys):
-        x, y = norm(col, row1[col['at']]), norm(col, row2[col['at']])
+        x = norm(col, row1[col['at']])
+        y = norm(col, row2[col['at']])
+
         s1 = s1 - math.exp(col['w'] * (x-y)/len(ys))
         s2 = s2 - math.exp(col['w'] * (y - x)/len(ys))
 
+    # if (len(ys) == 0):
+    #     return s1 < s2
     return s1/len(ys) < s2 / len(ys)
 def many(t, n):
-    u = []
-    for i in range(n):
-        u.append(any(t))
+    return [any(t) for i in range(n)]
 
 
-def tree(data, rows=None, cols=None, above=None):
-    rows = rows if rows else data['rows']
-    here = {"data": data.clone(data, rows)}
-    if len(rows) >= 2 * (len(data['rows']) ** the['min']):
-        left, right, A, B, _ = half(data, rows, cols, above)
-        here['left'] = tree(data, left, cols, A)
-        here['right'] = tree(data, right, cols, B)
+def tree(d, r=None, cols=None, above=None):
+    r = r if r else d['rows']
+    here = {"data": data.clone(d, r)}
+    if len(r)>=2*(len(d['rows'])**0.5):
+        left, right, A, B, _ = half(d, r, cols, above)
+        here['left'] = tree(d, left, cols, A)
+        here['right'] = tree(d, right, cols, B)
     return here
 
 def showTree(tree, lvl=0, post=None):
@@ -232,20 +253,44 @@ def showTree(tree, lvl=0, post=None):
         showTree(tree.get('left'), lvl + 1)
         showTree(tree.get('right'), lvl + 1)
 
-def sway(data):
-    def worker(rows, worse, above=None):
-        if len(rows) <= len(data['rows']) ** the['min']:
-            return rows, many(worse, the['rest'] * len(rows))
+def half(data, rows = None, cols = None, above = None):
+   
+    def gap(r1, r2):
+        return dist(data, r1, r2, cols)
+    def cos(a, b, c):
+        return (a**2 + c**2 - b**2)/(2*c +1)
+    def proj(r):
+        return {'row': r, 'x': cos(gap(r, A), gap(r, B), c)}
+    rows = rows or data['rows']
+    some = many(rows, 512)
+    A = above or any(some)
+    tmp = sorted([{"row": r, "d": gap(r, A)} for r in some], key=lambda x: x["d"])
+    far = tmp[int(len(tmp)*0.95)]
+    B, c = far["row"], far["d"]
+    # print(far)
+    sorted_rows = sorted(map(rows, proj).values(), key=lambda x: x["x"])
+    left, right = [], []
+    for n, two in enumerate(sorted_rows):
+        if n <= (len(rows) - 1) / 2:
+            left.append(two["row"])
         else:
-            l, r, A, B, dummy = half(data, rows, None, above)
-            if better(data, B, A):
+            right.append(two["row"])
+    return left, right, A, B, c
+
+def sway(d):
+    def worker(rows, worse, above=None):
+        if len(rows) <= len(d["rows"])**0.5:
+            return rows, many(worse, 4 * len(rows))
+        else:
+            l, r, A, B, dummy = half(d, rows, None, above)
+            if better(d, B, A):
                 l, r, A, B = r, l, B, A
             for row in r:
                 worse.append(row)
             return worker(l, worse, A)
 
-    best, rest = worker(data["rows"], [])
-    return clone(data, best), clone(data, rest)
+    best, rest = worker(d["rows"], [])
+    return data.clone(d, best), data.clone(d, rest)
 
 
 # def sort(t):

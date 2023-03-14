@@ -1,43 +1,48 @@
+import math
+import re
+import sys
+sys.path.append("./HW-5/src")
 from typing import Iterable
 import functions
-from row import row
-import cols
+import row
+import cols as c
 
 
-class DATA:
-    def __init__(self, src=None):
-        self.rows = []
-        self.cols = None
 
-        # if isinstance(src, str):
-        #     for x in functions.csv_read(src):
-        #         self.add(x)
-        # else:
-        #     # self.add(src)
-        #     functions.map(src, self.add)
+# class DATA:
+#     def __init__(self, src=None):
+#         self.rows = []
+#         self.cols = None
 
-    # def add(self, t):
-    #     if self.cols:
-    #         t = t if hasattr(t, "cells") else row.Row(t)
-    #         self.rows.append(t)
-    #         self.cols.add(t)
-    #     else:
-    #         self.cols = cols.Cols(t)
+#         # if isinstance(src, str):
+#         #     for x in functions.csv_read(src):
+#         #         self.add(x)
+#         # else:
+#         #     # self.add(src)
+#         #     functions.map(src, self.add)
 
-    def new(self):
-        return {'rows':[], 'cols':None}
+#     # def add(self, t):
+#     #     if self.cols:
+#     #         t = t if hasattr(t, "cells") else row.Row(t)
+#     #         self.rows.append(t)
+#     #         self.cols.add(t)
+#     #     else:
+#     #         self.cols = cols.Cols(t)
 
-    def clone(self, data, ts, init=None):
-        data1 = row(self.new(), data['cols']['names'])
-        for i in ts:
-            row(data1, i)
-        return data1
+#     def new(self):
+#         return {'rows':[], 'cols':None}
 
-    def read(self, file):
-        data = self.new()
-        t = functions.csv_read(file)
-        for i in t:
-            row(data, i) 
+#     def clone(self, data, ts, init=None):
+#         data1 = row(self.new(), data['cols']['names'])
+#         for i in ts:
+#             row(data1, i)
+#         return data1
+
+#     def read(self, file):
+#         data = self.new()
+#         t = functions.csv_read(file)
+#         for i in t:
+#             row(data, i) 
 
     # def stats(self, what=None, cols=None, nPlaces=None):
     #     def fun(col):
@@ -140,4 +145,99 @@ class DATA:
     # def furthest(self, row1, rows=None, cols=None):
     #     t = self.around(row1, rows,cols)
     #     return t[-1][0]
+
+def row1(data, t):
+
+    if data["cols"]:
+        data["rows"].append(t)
+        temp = data["cols"]["x"]
+        temp.extend(data["cols"]["y"])
+        for cols in [data["cols"]["x"], data["cols"]["y"]]:
+        
+            for col in cols:
+                
+                
+
+                add(col, t[col['at']])
+    else:
+        data["cols"]= c.cols(t)
+    return data
+
+
+def rand(lo=0, hi=1):
+  Seed = 93716211
+  lo = lo or 0
+  hi = hi or 1
+  Seed = (16807 * Seed) % 2147483647
+  return lo + (hi - lo) * Seed / 2147483647
+
+
+def rint(lo=0, hi=1):
+  return math.floor(0.5 + rand(lo, hi))
+
+
+def add(col, x, n = 1):
+    if x != '?':
+        n = n or 1
+        col['n'] += n
+        if col['isSym']:
+            col['has'][x] = n + col['has'].get(x, 0)
+            if col['has'][x] > col['most']:
+                col['most'], col['mode'] = col['has'][x], x
+        else:
+            col['lo'] = min(x, col['lo'])
+            col['hi'] = max(x, col['hi'])
+            all_ = len(col['has'])
+            pos = (all_ < 512 and all_+1) or (rand()< 512/col['n'] and rint(1, all_))
+            if pos:
+                
+                col['has'][pos-1] = x
+                col['ok'] = False
+
+
+def adds(col, t):
+    for value in t or []:
+        add(col, value)
+    return col
+
+def extend(range, n, s):
+    range['lo'] = min(n, range['lo'])
+    range['hi'] = max(n, range['hi'])
+    add(range['y'], s)
+
+def cells(s):
+    t = []
+    for s1 in re.findall("[^,]+", s):
+        t.append(functions.coerce(s1))
+    return t
+
+def lines(sFilename, fun):
+    with open(sFilename, "r") as src:
+        for s in src:
+            s = s.rstrip("\r\n")
+            fun(s)
+    src.close()
+
+def CSV(sFilename, fun):
+    lines(sFilename, lambda line: fun(cells(line)))
+
+
+## data functions!!
+def new():
+    return {"rows":[], "cols":None}
+
+def read(sFile):
+    data = new()
+    callback = lambda t: row1(data, t)
+    CSV(sFile, callback)
+    return data
+
+def clone(data, ts = None, data1 = None):
+    # print(data)
+    data1 = row1(new(), data["cols"]["names"])
+    # print("ts", ts)
+    for t in (ts or []):
+        # print(t)
+        row1(data1, t)
+    return data1
 

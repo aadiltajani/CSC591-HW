@@ -1,23 +1,28 @@
 import sys
 # sys.path.append("./code")
-import col
-
+import col as c
+import SYM
 def cols(ss):
     cols={'names' : ss,
-    'all': {},
-    'x': {},
-    'y': {}}
+    'all': [],
+    'x': [],
+    'y': []}
 
     for n,s in enumerate(ss):
-        cols['all'] = col(n,s)
-        if col['isIgnored'] is None:
-            if col['isKlass'] is None:
-                cols['klass'] = col
-                if col['isGoal']:
-                    col['y'] = col
-                else:
-                    col['x'] = col
-        return cols
+        
+        col1 = c.col(n, s)
+        cols["all"].append(col1)
+        if not col1['isIgnored']:
+            if col1['isKlass']:
+                cols['klass'] = col1
+            if col1['isGoal']:
+                cols["y"].append(col1)
+            else:
+                cols["x"].append(col1)
+    return cols
+    
+
+
 # class Cols:
 
 #     def __init__(self, names):

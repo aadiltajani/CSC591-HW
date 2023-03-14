@@ -20,9 +20,8 @@ def range(at, txt, lo, hi):
         'y' : SYM.SYM()
     }
 
-def add(col,x):
+def add(col,x, n=1):
     if x != "?":
-        n=1
         col['n'] = col['n'] + n
         if col['isSym']:
             col['has'][x] = n + (col['has'][x] if x in col['has'].keys() else 0)

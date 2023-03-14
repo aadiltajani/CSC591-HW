@@ -106,14 +106,15 @@ def norm(num,n):
     else:
         return (n - num['lo'])/(num['hi'] - num['lo'] + 1/float('inf'))
 
-def value(has):
-    sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
+def value(has, nB=1, nR=1, sGoal=True):
+    # print(has)
+    # sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
     b,r = 0,0
-    for x,n in enumerate(has):
+    for x,n in has.items():
         if x==sGoal:
-            b = b + n 
+            b = b + int(n) 
         else:
-            r = r + n
+            r = r + int(n)
     b,r = b/(nB+1/float('inf')), r/(nR+1/float('inf'))
     return b**2/(b+r)
 

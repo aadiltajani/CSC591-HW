@@ -4,16 +4,19 @@ import math
 def bins(cols, rowss):
     out = []
     for col in cols:
-        ranges = []
-        for y, rows in enumerate(rowss):
+        # print('#####',col, "\t\t", cols)
+        ranges = {}
+        for y, rows in rowss.items():
+            # print('!!!!!!', y,rows)
             for row in rows:
-                x,k = row[col['at']]
+                # print('*****',row)
+                x = row[col['at']]
                 if x != '?':
                     k = bin(col, x)
-                    ranges[k] = ranges[k] or functions.Range(col['at'], col['txt'], x)
+                    ranges[k] = ranges[k] if k in ranges.keys() else functions.Range(col['at'], col['txt'], x)
                     functions.extend(ranges[k], x, y)
-        ranges = sorted(functions.map(ranges, functions.itself))
-        out[len(out)] = ranges if col['isSym'] else mergeAny(ranges)
+        ranges = list(dict(sorted(ranges.items())).values())
+        out.append(ranges if col['isSym'] else mergeAny(ranges))
     return out
 
 def bin(col, x):
@@ -32,7 +35,7 @@ def noGaps(t):
 def mergeAny(ranges0):
     ranges1, j, left, right, y = [], 1, None, None, None
     while j <= len(ranges0) - 1:
-        left, right = ranges0[j], ranges0[j+1]
+        left, right = ranges0[j], None if j == len(ranges0)-1 else ranges0[j+1]
         if right:
             y = merge2(left.y, right.y)
             if y:

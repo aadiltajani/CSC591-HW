@@ -132,12 +132,14 @@ else:
         col = d["cols"]["x"][0]
         print(col['lo'], col['hi'], functions.mid(col), functions.div(col))
         functions.oo(functions.stats(d))
+        print("✅ pass: data")
 
     if the['g'] == 'all' or the['g'] == 'clone':
         data1 = data.read(the['f'])
         data2= data.clone(data1, data1['rows'])
         functions.oo(functions.stats(data1))
         functions.oo(functions.stats(data2))
+        print("✅ pass: clone")
 
 
     if the['g'] == 'all' or the['g'] == 'cliffs':
@@ -157,6 +159,7 @@ else:
             diff = functions.cliffsDelta(t1, t3)
             print(">", round(j, 4), diff)
             j *= 1.025      
+        print("✅ pass: cliffs")
 
 
     if the['g'] == 'all' or the['g'] == 'dist':
@@ -170,9 +173,11 @@ else:
             'mid': functions.rnd(functions.mid(num)),
             'div': functions.rnd(functions.div(num))
                       })
+        print("✅ pass: dist")
         
     if the['g'] == 'all' or the['g'] == 'tree':
         functions.showTree(functions.tree(data.read(the['f'])))
+        print("✅ pass: tree")
 
 
     if the['g'] == 'all' or the['g'] == 'sway':
@@ -186,18 +191,23 @@ else:
         print("    ",   functions.o(functions.stats(rest,functions.div))) 
         print("\nall ~= best?", functions.o(functions.diffs(best['cols']['y'], d['cols']['y'])))
         print("best ~= rest?", functions.o(functions.diffs(best['cols']['y'], rest['cols']['y'])))
+        print("✅ pass: sway")
 
 
     if the['g'] == 'all' or the['g'] == 'bins':
         d = data.read(the['f'])
         best,rest = functions.sway(d)
         print("all","","","",functions.o({'best': len(best['rows']), 'rest': len(rest['rows'])}))
-        for k,t in discretization.bins(d['cols']['x'],{'best':best['rows'], 'rest':rest['rows']}):
+        for k,t in enumerate(discretization.bins(d['cols']['x'],{'best':best['rows'], 'rest':rest['rows']})):
             for _,range in enumerate(t):
                 b4 = range['txt']
                 print(range['txt'],range['lo'],range['hi'],
                 functions.rnd(functions.value(range['y']['has'], len(best['rows']),len(rest['rows']),"best")), 
                 functions.o(range['y']['has']))
+        print("✅ pass: bins")
+
+
+
     # if the['g'] == 'all' or the['g'] == 'copy':
     #     t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
     #     t2 = functions.copy(t1)

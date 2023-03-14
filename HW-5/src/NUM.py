@@ -5,6 +5,7 @@
 
 def num(n=0,s=""):
     d={'at' : n, 
+        'isSym': False,
         'txt': s,
         'n' : 0,
         'hi' : float('-inf'),

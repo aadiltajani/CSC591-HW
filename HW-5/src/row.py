@@ -2,16 +2,16 @@ import sys
 # sys.path.append("./code")
 import data
 import functions
-import col
+import cols
 
 def row(data,t):
-    if data.cols:
-        data['rows'] = t
-        for _,cols in [data['cols']['x'],data['cols']['y']]:
-            for _,cols in cols:
+    if data['cols']:
+        data['rows'].append(t)
+        for _,colss in [data['cols']['x'],data['cols']['y']]:
+            for _,col in colss:
                 functions.add(col, t[col.at])
     else:
-        data.cols = cols(t)
+        data['cols'] = cols.cols(t)
 
     return data
 

@@ -1,6 +1,6 @@
 from typing import Iterable
 import functions
-import row
+from row import row
 import cols
 
 
@@ -9,12 +9,12 @@ class DATA:
         self.rows = []
         self.cols = None
 
-        if isinstance(src, str):
-            for x in functions.csv_read(src):
-                self.add(x)
-        else:
-            # self.add(src)
-            functions.map(src, self.add)
+        # if isinstance(src, str):
+        #     for x in functions.csv_read(src):
+        #         self.add(x)
+        # else:
+        #     # self.add(src)
+        #     functions.map(src, self.add)
 
     # def add(self, t):
     #     if self.cols:
@@ -24,20 +24,20 @@ class DATA:
     #     else:
     #         self.cols = cols.Cols(t)
 
-    def clone(self, init=None):
-        data = DATA([self.cols.names])
-        if(type(init) == dict):
-            for i, item in init.items():
-                data.add(item.cells)
-            return data
-        else:
-            for row in init:
-                data.add(row)
-            return data
+    def new(self):
+        return {'rows':[], 'cols':None}
+
+    def clone(self, data, ts, init=None):
+        data1 = row(self.new(), data['cols']['names'])
+        for i in ts:
+            row(data1, i)
+        return data1
 
     def read(self, file):
-        data = DATA()
-        functions.csv_read(file) 
+        data = self.new()
+        t = functions.csv_read(file)
+        for i in t:
+            row(data, i) 
 
     # def stats(self, what=None, cols=None, nPlaces=None):
     #     def fun(col):

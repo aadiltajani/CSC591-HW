@@ -25,13 +25,13 @@ def add(col,x):
         n=1
         col['n'] = col['n'] + n
         if col['isSym']:
-            col['has']['x'] = n + (col['has']['x'] if 'x' in col['has'].keys() else 0)
-            if col['has']['x'] > col['most']:
-                col['most'], col['mode'] = col['has']['x'],x
+            col['has'][x] = n + (col['has'][x] if x in col['has'].keys() else 0)
+            if col['has'][x] > col['most']:
+                col['most'], col['mode'] = col['has'][x],x
         else:
-            col['lo'], col['hi'] = math.min(x,col['lo']), math.max(x,col['hi'])
+            col['lo'], col['hi'] = min(x,col['lo']), max(x,col['hi'])
             all = len(col['has'])
-            pos = (all < 512 and all+1) or (function.rand() < 512/col['n'] and function.rint(1,all))
+            pos = (all < 512 and all+1) or (rand() < 512/col['n'] and rint(1,all))
             if pos:
                 col['has'][pos] = x
                 col['ok'] = False
@@ -53,7 +53,7 @@ def extend(range, n, s):
 
 def has(col):
     if not col['isSym'] and not col['ok']:
-        col['has'] = dict(sorted(col['has']))
+        col['has'] = dict(sorted(col['has'].items()))
     col['ok'] = True
     return col['has']
     
@@ -123,10 +123,7 @@ def kap(t, fun):
 # global Seed
 
 
-def rand(lo, hi, Seed =  93716211):
-#   Seed =  93716211
-  lo = lo or 0
-  hi = hi or 1
+def rand(lo=0, hi=1, Seed =  93716211):
   Seed = (16807 * Seed) % 2147483647
   return lo + (hi - lo) * Seed / 2147483647
 
@@ -301,33 +298,33 @@ def the(t):
     oo(t)
 
 
-# def typecheck(x):
-#     try:
-#         a = float(x)
-#         b = int(a)
-#     except (TypeError, ValueError):
-#         pass
-#     else:
-#         return b
-#     try:
-#         a = float(x)
-#     except (TypeError, ValueError):
-#         return x
-#     else:
-#         return float(x)
+def typecheck(x):
+    try:
+        a = float(x)
+        b = int(a)
+    except (TypeError, ValueError):
+        pass
+    else:
+        return b
+    try:
+        a = float(x)
+    except (TypeError, ValueError):
+        return x
+    else:
+        return float(x)
 
 
-# def csv_read(filename):
-#     f = open(filename, 'r')
-#     # f = open(r'./etc/data/auto93.csv', 'r')
+def csv_read(filename):
+    f = open(filename, 'r')
+    # f = open(r'./etc/data/auto93.csv', 'r')
 
-#     reader = csv.reader(f)
-#     t = []
-#     for row in reader:
-#         t.append([typecheck(ele) for ele in row])
-#     # if fun is not None:
-#     #     fun(t)
-#     return t
+    reader = csv.reader(f)
+    t = []
+    for row in reader:
+        t.append([typecheck(ele) for ele in row])
+    # if fun is not None:
+    #     fun(t)
+    return t
 
 # def cosine(a, b, c):
 #     den = 1 if c == 0 else 2 * c

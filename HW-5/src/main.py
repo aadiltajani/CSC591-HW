@@ -11,7 +11,7 @@ n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'b:c:f:F:g:h:H:m:M:p:r:R:s:'
 longs = ['bins=', 'cliffs=', 'file=', 'Far=', 'go=', 'help=', 'Halves=', 'min=', 'Max=', 'p=', 'rest=', 'Reuse=', 'seed=']
-the = {'b':16, 'c':0.147, 'f': './etc/data/repgrid1.json', 'g': 'all', 'h': False, 'H': 512, 'm':0.5, 'M':512, 'r':4, 'R':True, 's': 937162211, 'p': 2}
+the = {'b':16, 'c':0.147, 'f': './etc/data/auto93.csv', 'g': 'all', 'h': False, 'H': 512, 'm':0.5, 'M':512, 'r':4, 'R':True, 's': 937162211, 'p': 2}
 help = """script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
@@ -98,21 +98,47 @@ else:
     if the['g'] == 'all' or the['g'] == 'syms':
         sym = functions.adds(SYM.SYM(), ["a","a","a","a","b","b","c"])
         print(functions.mid(sym), functions.rnd(functions.div(sym)))
-        if 1.38 != functions.rnd(functions.div(sym)):
+        if 1.38 != functions.rnd(functions.div(sym),2):
             print("❌ fail: sym")
         else:
             print("✅ pass: sym")
 
 
-    if the['g'] == 'all' or the['g'] == 'num':
-        num = NUM.NUM()
-        for i in [1, 1, 1, 1, 2, 2, 3]:
-            num.add(i)
-        val = 11 / 7 == num.mid() and 0.787 == functions.rnd(num.div())
-        if not val:
-            print("❌ fail: num")
-        else:
+    if the['g'] == 'all' or the['g'] == 'nums':
+        num1, num2 = NUM.num(), NUM.num()
+        for i in range(10000):
+            functions.add(num1, functions.rand())
+            functions.add(num2, functions.rand()**2)
+        print(1, functions.rnd(functions.mid(num1),1), functions.rnd(functions.div(num1)))
+        print(2, functions.rnd(functions.mid(num2),1), functions.rnd(functions.div(num2))) 
+        if .5 == functions.rnd(functions.mid(num1),1) and functions.mid(num1)> functions.mid(num2):
             print("✅ pass: num")
+        else:
+            print("❌ fail: num")            
+
+    if the['g'] == 'all' or the['g'] == 'csv':
+        n = 0
+        t = functions.csv_read(the['f'])
+        for i in t:
+            n+=len(i)
+        if 3192 != n:
+            print("❌ fail: sym")
+        else:
+            print("✅ pass: sym")
+
+    if the['g'] == 'all' or the['g'] == 'data':
+        data = data.DATA().read(the['f'])
+
+
+        n = 0
+        t = functions.csv_read(the['f'])
+        for i in t:
+            n+=len(i)
+        if 3192 != n:
+            print("❌ fail: sym")
+        else:
+            print("✅ pass: sym")
+
 
 
     # if the['g'] == 'all' or the['g'] == 'copy':

@@ -12,6 +12,24 @@ import col
 import data
 sys.path.append("./HW-6/src")
 
+def rule(ranges, maxSize):
+    t = {}
+    for _,range in ranges:
+        t['range']['txt'] = t['range']['txt'] or {}
+        t['range']['txt'].append({'lo':range['lo'],'hi':range['hi'],'at':range['at']})
+        return prune(t,maxSize)
+
+def prune(rule, maxSize):
+    n=0
+    for txt,ranges in enumerate(ranges):
+        n = n+1
+        if len(ranges) == maxSize[txt]:
+            n = n-1
+            rule[txt] = None
+    if n > 0:
+        return rule
+
+
 def Range(at,txt,lo,hi = None):
     if hi is None:
         hi = lo

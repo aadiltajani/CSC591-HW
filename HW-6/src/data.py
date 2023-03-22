@@ -6,9 +6,7 @@ from typing import Iterable
 import functions
 import row
 import cols as c
-
-
-
+from functions import t, csv
 # class DATA:
 #     def __init__(self, src=None):
 #         self.rows = []
@@ -87,10 +85,6 @@ import cols as c
     # def half(self, rows=None, cols=None, above=None):
     #     A, B, left, right, c, mid, some = None, None, None, None, None, None, None
         
-        
-       
-            
-        
     #     def project(row):
     #         x, y  = functions.cosine(dist(row, A), dist(row, B), c)
     #         row.x = x or row.x
@@ -113,10 +107,6 @@ import cols as c
     #             right.append(tmp["row"])
     #     return left, right, A, B, mid, c
         
-
-
-
-
     # def cluster(self, rows=None, cols=None, above=None):
     #         rows = rows if rows else self.rows
     #         cols = cols if cols else self.cols.x
@@ -146,98 +136,104 @@ import cols as c
     #     t = self.around(row1, rows,cols)
     #     return t[-1][0]
 
-def row1(data, t):
+# def row1(data, t):
 
-    if data["cols"]:
-        data["rows"].append(t)
-        temp = data["cols"]["x"]
-        temp.extend(data["cols"]["y"])
-        for cols in [data["cols"]["x"], data["cols"]["y"]]:
-        
-            for col in cols:
+#     if data["cols"]:
+#         data["rows"].append(t)
+#         temp = data["cols"]["x"]
+#         temp.extend(data["cols"]["y"])
+#         for cols in [data["cols"]["x"], data["cols"]["y"]]:
+#             for col in cols:
+#                 add(col, t[col['at']])
+#     else:
+#         data["cols"]= c.cols(t)
+#     return data
+
+
+# def rand(lo=0, hi=1):
+#   Seed = 93716211
+#   lo = lo or 0
+#   hi = hi or 1
+#   Seed = (16807 * Seed) % 2147483647
+#   return lo + (hi - lo) * Seed / 2147483647
+
+
+# def rint(lo=0, hi=1):
+#   return math.floor(0.5 + rand(lo, hi))
+
+
+# def add(col, x, n = 1):
+#     if x != '?':
+#         n = n or 1
+#         col['n'] += n
+#         if col['isSym']:
+#             col['has'][x] = n + col['has'].get(x, 0)
+#             if col['has'][x] > col['most']:
+#                 col['most'], col['mode'] = col['has'][x], x
+#         else:
+#             col['lo'] = min(x, col['lo'])
+#             col['hi'] = max(x, col['hi'])
+#             all_ = len(col['has'])
+#             pos = (all_ < 512 and all_+1) or (rand()< 512/col['n'] and rint(1, all_))
+#             if pos:
                 
-                
-
-                add(col, t[col['at']])
-    else:
-        data["cols"]= c.cols(t)
-    return data
+#                 col['has'][pos-1] = x
+#                 col['ok'] = False
 
 
-def rand(lo=0, hi=1):
-  Seed = 93716211
-  lo = lo or 0
-  hi = hi or 1
-  Seed = (16807 * Seed) % 2147483647
-  return lo + (hi - lo) * Seed / 2147483647
+# def adds(col, t):
+#     for value in t or []:
+#         add(col, value)
+#     return col
 
+# def extend(range, n, s):
+#     range['lo'] = min(n, range['lo'])
+#     range['hi'] = max(n, range['hi'])
+#     add(range['y'], s)
 
-def rint(lo=0, hi=1):
-  return math.floor(0.5 + rand(lo, hi))
+# def cells(s):
+#     t = []
+#     for s1 in re.findall("[^,]+", s):
+#         t.append(functions.coerce(s1))
+#     return t
 
+# def lines(sFilename, fun):
+#     with open(sFilename, "r") as src:
+#         for s in src:
+#             s = s.rstrip("\r\n")
+#             fun(s)
+#     src.close()
 
-def add(col, x, n = 1):
-    if x != '?':
-        n = n or 1
-        col['n'] += n
-        if col['isSym']:
-            col['has'][x] = n + col['has'].get(x, 0)
-            if col['has'][x] > col['most']:
-                col['most'], col['mode'] = col['has'][x], x
-        else:
-            col['lo'] = min(x, col['lo'])
-            col['hi'] = max(x, col['hi'])
-            all_ = len(col['has'])
-            pos = (all_ < 512 and all_+1) or (rand()< 512/col['n'] and rint(1, all_))
-            if pos:
-                
-                col['has'][pos-1] = x
-                col['ok'] = False
-
-
-def adds(col, t):
-    for value in t or []:
-        add(col, value)
-    return col
-
-def extend(range, n, s):
-    range['lo'] = min(n, range['lo'])
-    range['hi'] = max(n, range['hi'])
-    add(range['y'], s)
-
-def cells(s):
-    t = []
-    for s1 in re.findall("[^,]+", s):
-        t.append(functions.coerce(s1))
-    return t
-
-def lines(sFilename, fun):
-    with open(sFilename, "r") as src:
-        for s in src:
-            s = s.rstrip("\r\n")
-            fun(s)
-    src.close()
-
-def CSV(sFilename, fun):
-    lines(sFilename, lambda line: fun(cells(line)))
+# def CSV(sFilename, fun):
+#     lines(sFilename, lambda line: fun(cells(line)))
 
 
 ## data functions!!
-def new():
-    return {"rows":[], "cols":None}
-
-def read(sFile):
-    data = new()
-    callback = lambda t: row1(data, t)
-    CSV(sFile, callback)
+def new(src,rows):
+    data = {"rows":[], "cols":None}
+    add = function(t) 
+    row(data,t)
+    if type(src) == "string":
+        csv(src,add)
+    else:
+        data['cols'] = c['src']['cols']['names']
+    map(rows or {}, add)
     return data
 
-def clone(data, ts = None, data1 = None):
-    # print(data)
-    data1 = row1(new(), data["cols"]["names"])
-    # print("ts", ts)
-    for t in (ts or []):
-        # print(t)
-        row1(data1, t)
-    return data1
+# def read(sFile):
+#     data = new()
+#     callback = lambda t: row1(data, t)
+#     CSV(sFile, callback)
+#     return data
+
+# def clone(data, ts = None, data1 = None):
+#     # print(data)
+#     data1 = row1(new(), data["cols"]["names"])
+#     # print("ts", ts)
+#     for t in (ts or []):
+#         # print(t)
+#         row1(data1, t)
+#     return data1
+
+
 

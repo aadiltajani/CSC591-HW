@@ -12,6 +12,7 @@ import col
 import data
 sys.path.append("./HW-6/src")
 
+
 def rule(ranges, maxSize):
     t = {}
     for _,range in ranges:
@@ -36,6 +37,13 @@ def Range(at,txt,lo,hi = None):
     y = SYM.SYM()
     return {'at': at, 'txt': txt, 'lo': lo, 'hi': hi, 'y': y}
 
+def rint(lo, hi, Seed =  93716211):
+            return math.floor(0.5 + rand(lo, hi, Seed))
+
+def rand(lo=0, hi=1, Seed =  93716211):
+  Seed = (16807 * Seed) % 2147483647
+  return lo + (hi - lo) * Seed / 2147483647
+
 def coerce(s: str):
     def fun(s1: str):
         if s1 == 'true' or s1.lower() == 'true':
@@ -52,20 +60,42 @@ def coerce(s: str):
         val = fun(re.search('^\s*(.+?)\s*$', s).group(1))
     return val
 
-def add(col,x, n=1):
-    if x != "?":
+# def add(col,x, n=1):
+#     if x != "?":
+#         col['n'] = col['n'] + n
+#         if col['isSym']:
+#             col['has'][x] = n + (col['has'][x] if x in col['has'].keys() else 0)
+#             if col['has'][x] > col['most']:
+#                 col['most'], col['mode'] = col['has'][x],x
+#         else:
+#             col['lo'], col['hi'] = min(x,col['lo']), max(x,col['hi'])
+#             all = len(col['has'])
+#             pos = (all < 512 and all+1) or (rand() < 512/col['n'] and rint(1,all))
+#             if pos:
+#                 col['has'][pos] = x
+#                 col['ok'] = False
+
+def add(col,x,n):
+    Is = {}
+    def sym(t):
+        t['x'] = n + (t['x'] or 0) 
+        if t['x'] > col['most']:
+            col['most'],col['mode'] = t['x'],x
+    def num(t):
+        col['lo'], col['hi'] = math.min(x,col['lo']), math.max(x,col['hi']) 
+        if len(t) < Is['max']:
+            col['ok']=False 
+            t[len(t) + 1]=x
+        elif rand() < Is['max']/col['n']:
+            col['ok']=False
+            t[rint(1, len(t))]=x
+    if x!="?":
+        n = n or 1
         col['n'] = col['n'] + n
         if col['isSym']:
-            col['has'][x] = n + (col['has'][x] if x in col['has'].keys() else 0)
-            if col['has'][x] > col['most']:
-                col['most'], col['mode'] = col['has'][x],x
+            sym(col['has'])
         else:
-            col['lo'], col['hi'] = min(x,col['lo']), max(x,col['hi'])
-            all = len(col['has'])
-            pos = (all < 512 and all+1) or (rand() < 512/col['n'] and rint(1,all))
-            if pos:
-                col['has'][pos] = x
-                col['ok'] = False
+            num(col['has'])
 
 def itself(x):
     return x
@@ -153,11 +183,6 @@ def kap(t, fun):
 #   return math.floor(0.5 + rand(lo, hi))
 
 # global Seed
-
-
-def rand(lo=0, hi=1, Seed =  93716211):
-  Seed = (16807 * Seed) % 2147483647
-  return lo + (hi - lo) * Seed / 2147483647
 
 def cliffsDelta(ns1, ns2):
     if len(ns1) > 256:
@@ -490,7 +515,6 @@ def any(t):
 #     rintVal = rint(None, len(t)-1)
 #     return t[rintVal]
 
-def rint(lo, hi, Seed =  93716211):
-            return math.floor(0.5 + rand(lo, hi, Seed))
+
 
 

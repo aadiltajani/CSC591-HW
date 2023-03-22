@@ -12,7 +12,7 @@ import col
 import data
 sys.path.append("./HW-6/src")
 
-
+Is = {}
 def rule(ranges, maxSize):
     t = {}
     for _,range in ranges:
@@ -76,7 +76,7 @@ def coerce(s: str):
 #                 col['ok'] = False
 
 def add(col,x,n):
-    Is = {}
+    
     def sym(t):
         t['x'] = n + (t['x'] or 0) 
         if t['x'] > col['most']:
@@ -227,28 +227,52 @@ def map(t, fun):
         return u
 
 
-def dist(data, t1, t2, cols= None):
+# def dist(data, t1, t2, cols= None):
+#     def dist1(col, x, y):
+#         if x == '?' and y =='?':
+#             return 1
+#         if col['isSym']:
+#             return 0 if x == y else 1
+        
+#         x, y = norm(col, x), norm(col, y)
+#         if x == "?":
+#             x = 1 if y < 0.5 else 1
+#         if y == "?":
+#             y = 1 if x < 0.5 else 1
+#         return abs(x - y)
+    
+#     d, n = 0, 1/float('inf')
+
+#     cols = cols if cols else data['cols']['x']
+#     for col in cols:
+#         n += 1
+#         d += dist1(col, t1[col['at']], t2[col['at']])
+
+#     return (d / n)**(1 / 2)
+
+def dist(data,t1,t2,cols):
+    def sym(x,y):
+        if x==y:
+            return 0
+        else:
+            return 1
+    def num(x,y):
+        if x=="?":
+            x = y < 0.5 and 1 or 1
+        if y=="?":
+            y = x < 0.5 and 1 or 1
+        return math.abs(x-y)
     def dist1(col, x, y):
         if x == '?' and y =='?':
             return 1
         if col['isSym']:
-            return 0 if x == y else 1
-        
-        x, y = norm(col, x), norm(col, y)
-        if x == "?":
-            x = 1 if y < 0.5 else 1
-        if y == "?":
-            y = 1 if x < 0.5 else 1
-        return abs(x - y)
-    
-    d, n = 0, 1/float('inf')
-
-    cols = cols if cols else data['cols']['x']
-    for col in cols:
-        n += 1
+            sym(x,y)
+        else:
+            num(norm(col,x), norm(col,y))
+    d, cols = 0, (cols or data['cols']['x'])
+    for _,col in cols:
         d += dist1(col, t1[col['at']], t2[col['at']])
-
-    return (d / n)**(1 / 2)
+    return (d/len(cols))**(1/Is['p'])
 
 def temp(k, nums, nums2, the):
     return cliffsDelta(nums.has, nums2[k].has, the), nums.txt
@@ -297,6 +321,30 @@ def showTree(tree, lvl=0, post=None):
         showTree(tree.get('left'), lvl + 1)
         showTree(tree.get('right'), lvl + 1)
 
+# def half(data, rows = None, cols = None, above = None):
+   
+#     def gap(r1, r2):
+#         return dist(data, r1, r2, cols)
+#     def cos(a, b, c):
+#         return (a**2 + c**2 - b**2)/(2*c +1)
+#     def proj(r):
+#         return {'row': r, 'x': cos(gap(r, A), gap(r, B), c)}
+#     rows = rows or data['rows']
+#     some = many(rows, 512)
+#     A = above or any(some)
+#     tmp = sorted([{"row": r, "d": gap(r, A)} for r in some], key=lambda x: x["d"])
+#     far = tmp[int(len(tmp)*0.95)]
+#     B, c = far["row"], far["d"]
+#     # print(far)
+#     sorted_rows = sorted(map(rows, proj).values(), key=lambda x: x["x"])
+#     left, right = [], []
+#     for n, two in enumerate(sorted_rows):
+#         if n <= (len(rows) - 1) / 2:
+#             left.append(two["row"])
+#         else:
+#             right.append(two["row"])
+#     return left, right, A, B, c
+
 def half(data, rows = None, cols = None, above = None):
    
     def gap(r1, r2):
@@ -305,13 +353,22 @@ def half(data, rows = None, cols = None, above = None):
         return (a**2 + c**2 - b**2)/(2*c +1)
     def proj(r):
         return {'row': r, 'x': cos(gap(r, A), gap(r, B), c)}
+    def around(row1,rows):
+        sorted_rows = sorted(map(lambda row2: {'row': row2, 'd': gap(row1, row2)}, rows),key=lambda x: x['d'])
+        return sorted_rows
+    def far(row,rows):
+        around(row,rows)
+        rows_length = len(rows)
+        element_index = int(rows_length * Is.Far)  # integer division
+        element = rows[element_index]
+        result = element['row']
+        return result
     rows = rows or data['rows']
     some = many(rows, 512)
     A = above or any(some)
-    tmp = sorted([{"row": r, "d": gap(r, A)} for r in some], key=lambda x: x["d"])
-    far = tmp[int(len(tmp)*0.95)]
-    B, c = far["row"], far["d"]
-    # print(far)
+    B = far(A, some)
+    c = gap(A,B)
+    far["d"]
     sorted_rows = sorted(map(rows, proj).values(), key=lambda x: x["x"])
     left, right = [], []
     for n, two in enumerate(sorted_rows):
@@ -319,7 +376,9 @@ def half(data, rows = None, cols = None, above = None):
             left.append(two["row"])
         else:
             right.append(two["row"])
-    return left, right, A, B, c
+    evals = Is.Reuse and above and 1 or 2
+    return left, right, A, B, c, evals
+
 
 def sway(d):
     def worker(rows, worse, above=None):

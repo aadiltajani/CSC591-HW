@@ -1,5 +1,6 @@
 import functions
 import math
+from copy import deepcopy
 
 def bins(cols, rowss):
     out = []
@@ -51,7 +52,7 @@ def merge2(col1, col2):
         return new
 
 def merge(col1, col2):
-    new = merge(col1, col2)
+    new = deepcopy(col1, col2)
     if col1['isSym']:
         for x,n in enumerate(col2['has']):
             functions.add(new, x, n)
@@ -61,3 +62,4 @@ def merge(col1, col2):
         new['lo'] = min(col1['lo'], col2['lo'])
         new['hi'] = max(col1['hi'], col2['hi'])
     return new
+

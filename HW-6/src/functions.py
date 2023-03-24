@@ -4,6 +4,7 @@ import csv
 import re
 import sys
 from copy import deepcopy
+import discretization
 import data
 import NUM
 import SYM
@@ -13,7 +14,7 @@ import data
 sys.path.append("./HW-6/src")
 
 Is = {}
-def rule(ranges, maxSize):
+def Rule(ranges, maxSize):
     t = {}
     for _,range in ranges:
         t['range']['txt'] = t['range']['txt'] or {}
@@ -29,7 +30,33 @@ def prune(rule, maxSize):
             rule[txt] = None
     if n > 0:
         return rule
+    
+def showRule():
+    pass
 
+def firstN():
+    pass
+
+def xpln(data, best, rest):
+    tmp,maxSizes = [],{}
+    def v(has):
+        return value(has, len(best['rows']), len(rest['rows']), "best")
+    def score(ranges):
+        rule = Rule(ranges,maxSizes)
+        if rule:
+            oo(showRule(rule))
+            bestr= selects(rule, best['rows'])
+            restr= selects(rule, rest['rows'])
+            if len(bestr) + len(restr) > 0: 
+                return v({'best': len(bestr), 'rest':len(restr)}),rule
+    for ranges in discretization.bins(data['cols']['x'],{'best':best['rows'], 'rest':rest['rows']}):
+        maxSizes[ranges[1]['txt']] = len(ranges)
+        print("")
+        for range in ranges:
+            print(range['txt'], range['lo'], range['hi'])
+            tmp.append({'range':range, 'max':len(ranges),'val': v(range['y']['has'])})
+    rule,most=firstN(sorted(tmp, key=lambda x:x['val']),score)
+    return rule,most
 
 def Range(at,txt,lo,hi = None):
     if hi is None:

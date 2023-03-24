@@ -30,11 +30,11 @@ from functions import t, csv
 #     def new(self):
 #         return {'rows':[], 'cols':None}
 
-#     def clone(self, data, ts, init=None):
-#         data1 = row(self.new(), data['cols']['names'])
-#         for i in ts:
-#             row(data1, i)
-#         return data1
+def clone(self, data, ts, init=None):
+    data1 = row(self.new(), data['cols']['names'])
+    for i in ts:
+        row(data1, i)
+    return data1
 
 #     def read(self, file):
 #         data = self.new()

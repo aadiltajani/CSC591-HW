@@ -272,7 +272,7 @@ def dist(data,t1,t2,cols):
     d, cols = 0, (cols or data['cols']['x'])
     for _,col in cols:
         d += dist1(col, t1[col['at']], t2[col['at']])
-    return (d/len(cols))**(1/Is['p'])
+    return (d/len(cols))**(1/2)
 
 def temp(k, nums, nums2, the):
     return cliffsDelta(nums.has, nums2[k].has, the), nums.txt
@@ -381,19 +381,19 @@ def half(data, rows = None, cols = None, above = None):
 
 
 def sway(d):
-    def worker(rows, worse, above=None):
+    def worker(rows, worse, evals0 = None, above=None):
         if len(rows) <= len(d["rows"])**0.5:
-            return rows, many(worse, 4 * len(rows))
+            return rows, many(worse, 10 * len(rows)), evals0
         else:
-            l, r, A, B, dummy = half(d, rows, None, above)
+            l, r, A, B, c, evals = half(d, rows, None, above)
             if better(d, B, A):
                 l, r, A, B = r, l, B, A
             for row in r:
                 worse.append(row)
-            return worker(l, worse, A)
+            return worker(l, worse, evals+evals0, A)
 
-    best, rest = worker(d["rows"], [])
-    return data.clone(d, best), data.clone(d, rest)
+    best, rest, evals = worker(d["rows"], [])
+    return data.clone(d, best), data.clone(d, rest), evals
 
 def value(has):
     sGoal,nB,nR = sGoal or True, nB or 1, nR or 1

@@ -395,6 +395,56 @@ def sway(d):
     best, rest = worker(d["rows"], [])
     return data.clone(d, best), data.clone(d, rest)
 
+def value(has):
+    sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
+    b,r = 0,0
+    for x,n in has:
+        if x==sGoal:
+            b = b + n 
+        else: 
+            r = r + n
+    b,r = b/(nB+1/math.huge), r/(nR+1/math.huge)
+    return b**2/(b+r)
+
+def selects(rule,rows):
+    def disjunction(ranges,row):
+        for _,range in ranges:
+            lo, hi, at = range.lo, range.hi, range.at
+            x = row[at]
+            if x == "?":
+                return True
+            if lo==hi and lo==x:
+                return True
+            if lo<=x  and x< hi:
+                return True
+        return False
+    def conjunction(row):
+        for _,ranges in rule:
+            if not disjunction(ranges,row):
+                return False
+        return True
+    def temp(r):
+        if conjunction(r):
+            return r
+    return map(rows, temp)
+
+# def showRule(rule):
+#     def pretty(range):
+#         return range.lo==range.hi and range.lo or {range.lo, range.hi}
+#     def merges(attr,ranges):
+#         return map(merge(sort(ranges,lt"lo")),pretty),attr
+
+# def xpln(data,best,rest):
+#     tmp,maxSizes = {},{}
+#     def v(has):
+#         return value(has, len(best.rows), len(rest.rows), "best")
+#     def score(ranges):
+#         rule = rule(ranges, maxSizes)
+#         if rule:
+#             oo(showRule(rule))
+#             bestr= selects(rule, best.rows)
+#             restr= selects(rule, rest.rows)
+
 
 # def sort(t):
 #     t = sorted(t)

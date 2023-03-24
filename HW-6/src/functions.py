@@ -34,8 +34,22 @@ def prune(rule, maxSize):
 def showRule():
     pass
 
-def firstN():
-    pass
+def firstN(sortedranges, scorefun):
+    print("")
+    for i in sortedranges:
+        print(i['range']['txt'], i['range']['lo'], i['range']['hi'], rnd(i['val']), o(i['range']['y']['has']))
+    first = sortedranges[0]['val']
+    def useful(range):
+        if range['val'] > 0.05 and range['val'] > first / 10:
+            return range
+    sortedranges = [s for s in sortedranges if useful(s)]
+    most = -1
+    out = -1
+    for n in range(len(sortedranges)):
+        tmp, rule = scorefun([i['range'] for i in sortedranges[:n+1]])
+        if tmp and tmp > most:
+            out, most = rule, tmp
+    return out, most
 
 def xpln(data, best, rest):
     tmp,maxSizes = [],{}

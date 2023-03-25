@@ -1,0 +1,53 @@
+54
+|.. 32
+|.. |.. 16
+|.. |.. |.. Jumanji
+|.. |.. |.. Mission Impossible
+|.. |.. 40
+|.. |.. |.. Interstellar
+|.. |.. |.. 33
+|.. |.. |.. |.. Catch me if you can
+|.. |.. |.. |.. The Wizard of oz
+|.. 32
+|.. |.. 21
+|.. |.. |.. Conjuring 2
+|.. |.. |.. American sniper
+|.. |.. 38
+|.. |.. |.. Babylon
+|.. |.. |.. 34
+|.. |.. |.. |.. Citizenfour
+|.. |.. |.. |.. 500 days of summer
+52
+|.. 38
+|.. |.. 22
+|.. |.. |.. High Rated:Low Rated
+|.. |.. |.. High Grossing:Low Grossing
+|.. |.. 27
+|.. |.. |.. High Budget:Low Budget
+|.. |.. |.. Action:Drama
+|.. 38
+|.. |.. 37
+|.. |.. |.. Fairly New:Fairly Old
+|.. |.. |.. Kids Movie:Adult Movie
+|.. |.. 34
+|.. |.. |.. Regional:Worldwide
+|.. |.. |.. One Time Watch:Multiple Repeats
+
+A The Wizard of oz
+B Citizenfour
+C American sniper
+D Jumanji
+E Interstellar
+F 500 days of summer
+G Conjuring 2
+H Catch me if you can
+I Babylon
+J Mission Impossible
+
+{                     }
+{                     }
+{       G             }
+{   J                 }
+{  EHC                }
+{D     A              }
+✅ pass: repgrid repgrid_test1.json

@@ -1,0 +1,53 @@
+54
+|.. 33
+|.. |.. 28
+|.. |.. |.. Jumanji
+|.. |.. |.. Mission Impossible
+|.. |.. 37
+|.. |.. |.. Interstellar
+|.. |.. |.. 33
+|.. |.. |.. |.. Catch me if you can
+|.. |.. |.. |.. The Wizard of oz
+|.. 44
+|.. |.. 38
+|.. |.. |.. 500 days of summer
+|.. |.. |.. Babylon
+|.. |.. 28
+|.. |.. |.. Conjuring 2
+|.. |.. |.. 22
+|.. |.. |.. |.. American sniper
+|.. |.. |.. |.. Citizenfour
+52
+|.. 35
+|.. |.. 22
+|.. |.. |.. High Budget:Low Budget
+|.. |.. |.. Fiction:Real Life
+|.. |.. 23
+|.. |.. |.. PG Rated:R Rated
+|.. |.. |.. High Rated:Low Rated
+|.. 49
+|.. |.. 41
+|.. |.. |.. New:Old
+|.. |.. |.. Action:Drama
+|.. |.. 33
+|.. |.. |.. Mild:Spicy
+|.. |.. |.. Boring:Exciting
+
+A The Wizard of oz
+B Citizenfour
+C American sniper
+D Jumanji
+E Interstellar
+F 500 days of summer
+G Conjuring 2
+H Catch me if you can
+I Babylon
+J Mission Impossible
+
+{       I             }
+{                     }
+{                     }
+{   E                 }
+{D H B A              }
+{     JG              }
+✅ pass: repgrid repgrid_test2.json

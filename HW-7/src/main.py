@@ -50,19 +50,19 @@ def egbootmu():
 
 def egbasic():
     print('\n\nbasic\n')
-    print("\t\ttruee", stats.bootstrap( {8, 7, 6, 2, 5, 8, 7, 3}, 
+    print("\tTrue", stats.bootstrap( {8, 7, 6, 2, 5, 8, 7, 3}, 
                                 {8, 7, 6, 2, 5, 8, 7, 3}),
                 functions.cliffsDelta( {8, 7, 6, 2, 5, 8, 7, 3}, 
-                            {8, 7, 6, 2, 5, 8, 7, 3}))
-    print("\t\tfalse", stats.bootstrap(  {8, 7, 6, 2, 5, 8, 7, 3},  
+                            {8, 7, 6, 2, 5, 8, 7, 3}), sep='\t')
+    print("\tFalse", stats.bootstrap(  {8, 7, 6, 2, 5, 8, 7, 3},  
                                     {9, 9, 7, 8, 10, 9, 6}),
                 functions.cliffsDelta( {8, 7, 6, 2, 5, 8, 7, 3},  
-                            {9, 9, 7, 8, 10, 9, 6})) 
-    print("\t\tfalse", 
+                            {9, 9, 7, 8, 10, 9, 6}), sep='\t') 
+    print("\tFalse", 
                 stats.bootstrap({0.34, 0.49, 0.51, 0.6,   .34,  .49,  .51, .6}, 
                                 {0.6,  0.7,  0.8,  0.9,   .6,   .7,   .8,  .9}),
                 functions.cliffsDelta({0.34, 0.49, 0.51, 0.6,   .34,  .49,  .51, .6}, 
-                                {0.6,  0.7,  0.8,  0.9,   .6,   .7,   .8,  .9}))
+                                {0.6,  0.7,  0.8,  0.9,   .6,   .7,   .8,  .9}), sep='\t')
 
 def egpre():
     print("\neg3")
@@ -74,7 +74,7 @@ def egpre():
           t1.append(stats.gaussian(10,1))
           t2.append(stats.gaussian(d * 10,1))
       val = True if d<1.1 else False
-      print("\t",d,val,stats.bootstrap(t1,t2),stats.bootstrap(t1,t1))
+      print("",d,val,stats.bootstrap(t1,t2),stats.bootstrap(t1,t1), sep='\t')
       d = round(d + 0.05, 2)
 
 def egfive():
@@ -121,8 +121,14 @@ def egtiles():
     for _ in range(1000):
         k.append(stats.gaussian(10,1))
     for k,v in enumerate([a,b,c,d,e,f,g,h,j,k]):
-        rxs.append(stats.RX(v,"rx" + str (k+1) ))
-    rxs = stats.rxs_sort(rxs)
+        rxs.append(functions.RX(v,"rx" + str (k+1) ))
+
+    # rxs = rxs.sort(key=lambda x: functions.mid(x))
+    for i,x in enumerate(rxs):
+        for j,y in enumerate(rxs):
+            if functions.mid(x) < functions.mid(y):
+                rxs[j],rxs[i]=rxs[i],rxs[j]
+
     for rx in stats.tiles(rxs):
         print("",rx['name'],rx['show'])
 

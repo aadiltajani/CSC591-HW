@@ -100,7 +100,7 @@ def tiles(rxs):
   for rx in rxs:
     t,u = rx['has'],[]
     def of(x,most):
-        return int(max(0, min(most, x)))
+        return int(max(1, min(most, x)))
     
     def at(x):
         return t[of(len(t)*x//1, len(t))]
@@ -108,7 +108,7 @@ def tiles(rxs):
     def pos(x):
         return math.floor(of(40*(x-lo)/(hi-lo+1E-32)//1, 40))
 
-    for i in range(0,40+1):
+    for i in range(41):
         u.append(" ")
     a,b,c,d,e= at(.1), at(.3), at(.5), at(.7), at(.9) 
     A,B,C,D,E= pos(a), pos(b), pos(c), pos(d), pos(e)
@@ -118,8 +118,8 @@ def tiles(rxs):
         u[i]="-"
     u[40//2] = "|" 
     u[C] = "*"
-    x = []
-    for i in [a,b,c,d,e]:
-        x.append("{:6.2f}".format(i))
-    rx['show'] = ''.join(u) + str(x)
+    rx["show"] = rx["show"] + ''.join(u) + "{" + "%6.2f".format(a)
+    for x in [b, c, d, e]:
+        rx["show"]= rx["show"] + ", " + "%6.2f".format(x)
+        rx["show"] = rx["show"] + "}"
   return rxs

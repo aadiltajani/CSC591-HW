@@ -48,10 +48,10 @@ def add(col, x, n = None):
 
     def num(t):
         col.lo, col.hi = min(x, col.lo), max(x, col.hi)
-        if len(t) < 512:
+        if len(t) < 32:
             col.ok = False
             t.append(x)
-        elif rand() < 512 / col.n:
+        elif rand() < 32 / col.n:
             col.ok = False
             t[rint(0, len(t) - 1)] = x
 

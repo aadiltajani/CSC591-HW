@@ -118,8 +118,9 @@ def tiles(rxs):
         u[i]="-"
     u[40//2] = "|" 
     u[C] = "*"
-    rx["show"] = rx["show"] + ''.join(u) + "{" + "%6.2f".format(a)
+    form = "%6.2f"
+    rx["show"] = rx["show"] + ''.join(u) + "{" + form % a
     for x in [b, c, d, e]:
-        rx["show"]= rx["show"] + ", " + "%6.2f".format(x)
-        rx["show"] = rx["show"] + "}"
+        rx["show"]= rx["show"] + ", " + form % x
+    rx["show"] = rx["show"] + "}"
   return rxs

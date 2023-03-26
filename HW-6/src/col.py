@@ -1,11 +1,9 @@
 import NUM
 import SYM
 
-def col(n,s):
-    is_num = s[0].isupper()
-    col = NUM.num(n, s) if is_num else SYM.SYM(n, s)
-    col['isIgnored'] = s.endswith("X")
-    col['isKlass'] = s.endswith("!")
-    col['isGoal'] = s.endswith("!") or s.endswith("+") or s.endswith("-")
-    
-    return col
+class Col:
+    def __init__(self, n, s):
+        self.col = NUM.Num(n, s) if s[0].isupper() else SYM.sym(n, s)
+        self.isIgnored = self.col.txt.endswith("X")
+        self.isKlass = self.col.txt.endswith("!")
+        self.isGoal = self.col.txt[-1] in ["!", "+", "-"]

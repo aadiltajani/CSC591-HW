@@ -1,5 +1,9 @@
 import random
 import sys
+
+
+sys.path.append('../HW-6/')
+
 import getopt
 import functions
 import NUM
@@ -7,7 +11,13 @@ import SYM
 import data
 import sys
 import discretization
-sys.path.append("./src")
+from functions import *
+from list_func import *
+from str_func import *
+from query import *
+from functions import *
+from new_func import *
+from optimization import *
 n = len(sys.argv)
 cli_list = sys.argv[1:]
 shorts = 'b:c:f:F:g:h:H:m:M:p:r:R:s:'
@@ -38,13 +48,13 @@ ACTIONS:
 #     num1, num2 = NUM(), NUM()
 #     Seed=the['seed']
 #     for i in range(1, 1000):
-#         num1.add(functions.rand(0, 1))
+#         num1.add(rand(0, 1))
 #     Seed=the['seed']
 #     for i in range(1, 1000):
-#         num2.add(functions.rand(0, 1))
-#     m1 = functions.rnd(num1.mid(), 10)
-#     m2 = functions.rnd(num2.mid(), 10)
-#     return m1==m2 and .5 == functions.rnd(m1,1)
+#         num2.add(rand(0, 1))
+#     m1 = rnd(num1.mid(), 10)
+#     m2 = rnd(num2.mid(), 10)
+#     return m1==m2 and .5 == rnd(m1,1)
 
 
 if n > 0:
@@ -80,46 +90,54 @@ if the['h']:
     print(help)
 else:
     if the['g'] == 'all' or the['g'] == 'the':
-        if not functions.oo(the):
+        if not oo(the):
             print("❌ fail: the")
         else:
             print("✅ pass: the")
 
 
     if the['g'] == 'all' or the['g'] == 'rand':
-        Seed, t, u = 1, [], []
+        Seed, t, u = the['s'], [], []
         for i in range(0,1000):
-            t.append(functions.rint(0,100,Seed))
-            u.append(functions.rint(0,100,Seed))
+            t.append(rint(100))
+            u.append(rint(100))
         for i in range(len(t)):
             assert(t[i]==u[i])
         print("✅ pass: rand")
 
+    if the['g'] == 'all' or the['g'] == 'some':
+        max = 32
+        num1 = NUM.Num()
+        for i in range(1,10000):
+            add(num1,i)
+        oo(has(num1))
 
-    if the['g'] == 'all' or the['g'] == 'syms':
-        sym = functions.adds(SYM.SYM(), ["a","a","a","a","b","b","c"])
-        print(functions.mid(sym), functions.rnd(functions.div(sym)))
-        if 1.38 != functions.rnd(functions.div(sym),2):
-            print("❌ fail: sym")
-        else:
-            print("✅ pass: sym")
+
+
+    # if the['g'] == 'all' or the['g'] == 'syms':
+    #     sym = adds(SYM.SYM(), ["a","a","a","a","b","b","c"])
+    #     print(mid(sym), rnd(div(sym)))
+    #     if 1.38 != rnd(div(sym),2):
+    #         print("❌ fail: sym")
+    #     else:
+    #         print("✅ pass: sym")
 
 
     if the['g'] == 'all' or the['g'] == 'nums':
-        num1, num2 = NUM.num(), NUM.num()
+        num1, num2 = NUM.Num(), NUM.Num()
         for i in range(10000):
-            functions.add(num1, functions.rand())
-            functions.add(num2, functions.rand()**2)
-        print(1, functions.rnd(functions.mid(num1),1), functions.rnd(functions.div(num1)))
-        print(2, functions.rnd(functions.mid(num2),1), functions.rnd(functions.div(num2))) 
-        if .5 == functions.rnd(functions.mid(num1),1) and functions.mid(num1)> functions.mid(num2):
+            add(num1, rand())
+            add(num2, rand()**2)
+        print(1, rnd(mid(num1),1), rnd(div(num1)))
+        print(2, rnd(mid(num2),1), rnd(div(num2))) 
+        if .5 == rnd(mid(num1),1) and mid(num1)> mid(num2):
             print("✅ pass: num")
         else:
             print("❌ fail: num")            
 
     if the['g'] == 'all' or the['g'] == 'csv':
         n = 0
-        t = functions.csv_read(the['f'])
+        t = csv_read(the['f'])
         for i in t:
             n+=len(i)
         if 3192 != n:
@@ -128,96 +146,114 @@ else:
             print("✅ pass: sym")
 
     if the['g'] == 'all' or the['g'] == 'data':
-        d = data.read(the['f'])
-        col = d["cols"]["x"][0]
-        print(col['lo'], col['hi'], functions.mid(col), functions.div(col))
-        functions.oo(functions.stats(d))
+        d = data.DATA(the['f'])
+        col = d.cols.x[1].col
+        print(col.lo, col.hi, mid(col), div(col))
+        oo(stats(d))
         print("✅ pass: data")
 
     if the['g'] == 'all' or the['g'] == 'clone':
-        data1 = data.read(the['f'])
-        data2= data.clone(data1, data1['rows'])
-        functions.oo(functions.stats(data1))
-        functions.oo(functions.stats(data2))
+        data1 = data.DATA(the['f'])
+        data2 = data.DATA(data1, data1.rows)
+        oo(stats(data1))
+        oo(stats(data2))
         print("✅ pass: clone")
 
 
     if the['g'] == 'all' or the['g'] == 'cliffs':
-        assert functions.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "1"
-        assert functions.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2"
+        assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "1"
+        assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2"
         t1 = []
         t2 = []
         for i in range(0, 1000):
             t1.append(random.random())
             t2.append(random.random() ** 0.5)
-        assert functions.cliffsDelta(t1, t1) == False, "3"
-        assert functions.cliffsDelta(t1, t2) == True, "4"
+        assert cliffsDelta(t1, t1) == False, "3"
+        assert cliffsDelta(t1, t2) == True, "4"
         diff = False
         j = 1.0
         while not diff:
             t3 = list(map(lambda x: x*j, t1))
-            diff = functions.cliffsDelta(t1, t3)
+            diff = cliffsDelta(t1, t3)
             print(">", round(j, 4), diff)
             j *= 1.025      
         print("✅ pass: cliffs")
 
 
     if the['g'] == 'all' or the['g'] == 'dist':
-        d = data.read(the['f'])
-        num = NUM.num()
-        for row in d['rows']:
-            functions.add(num, functions.dist(d, row, d['rows'][0]))
-        functions.oo({
-            'lo': num['lo'],
-            'hi': num['hi'],
-            'mid': functions.rnd(functions.mid(num)),
-            'div': functions.rnd(functions.div(num))
+        d = data.DATA(the['f'])
+
+        num = NUM.Num()
+        for row in d.rows:
+            add(num, dist(d, row, d.rows[0]))
+        oo({
+            'lo': num.lo,
+            'hi': num.hi,
+            'mid': rnd(mid(num)),
+            'div': rnd(div(num))
                       })
         print("✅ pass: dist")
         
     if the['g'] == 'all' or the['g'] == 'tree':
-        functions.showTree(functions.tree(data.read(the['f'])))
+        d = data.DATA(the['f'])
+
+        showTree(tree(d))
         print("✅ pass: tree")
 
 
-    if the['g'] == 'all' or the['g'] == 'sway':
-        d = data.read(the['f'])
-        best, rest = functions.sway(d)
-        print("\nall ", functions.o(functions.stats(d))) 
-        print("    ",   functions.o(functions.stats(d,functions.div))) 
-        print("\nbest", functions.o(functions.stats(best))) 
-        print("    ",   functions.o(functions.stats(best,functions.div))) 
-        print("\nrest", functions.o(functions.stats(rest))) 
-        print("    ",   functions.o(functions.stats(rest,functions.div))) 
-        print("\nall ~= best?", functions.o(functions.diffs(best['cols']['y'], d['cols']['y'])))
-        print("best ~= rest?", functions.o(functions.diffs(best['cols']['y'], rest['cols']['y'])))
-        print("✅ pass: sway")
+    # if the['g'] == 'all' or the['g'] == 'sway':
+    #     d = data.read(the['f'])
+    #     best, rest = sway(d)
+    #     print("\nall ", o(stats(d))) 
+    #     print("    ",   o(stats(d,div))) 
+    #     print("\nbest", o(stats(best))) 
+    #     print("    ",   o(stats(best,div))) 
+    #     print("\nrest", o(stats(rest))) 
+    #     print("    ",   o(stats(rest,div))) 
+    #     print("\nall ~= best?", o(diffs(best['cols']['y'], d['cols']['y'])))
+    #     print("best ~= rest?", o(diffs(best['cols']['y'], rest['cols']['y'])))
+    #     print("✅ pass: sway")
 
 
-    if the['g'] == 'all' or the['g'] == 'bins':
-        d = data.read(the['f'])
-        best,rest = functions.sway(d)
-        print("all","","","",functions.o({'best': len(best['rows']), 'rest': len(rest['rows'])}))
-        for k,t in enumerate(discretization.bins(d['cols']['x'],{'best':best['rows'], 'rest':rest['rows']})):
-            for _,range in enumerate(t):
-                b4 = range['txt']
-                print(range['txt'],range['lo'],range['hi'],
-                functions.rnd(functions.value(range['y']['has'], len(best['rows']),len(rest['rows']),"best")), 
-                functions.o(range['y']['has']))
-        print("✅ pass: bins")
+    # if the['g'] == 'all' or the['g'] == 'bins':
+    #     d = data.read(the['f'])
+    #     best,rest = sway(d)
+    #     print("all","","","",o({'best': len(best['rows']), 'rest': len(rest['rows'])}))
+    #     for k,t in enumerate(discretization.bins(d['cols']['x'],{'best':best['rows'], 'rest':rest['rows']})):
+    #         for _,range in enumerate(t):
+    #             b4 = range['txt']
+    #             print(range['txt'],range['lo'],range['hi'],
+    #             rnd(value(range['y']['has'], len(best['rows']),len(rest['rows']),"best")), 
+    #             o(range['y']['has']))
+    #     print("✅ pass: bins")
 
+
+    if the['g'] == 'all' or the['g'] == 'xpln':
+        d = data.DATA(the['f'])
+        best,rest,evals = sway(d)
+        rule,most= discretization.xpln(d,best,rest)
+        print("\n-----------\nexplain=", d.showRule(rule))
+        selects = discretization.selects(rule,d.rows)
+        data_selects = [s for s in selects if s!=None]
+        data1= d.clone(data_selects)
+        print("all               ",d.stats('mid', d.cols.y, 2),d.stats('div', d.cols.y, 2))
+        print("sway with",evals,"evals",best.stats('mid', best.cols.y, 2),best.stats('div', best.cols.y, 2))
+        print("xpln on",evals,"evals",data1.stats('mid', data1.cols.y, 2),data1.stats('div', data1.cols.y, 2))
+        top,_ = d.betters(len(best.rows))
+        top = d.clone(top)
+        print("sort with",len(d.rows),"evals",top.stats('mid', top.cols.y, 2),top.stats('div', top.cols.y, 2))
 
 
     # if the['g'] == 'all' or the['g'] == 'copy':
     #     t1 = {'a':1, 'b':{'c':2, 'd':[3]}}
-    #     t2 = functions.copy(t1)
+    #     t2 = copy(t1)
     #     t2['b']['d'][0] = 10000
-    #     print("b4",functions.o(t1),"\nafter",functions.o(t2))
+    #     print("b4",o(t1),"\nafter",o(t2))
     #     print("✅ pass: copy")
 
 
     # if the['g'] == 'all' or the['g'] == 'repcols':
-    #     t = functions.repCols(functions.dofile(the['f']).get("cols"))
+    #     t = repCols(dofile(the['f']).get("cols"))
     #     for col in t.cols.all:
     #         print(vars(col))
     #     for row in t.rows:
@@ -227,42 +263,42 @@ else:
 
     # if the['g'] == 'all' or the['g'] == 'synonyms':
         
-    #     t = functions.dofile(the['f'])["cols"]
-    #     cols = functions.repCols(t)
+    #     t = dofile(the['f'])["cols"]
+    #     cols = repCols(t)
     #     x = cols.cluster()
-    #     functions.show(x)
-    #     # functions.show(functions.repCols(functions.dofile(the['f']).get("cols")).cluster())
+    #     show(x)
+    #     # show(repCols(dofile(the['f']).get("cols")).cluster())
     #     print("✅ pass: synonyms")
 
         
     # if the['g'] == 'all' or the['g'] == 'reprows':
-    #     t = functions.dofile(the['f'])
-    #     rows = functions.repRows(t, functions.transpose(t['cols']))
-    #     functions.map(rows.cols.all, functions.oo)
-    #     functions.map(rows.rows, functions.oo)
+    #     t = dofile(the['f'])
+    #     rows = repRows(t, transpose(t['cols']))
+    #     map(rows.cols.all, oo)
+    #     map(rows.rows, oo)
     #     print("✅ pass: reprows")
 
     # if the['g'] == 'all' or the['g'] == 'prototypes':
-    #     t = functions.dofile(the['f'])
+    #     t = dofile(the['f'])
         
-    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
-    #     functions.show(rows.cluster())
+    #     rows = repRows(t, transpose(t["cols"]))
+    #     show(rows.cluster())
     #     print("✅ pass: prototypes")
 
     # if the['g'] == 'all' or the['g'] == 'position':
-    #     t = functions.dofile(the['f'])
-    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
+    #     t = dofile(the['f'])
+    #     rows = repRows(t, transpose(t["cols"]))
     #     rows.cluster()
-    #     functions.repPlace(rows)
+    #     repPlace(rows)
     #     print("✅ pass: position")
 
     # if the['g'] == 'all' or the['g'] == 'repgrid':
-    #     t = functions.dofile(the['f'])
-    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
-    #     cols = functions.repCols(t["cols"])
-    #     functions.show(rows.cluster())
-    #     functions.show(cols.cluster())
-    #     functions.repPlace(rows)
+    #     t = dofile(the['f'])
+    #     rows = repRows(t, transpose(t["cols"]))
+    #     cols = repCols(t["cols"])
+    #     show(rows.cluster())
+    #     show(cols.cluster())
+    #     repPlace(rows)
     #     print("✅ pass: repgrid")
 
     # print("======================================================================================================")
@@ -270,16 +306,16 @@ else:
     # print("======================================================================================================")
 
     # for f in ['./etc/data/repgrid_test1.json','./etc/data/repgrid_test2.json','./etc/data/repgrid_test3.json']:
-    #     t = functions.dofile(f)
-    #     rows = functions.repRows(t, functions.transpose(t["cols"]))
-    #     cols = functions.repCols(t["cols"])
-    #     functions.show(rows.cluster())
-    #     functions.show(cols.cluster())
-    #     functions.repPlace(rows)
+    #     t = dofile(f)
+    #     rows = repRows(t, transpose(t["cols"]))
+    #     cols = repCols(t["cols"])
+    #     show(rows.cluster())
+    #     show(cols.cluster())
+    #     repPlace(rows)
     #     print("✅ pass: repgrid", f.split('/')[-1])
 
     # if the['g'] == 'all' or the['g'] == 'csv':
-    #     n = functions.csv_read(the['f'])
+    #     n = csv_read(the['f'])
     #     if len([i for sublist in n for i in sublist]) != 8 * 399:
     #         print("❌ fail: csv") 
     #     else:
@@ -294,8 +330,8 @@ else:
     #     Data = data.DATA(the['f'])
     #     try:
     #         for k, cols in ([('y', Data.cols.y), ('x', Data.cols.x)]):
-    #             print(k, "mid", functions.o(Data.stats("mid", cols, 2)))
-    #             print(" ", "div", functions.o(Data.stats("div", cols, 2)))
+    #             print(k, "mid", o(Data.stats("mid", cols, 2)))
+    #             print(" ", "div", o(Data.stats("div", cols, 2)))
     #         print("✅ pass: stats")
     #     except Exception as e:
     #         print(e, "❌ fail: stats")
@@ -310,21 +346,21 @@ else:
     #         Data = data.DATA(the['f'])
     #         for n,t in enumerate(Data.around(Data.rows[1], the['p'])):
     #             if n%50 == 0:
-    #                 print(n, '\t', functions.rnd(t['dist']), '\t', functions.o(t['row'].cells))
+    #                 print(n, '\t', rnd(t['dist']), '\t', o(t['row'].cells))
     #         print("✅ pass: around")
     # if the['g'] == 'all' or the['g'] == 'half':
     #             Data = data.DATA(the['f'])
     #             left, right, A, B, mid, c = Data.half(S = the['S'],F =  the['F'], p = the['p'])
     #             print(len(left), len(right), len(Data.rows))
-    #             print(functions.o(A.cells), c)
-    #             print(functions.o(mid.cells))
-    #             print(functions.o(B.cells))
+    #             print(o(A.cells), c)
+    #             print(o(mid.cells))
+    #             print(o(B.cells))
     #             print("✅ pass: half")
     # if the['g'] == 'all' or the['g'] == 'cluster':
     #             Data = data.DATA(the['f'])
-    #             functions.show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+    #             show(Data.cluster(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
     #             print("✅ pass: cluster")
     # if the['g'] == 'all' or the['g'] == 'optimise':
     #             Data = data.DATA(the['f'])
-    #             functions.show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
+    #             show(Data.sway(S = the['S'],F =  the['F'], p = the['p']),'mid',Data.cols.y,1)
     #             print("✅ pass: optimise")

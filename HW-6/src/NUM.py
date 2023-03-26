@@ -3,30 +3,18 @@
 # import functions
 
 
-def num(n=0,s=""):
-    d={'at' : n, 
-        'isSym': False,
-        'txt': s,
-        'n' : 0,
-        'hi' : float('-inf'),
-        'lo' : float('inf'),
-        'ok' : True,
-        'has' : {},
-        'w' : -1 if s.endswith('-') else 1
+class Num:
+    def __init__(self, n = 0, s = ""):
+        self.at = n
+        self.txt = s
+        self.n = 0
+        self.lo = float('inf')
+        self.hi = float('-inf')
+        self.ok = True
+        self.has = []
+        self.w = -1 if s.endswith("-") else 1
 
-    }
-    return d
 
-# class NUM:
-#     def __init__(self, at=0, txt=''):
-#         self.n = 0
-#         self.at = at
-#         self.txt = txt
-#         self.mu = 0
-#         self.m2 = 0
-#         self.lo = float('inf')
-#         self.hi = float('-inf')
-#         self.w = -1 if '-' in self.txt else 1
 
 #     def add(self, n):
 #         # if isinstance(n, float) or isinstance(n, int):

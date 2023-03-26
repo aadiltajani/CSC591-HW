@@ -1,24 +1,25 @@
 # import math
 
-def SYM(n=0,s=""):
-    d={'at' : n, 
-        'txt': s,
-        'n' : 0,
-        'mode' : None,
-        'most' : 0,
-        'isSym' : True,
-        'has' : {}
-    }
-    return d
+# def SYM(n=0,s=""):
+#     d={'at' : n, 
+#         'txt': s,
+#         'n' : 0,
+#         'mode' : None,
+#         'most' : 0,
+#         'isSym' : True,
+#         'has' : {}
+#     }
+#     return d
     
-# class sym:
-#     def __init__(self, at=0, txt='') -> None:
-#         self.n = 0
-#         self.has = {}
-#         self.most = 0
-#         self.mode = None
-#         self.at = at
-#         self.txt = txt
+class sym:
+    def __init__(self, n = 0, s = ""):
+        self.at = n
+        self.txt = s
+        self.n = 0
+        self.has = {}
+        self.most = 0
+        self.mode = None
+        self.isSym = True
 
 #     def add(self, v):
 #         if v != '?':

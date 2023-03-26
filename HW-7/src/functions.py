@@ -6,16 +6,21 @@ sys.path.append("./HW-7/src")
 def RX(t, s = ""):
     return {"name":s, "rank":0, "n":len(t), "show":"", "has":sorted(t)}
 
-def mid():
-    pass
+def mid(t):
+    t= t['has'] if t['has'] else t
+    n = (len(t)-1)//2
+    return (t[n] +t[n+1])/2 if len(t)%2==0 else t[n+1]
 
-def div():
-    pass
+def div(t):
+    t= t['has'] if t['has'] else t
+    return (t[ len(t)*9//10 ] - t[ len(t)*1//10 ])/2.56
 
-def merge():
-    pass
-
-
+def merge(rx1, rx2):
+    rx3 = RX([], rx1['name'])
+    rx3['has'] = rx1['has'] + rx2['has']
+    rx3['has'] = sorted(rx3['has'])
+    rx3['n'] = len(rx3['has'])
+    return rx3
 
 def cliffsDelta(ns1, ns2): 
     n, gt, lt = 0, 0, 0 
